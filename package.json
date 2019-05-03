@@ -1,0 +1,19 @@
+{
+  "name": "sgpbweb",
+  "version": "1.0.0",
+  "description": "Sistema de gestion de planos boherdi version web",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patodimasi/SGPBweb.git"
+  },
+  "author": "Patricia Dimasi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patodimasi/SGPBweb/issues"
+  },
+  "homepage": "https://github.com/patodimasi/SGPBweb#readme"
+}
