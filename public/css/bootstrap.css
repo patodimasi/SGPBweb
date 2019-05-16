@@ -226,15 +226,6 @@ label {
   margin-bottom: 0.5rem;
 }
 
-button {
-  border-radius: 0;
-}
-
-button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-}
-
 input,
 button,
 select,
@@ -4081,6 +4072,17 @@ input[type="button"].btn-block {
 
 .nav-tabs .nav-item {
   margin-bottom: -1px;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc; 
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
 }
 
 .nav-tabs .nav-link {
