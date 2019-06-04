@@ -35,40 +35,40 @@ app.get('/patricia',(req,res)=>{
 
 });
 
-app.get('/materiales',(req,res)=>{
-   /* console.log("GET MATERIALES");
-
-    planos.find(function(err, plano){
-
-      if(err){
-          res.send("Ocurrió error obteniendo los planos");
-      }else{
-       console.log(plano);
-       res.write(JSON.stringify(plano));
-       return res.end();
-          
-      }
-  
-   });
-   */
-  var materiales ={
-      
-    "data":[
-        {
-        "name": "row_7",
-        "position": "Airi",
-        "salary": "Satou",
-        "start_date": "Accountant",
-        "office": "Tokyo",
-        "extn": "28th Nov 08"
+app.get('/buscarTodosp',(req,res)=>{
+    /* console.log("GET MATERIALES");
+     planos.find(function(err, plano){
+       if(err){
+           res.send("Ocurrió error obteniendo los planos");
+       }else{
+        console.log(plano);
+        res.write(JSON.stringify(plano));
+        return res.end();
+           
+       }
+   
+    });
+    */
+   var buscarTodosp ={
        
-        }
-    ]
-}
-
-res.write(JSON.stringify(materiales));
-return res.end();
-})
+     "data":[
+         {
+         "codigo": "DB4-0001",
+         "descripcion" : "SER",
+         "ubicacion": "/boherdiserver/ingenieria",
+         "ualta": "LMOTREL",
+         "falta": "25/04/2017",
+         "uaprobacion": "MDIFAZIO",
+         "faprobacion": "03/02/2015",
+         "urecepcion": "PRIOS",
+         "frecepcion": "25/04/021",
+        
+         }
+     ]
+ }
+    res.write(JSON.stringify(buscarTodosp));
+    return res.end();
+ })
 
 app.get('/login',(req,res)=>{
 
