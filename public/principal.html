@@ -17,16 +17,28 @@
           function format ( d ) {
            return '<table cellpadding="5"cellspacing="0" border="0"  style = "padding-left:50px;">' +
            '<tr>'+
-              '<td>Full name:</td>'+ 
-              '<td>'+d.name+'</td>'+ 
+              '<td>Usuario Alta:</td>'+ 
+              '<td>'+d.ualta+'</td>'+ 
             '</tr>'+
            '<tr>'+
-              '<td>Extension number:</td>'+
-             '<td>'+d.extn+'</td>'+
+              '<td>Fecha Alta:</td>'+
+             '<td>'+d.falta+'</td>'+
            '</tr>'+
             '<tr>'+
-              '<td>Extra info:</td>'+
-              '<td>informacion.....</td>'+
+              '<td>Usuario Aprobación:</td>'+
+              '<td>'+d.uaprobacion+'</td>'+
+            '</tr>'+
+            '<tr>'+
+              '<td>Fecha Aprobación:</td>'+
+              '<td>'+d.faprobacion+'</td>'+
+            '</tr>'+
+            '<tr>'+
+              '<td>Usuario Recepción:</td>'+
+              '<td>'+d.urecepcion+'</td>'+
+            '</tr>'+
+            '<tr>'+
+              '<td>Fecha Recepción:</td>'+
+              '<td>'+d.frecepcion+'</td>'+
             '</tr>'+
           '</table>';        
            }
@@ -35,7 +47,7 @@
           var table = $('#examplep').DataTable( {
             "processing": true,
             "serverSide": true,
-            "ajax": "/materiales",
+            "ajax": "/buscarTodosp",
             "columns": [
                 {
                     "class":          'details-control',
@@ -43,10 +55,10 @@
                     "data":           null,
                     "defaultContent": ''
                 },
-                { "data": "name" },
-                { "data": "position" },
-                { "data": "office" },
-                { "data": "salary" }
+                { "data": "codigo" },
+                { "data": "descripcion" },
+                { "data": "ubicacion" },
+              
               ],
             "order": [[1, 'asc']]
             } );
@@ -72,7 +84,6 @@
                 }    
               }       
             });
-
            table.on( 'draw', function () {
               $.each( detailRows, function ( i, id ) {
               $('#'+id+' td.details-control').trigger( 'click' );
@@ -94,7 +105,6 @@
                 data: {codigo:cod},
                 success: function(res){
                   $('#examplep').dataTable().fnDestroy();
-
                   $('#examplep').DataTable({         
                       data : JSON.parse(res),
                       "columns": [
@@ -110,7 +120,6 @@
                         { "data": "PLN_UBICACION" }
                       ]
                     });             
-
                   console.log(res);
                 }
               });
@@ -193,7 +202,6 @@
                 font-size: 3.5rem;
               }
             }
-
             @keyframes check {0% {height: 0;width: 0;}
              25% {height: 0;width: 10px;}
              50% {height: 20px;width: 10px;}
@@ -210,7 +218,6 @@
           .checkbox input:checked + .info:after{border-color:#3de0f5}
           .checkbox input:checked + .warning:after{border-color:#FFC107}
           .checkbox input:checked + .danger:after{border-color:#f44336}
-
           td.details-control {
               background: url('./images/details_open.png') no-repeat center center;
               cursor: pointer;
@@ -373,20 +380,22 @@
                       <thead>
                           <tr>
                               <th></th>
-                              <th>Name</th>
-                              <th>Position</th>
-                              <th>Office</th>
-                              <th>Salary</th>
+                              <th>Código</th>
+                              <th>Descripción</th>
+                              <th>Ubicación</th>
+                              <!----th>Office</th-->
+                              <!--th>Salary</th-->
                              
                           </tr>
                       </thead>
                       <tfoot>
                           <tr>
                               <th></th>
-                              <th>Name</th>
-                              <th>Position</th>
-                              <th>Office</th>
-                              <th>Salary</th>
+                              <th>Código</th>
+                              <th>Descripción</th>
+                              <th>Ubicación</th>
+                              <!----th>Office</th-->
+                              <!----th>Salary</th-->
                              
                           </tr>
                       </tfoot>
