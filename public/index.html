@@ -1,46 +1,78 @@
 <!DOCTYPE html> 
 <html>
   <head>
-     <script src="./scripts/jquery-3.4.1.js"></script>
-     <script src="./scripts/bootstrap.js"></script>
-     <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
-     <link rel= "shortcut icon" type= "image/ico" href="./images/1.ico"/>
-     <!-- Latest compiled and minified CSS -->
-     <!----lnk rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"-->
-     <title>SGPB</title>
-     <style>
-        .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
+    <script src="./scripts/jquery-3.4.1.js"></script>
+    <script src="./scripts/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+    <link rel= "shortcut icon" type= "image/ico" href="./images/1.ico"/>
+    <link href="./css/signin.css" rel="stylesheet" type="text/css">
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
         }
-      }
-     </style>
-     <link href="./css/signin.css" rel="stylesheet" type="text/css">
-  </head>
+  
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+    </style>
+    <script>
+      $(document).ready(function(){
+        
+          $("#btnIngresar").click(function(){
+
+              var user = $("#txtUser").val();
+              var pass = $("#txtPassword").val();
+              console.log("click");
+              $.ajax({
+                method : "GET",
+                async:true,
+                //url:"../login",
+                url:"../login?usr="+user.toUpperCase()+"&pass="+pass,
+                success: function(res){
+                  var jsoLogin = JSON.parse(res);
+                  console.log(res);
+                  if (jsoLogin.result.match("ERROR")){
+                      $("#err").show();
+                      $("#txtUser").val("");
+                      $("#txtPassword").val("");     
+                  }
+                  else
+                  {
+                      sessionStorage["iniciales"] = jsoLogin.iniciales;
+                      window.location = jsoLogin.url;
+                  }
+                }
+              });
+          });
+      });
+   </script>
+  </head>   
+
   <body class="text-center">
-    <form class="form-signin">
-   <img src="./images/logo.png" alt="" width="72" height="72">    
-   <h1 class="h3 mb-3 font-weight-normal">Sistema de Gestion de planos Boherdi</h1>   
-   <!----label for="inputEmail" class="sr-only">Email address</label-->  
-   <input  id="inputEmail" class="form-control" placeholder="Usuario" required autofocus> 
-   <!----label for="inputPassword" class="sr-only">Password</label-->
-   <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
-   <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Recordar contraseña
-      </label>
-   </div>  
-   <a class="btn btn-lg btn-primary btn-block" href="aux.html" role="button">Ingresar &raquo;</a>
-   <p class="mt-5 mb-3 text-muted">&copy; DB4-1412 Rev.1</p>
-    </form>
+      <form class="form-signin">
+        <img src="./images/logo.png" alt="" width="72" height="72">   
+        <h1 class="h3 mb-3 font-weight-normal">Sistema de Gestion de planos Boherdi</h1>   
+        <!----label for="inputEmail" class="sr-only">Usuario</label-->
+        <input  id="txtUser" class="form-control" placeholder="Usuario" required autofocus>
+        <!----label for="inputPassword" class="sr-only">Password</label-->
+        <input  type="password" id="txtPassword" class="form-control" placeholder="Contraseña" required> 
+        <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Recordar contraseña
+            </label>  
+        </div>  
+        <button type="button" id ="btnIngresar" class="btn btn-lg btn-primary btn-block" role="button">Ingresar</button>
+        <div id="err" style="color:red; display: none;">Error de autenticacion</div>
+        <p class="mt-5 mb-3 text-muted">&copy; DB4-1412 Rev.1</p>
+      </form>  
   </body>
-</html>
+
+</html>   

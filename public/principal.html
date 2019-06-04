@@ -1,17 +1,185 @@
 <!DOCTYPE html> 
 <html>
     <head>
-       <script src="./scripts/jquery-3.4.1.js"></script>
-       <script src="./scripts/bootstrap.js"></script>
-       <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
-       <link rel= "shortcut icon" type= "image/ico" href="./images/1.ico"/>
-       <link href="./css/bootstrap.min.css" rel="stylesheet">
-       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-       
-       <title>Principal</title>
+        <script src="./scripts/jquery-3.4.1.js"></script>
+        <script src="./scripts/bootstrap.js"></script>
+        <script type="text/javascript" languaje="javascript" src="./media/js/jquery.dataTables.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="./media/css/jquery.dataTables.css"> 
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+        <link rel= "shortcut icon" type= "image/ico" href="./images/1.ico"/>
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap-grid.css" /> 
+        <link href="./css/principal.css" rel="stylesheet"/>
+        <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
+   
+        <script>
+          function format ( d ) {
+           return '<table cellpadding="5"cellspacing="0" border="0"  style = "padding-left:50px;">' +
+           '<tr>'+
+              '<td>Full name:</td>'+ 
+              '<td>'+d.name+'</td>'+ 
+            '</tr>'+
+           '<tr>'+
+              '<td>Extension number:</td>'+
+             '<td>'+d.extn+'</td>'+
+           '</tr>'+
+            '<tr>'+
+              '<td>Extra info:</td>'+
+              '<td>informacion.....</td>'+
+            '</tr>'+
+          '</table>';        
+           }
+           
+          $(document).ready(function() {
+          var table = $('#examplep').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "ajax": "/materiales",
+            "columns": [
+                {
+                    "class":          'details-control',
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                { "data": "name" },
+                { "data": "position" },
+                { "data": "office" },
+                { "data": "salary" }
+              ],
+            "order": [[1, 'asc']]
+            } );
+    
+    // Array to track the ids of the details displayed rows
+           var detailRows = [];
+ 
+           $('#examplep tbody').on( 'click', 'tr td.details-control', function () {
+              var tr = $(this).closest('tr');
+              var row = table.row( tr );
+              var idx = $.inArray( tr.attr('id'), detailRows );
+      
+            if ( row.child.isShown() ) {
+              tr.removeClass( 'details' );
+              row.child.hide();
+              detailRows.splice(idx,1);         
+            }
+            else {
+               tr.addClass( 'details' );
+               row.child( format( row.data() ) ).show();     
+                if ( idx === -1 ) {
+                  detailRows.push( tr.attr('id') );
+                }    
+              }       
+            });
 
-       <style>
-            .bd-placeholder-img {
+           table.on( 'draw', function () {
+              $.each( detailRows, function ( i, id ) {
+              $('#'+id+' td.details-control').trigger( 'click' );
+              });
+            });
+          });
+    
+         </script> 
+
+        <!----script>
+          $(document).ready(function(){
+            $("#bpb").click(function(){
+              var cod = $("#codigop").val();
+              console.log("llega");
+              $.ajax({
+                method : "GET",
+                async: true,
+                url:"/buscarp",
+                data: {codigo:cod},
+                success: function(res){
+                  $('#examplep').dataTable().fnDestroy();
+
+                  $('#examplep').DataTable({         
+                      data : JSON.parse(res),
+                      "columns": [
+                        {"data": "PLN_FECHA" },
+                        {"data" : "PLN_CODIGO" },
+                        { "data": "PLN_DESCRIPCION" },
+                        { "data": "PLN_NRO_REV" },
+                        { "data": "PLN_USUARIO_ALTA" },
+                        { "data": "PLN_USUARIO_APR" },
+                        { "data": "PLN_FECHA_APR" },
+                        { "data": "PLN_USUARIO_REC" },
+                        { "data": "PLN_FECHA_REC" },
+                        { "data": "PLN_UBICACION" }
+                      ]
+                    });             
+
+                  console.log(res);
+                }
+              });
+          });
+        });
+        </script-->
+        <script>
+           $(document).ready(function(){
+             if (sessionStorage["iniciales"]){
+                var iniciales = sessionStorage["iniciales"];
+                $('<p>'+ iniciales +'</p>').appendTo('#btnlogin');
+             }
+             else
+             {
+              $('<p>NN</p>').appendTo('#btnlogin');
+             }
+        });
+      </script>
+
+       <!----script>
+           $(document).ready(function(){
+            $("#bpt").click(function(){
+              console.log("llega el click");
+              $(document).ready(function(){
+                console.log("llega el click dos");
+    	            $('#examplep').DataTable({
+               
+                    ajax: {
+                    url: "/materiales",
+                    dataSrc: ""
+                  },
+                    "columns": [
+                     {"data": "PLN_FECHA" },
+                     {"data" : "PLN_CODIGO" },
+                     { "data": "PLN_DESCRIPCION" },
+                     { "data": "PLN_NRO_REV" },
+                     { "data": "PLN_USUARIO_ALTA" },
+                     { "data": "PLN_USUARIO_APR" },
+                     { "data": "PLN_FECHA_APR" },
+                     { "data": "PLN_USUARIO_REC" },
+                     { "data": "PLN_FECHA_REC" },
+                     { "data": "PLN_UBICACION" }
+                    ]
+                  });             
+              } );        
+            });
+            
+          });
+        </script-->  
+        
+
+         <!----script>
+          $(document).ready(function(){
+              $('#example').dataTable();
+          
+          });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('#examplem').dataTable();
+            
+            });
+          </script-->
+
+      <title>Principal</title>
+
+
+      <style>
+        .bd-placeholder-img {
               font-size: 1.125rem;
               text-anchor: middle;
               -webkit-user-select: none;
@@ -25,47 +193,305 @@
                 font-size: 3.5rem;
               }
             }
-          </style>
-          <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
+
+            @keyframes check {0% {height: 0;width: 0;}
+             25% {height: 0;width: 10px;}
+             50% {height: 20px;width: 10px;}
+            }
+          .checkbox{background-color:#fff;display:inline-block;height:28px;margin:0 .25em;width:28px;border-radius:4px;border:1px solid #ccc;float:right}
+          .checkbox span{display:block;height:28px;position:relative;width:28px;padding:0}
+          .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:4px solid #fff;border-top:4px solid #fff;content:'';display:block;height:20px;left:3px;position:absolute;top:15px;width:10px}
+          .checkbox span:hover:after{border-color:#999}
+          .checkbox input{display:none}
+          .checkbox input:checked + span:after{-webkit-animation:check .8s;-moz-animation:check .8s;-o-animation:check .8s;animation:check .8s;border-color:#555}
+          .checkbox input:checked + .default:after{border-color:#444}
+          .checkbox input:checked + .primary:after{border-color:#2196F3}
+          .checkbox input:checked + .success:after{border-color:#8bc34a}
+          .checkbox input:checked + .info:after{border-color:#3de0f5}
+          .checkbox input:checked + .warning:after{border-color:#FFC107}
+          .checkbox input:checked + .danger:after{border-color:#f44336}
+
+          td.details-control {
+              background: url('./images/details_open.png') no-repeat center center;
+              cursor: pointer;
+            }
+            tr.details td.details-control {
+              background: url('./images/details_close.png') no-repeat center center;
+            }
+      </style>
     </head>
+
     <body>
-      <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">&nbsp;&nbsp;SGPB</a>     
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-        <ul class="navbar-nav px-3">  
-            <li class="nav-item text-nowrap">   
-                <a class="nav-link" href="#">Sign out</a>   
-            </li>   
-        </ul>
-      </nav>  
+  
+      <nav class="minav navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <div class="navbar-brand col-sm-3 col-md-2 mr-3">SGPB</div>
+        <button  id="bth"  class="btn btn-danger btn-circle btn-xl"><i class="fa fa-heart">
+          <div style="margin-left: -7px;color: black; margin-top:-2px" id=btnlogin></div>
+        </i>
+      </nav> 
+    
       <div class="container-fluid">
-        <div class="row">   
+          <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-               <div class="sidebar-sticky">
-                  <ul class="nav flex-column">
-                    <li class="nav-item">
-                       <a class="nav-link active" href="#">
-                           <span data-feather="home"></span> 
-                           
-                           Consultas <span class="sr-only">(current)</span>
-                           
-                           <img src="./images/consulta.png" align="left"  hspace="3">
-                        
-                       </a>                      
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file"></span> 
-                            Planos
-                            <img src="./images/plano.png" align="left"  hspace="3">
-                        </a>    
-                    </li>
-                   
-                  </ul>
-               </div>     
-            </nav>      
-        </div>     
-      </div>        
+              <div class="sidebar-sticky" style="background: #ccc">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        &nbsp;Consultas
+                      <!----img src="./images/consulta.png" align="left"  hspace="9"-->
+                      <img src="./images/consulta.png" class="rounded float-left">    
+                    </a>
+                  </li>  
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse"  href="#plano"> 
+                        &nbsp;Planos
+                      <img src="./images/plano.png" class="rounded float-left">
+                    </a>  
+                    <div id="plano" class="collapse">                   
+                        <div class="container">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-12">
+                                <ul>
+                                  <li class="active"><a href="#">Alta</a></li>
+                                  <li><a href="#">Baja</a></li>
+                                  <li><a href="#">Modificación</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                        </div>       
+                    </div>
+                  </li>  
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse"  href="#manual">
+                        &nbsp;Manuales 
+                      <img src="./images/manual.png" class="rounded float-left">
+                    </a>  
+                    <div id="manual" class="collapse">   
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-12">
+                            <ul>
+                              <li class="active"><a href="#">Alta</a></li>
+                              <li><a href="#">Baja</a></li>
+                              <li><a href="#">Modificación</a></li>
+                            </ul>  
+                          </div>  
+                        </div>  
+                      </div>  
+                    </div>  
+                  </li>  
+                  <li class="nav-item">
+                    <a  class="nav-link" data-toggle="collapse"  href="#lista">
+                        &nbsp;Lista de Materiales
+                      <img src="./images/lista.png" class="rounded float-left">
+                    </a>  
+                    <div id="lista" class="collapse">  
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-12">
+                            <ul>
+                              <li class="active"><a href="#">Alta</a></li>
+                              <li><a href="#">Baja</a></li>
+                              <li><a href="#">Modificación</a></li>
+                            </ul>  
+                          </div>  
+                        </div>  
+                      </div>  
+                    </div>   
+                  </li>  
+                </ul>  
+              </div>
+            </nav>  
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Consultas</h1>
+              </div>  
+              <form class="form">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="codigo"><strong>Código</strong></label>
+                        <input  style="text-transform: uppercase" type="text" class="form-control" id="codigop" placeholder="" value="" required>
+                      </div>  
+                      <div class="col-md-6">
+                        <label  for="nrorev"><strong>NroRev</strong></label>
+                        <input  type="text" class="form-control" id="nrorevp" placeholder="" value="" required>
+                      </div>  
+                    </div>  
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <label for="descripcion"><strong> Descripción</strong></label>
+                        <input type="text" class="form-control" id="descripcionp" placeholder="" value="" required>
+                      </div>
+                    </div>                
+                  </div>  
+
+                  <div class="col-md-4">
+                      <div class="card" style="width: 18rem;">
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Última revisión</strong>
+                              <label class="checkbox active">
+                                <input type="checkbox" checked="checked" />
+                                <span class="default"></span>
+                              </label>
+                            </li>
+                            <li class="list-group-item"><strong>Historico</strong>
+                              <label class="checkbox">
+                                <input type="checkbox" />
+                                <span class="primary"></span>
+                              </label>
+                            </li>
+                            <li class="list-group-item"><strong>Todos</strong>
+                              <label class="checkbox">
+                                <input type="checkbox" />
+                                <span class="success"></span>
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                  </div>  
+                </div>  
+              </form> 
+
+              <div style="margin-left: -10px" class="container">
+                <ul style="margin-top: 40px" class="nav nav-pills nav-justified">
+                      <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#planos">Planos</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#manuales">Manuales</a>
+                      </li>
+                      <li class="nav-item">
+                          <a id="mat" class="nav-link" data-toggle="tab" href="#listas">Lista de Materiales</a>
+                      </li>
+                </ul>
+                <div class="tab-content">
+                  <div style="background-color: #fff" id="planos" class="tab-pane active">  
+                    <table id="examplep" class="display" cellspacing="0" width="100%">
+                      <thead>
+                          <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Position</th>
+                              <th>Office</th>
+                              <th>Salary</th>
+                             
+                          </tr>
+                      </thead>
+                      <tfoot>
+                          <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Position</th>
+                              <th>Office</th>
+                              <th>Salary</th>
+                             
+                          </tr>
+                      </tfoot>
+                  </table> 
+                    <!----table id="examplep" class="display" style="width: 100%">
+                      <thead>
+                        <tr>
+                          <th>Fecha</th>
+                          <th>Código</th>
+                          <th>Descripción</th>
+                          <th>N°Rev</th>
+                          <th>U.Alta</th>        
+                          <th>U.Aprobación</th>
+                          <th>F.Aprobación</th>
+                          <th>U.Recepción</th>
+                          <th>F.Recepción</th>
+                          <th>Ubicación</th>
+                        </tr>
+                      </thead>
+                    
+                    <tbody>
+                     
+                    </tbody>
+                  </table-->  
+                   <div style="margin-top:80px;margin-left:320px">  
+                      <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
+                      <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button>       
+                    </div>  
+                  </div>
+                  <div style="background-color: transparent" id="manuales" class="tab-pane fade"> 
+                    <table id="examplem" class="display" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>N°Rev</th>        
+                            <th>U.Aprobación</th>
+                            <th>F.Aprobación</th>
+                            <th>U.Recepción</th>
+                            <th>F.Recepción</th>
+                            <th>Ubicacion</th>
+                          </tr>
+                        </thead>
+                      
+                      <tbody>
+                        <tr>
+                          <td>EB4-0001</td>
+                          <td>SER</td>
+                          <td>0</td>
+                          <td>LMOTREL</td>
+                          <td>26/04/2019</td>
+                          <td>LMOTREL</td>
+                          <td>26/04/2019</td>
+                          <td>//BOHERDISERVER\Shared Folders\Ingeniería-01</td>
+                        </tr>
+                      </tbody>
+                    </table>  
+
+                  </div>
+                  <div style="background-color: transparent" id="listas" class="tab-pane fade"> 
+                    <table id="example" class="display"  style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>N°Rev</th>                              
+                                <th>U.Aprobación</th>
+                                <th>F.Aprobación</th>
+                                <th>U.Recepción</th>
+                                <th>F.Recepción</th>
+                                <th>Ubicación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td>LB9-001</td>
+                                <td>0</td>
+                                <td>SER</td>
+                                <td>LMOTREL</td>
+                                <td>25/04/2018</td>
+                                <td>LMOTREL</td>
+                                <td>26/04/2019</td>
+                                <td>\\BOHERDISERVER\Shared Folders\Ingeniería\01 - Proyectos\11 - BO2002\06 - Lista de Materiales</td>
+                            </tr>
+                            <tr>
+                                <td>LB9-002</td>
+                                <td>1</td>
+                                <td>SER</td>
+                                <td>LMOTREL</td>
+                                <td>27/04/2018</td>
+                                <td>LMOTREL</td>
+                                <td>29/04/2019</td>
+                                <td>\\BOHERDISERVER\Shared Folders\Ingeniería\01 - Proyectos\11 - BO2002\06 - Lista de Materiales</td>
+                            </tr>
+                                
+                          </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>  
+              
+            </main>
+          </div>  
+      </div>
     </body>
-   
 </html>
