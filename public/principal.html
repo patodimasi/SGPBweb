@@ -32,35 +32,51 @@
           return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
               '<tr>'+
                   '<td>Usuario Alta:</td>'+
-                  '<td>'+d.ualta+'</td>'+
+                  '<td>'+d.PLN_USUARIO_ALTA+'</td>'+
               '</tr>'+
               '<tr>'+
                   '<td>Fecha Alta:</td>'+
-                  '<td>'+d.falta+'</td>'+
+                  '<td>'+d.PLN_FECHA+'</td>'+
               '</tr>'+
               '<tr>'+
                   '<td>Usuario Aprobación:</td>'+
-                  '<td>'+d.uaprobacion+'</td>'+
+                  '<td>'+d.PLN_USUARIO_APR+'</td>'+
               '</tr>'+
               '<tr>'+
                   '<td>Fecha Aprobación:</td>'+
-                  '<td>'+d.faprobacion+'</td>'+
+                  '<td>'+d.PLN_FECHA_APR+'</td>'+
               '</tr>'+
               '<tr>'+
                   '<td>Usuario Recepción:</td>'+
-                  '<td>'+d.urecepcion+'</td>'+
+                  '<td>'+d.PLN_USUARIO_REC+'</td>'+
               '</tr>'+
               '<tr>'+
                   '<td>Fecha Recepción:</td>'+
-                  '<td>'+d.frecepcion+'</td>'+
+                  '<td>'+d.PLN_FECHA_REC+'</td>'+
               '</tr>'+
           '</table>';
          }
     $(document).ready(function(){  
       $("#bpt").click(function(){    
         $(document).ready(function() {
+          $('#examplep').dataTable().fnDestroy();
              var table = $('#examplep').DataTable( {
-             "ajax": "/buscarTodosp",
+               "ajax":{
+                  "url": "/buscarTodosp",
+                  "dataSrc":""
+               },
+               "columns": [
+               {
+                      "className":      'details-control',
+                      "orderable":      false,
+                      "data":           null,
+                      "defaultContent": ''
+                  },
+                 {"data": "PLN_CODIGO"},
+                 {"data": "PLN_DESCRIPCION"},
+                 {"data": "PLN_UBICACION"}
+               ]
+          /*   "ajax": "/buscarTodosp",
              "columns": [
                   {
                       "className":      'details-control',
@@ -73,6 +89,7 @@
                   { "data": "ubicacion" }   
               ],
               "order": [[1, 'asc']]
+              */
         } );
      
     // Add event listener for opening and closing details
