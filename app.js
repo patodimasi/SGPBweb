@@ -36,38 +36,54 @@ app.get('/patricia',(req,res)=>{
 });
 
 app.get('/buscarTodosp',(req,res)=>{
-    /* console.log("GET MATERIALES");
+  /*   console.log("GET MATERIALES");
      planos.find(function(err, plano){
        if(err){
            res.send("Ocurrió error obteniendo los planos");
        }else{
-        console.log(plano);
+      //  console.log(plano);
         res.write(JSON.stringify(plano));
         return res.end();
            
        }
    
     });
+    
+
+  
     */
    var buscarTodosp ={
        
      "data":[
-         {
-         "codigo": "DB4-0001",
-         "descripcion" : "SER",
-         "ubicacion": "/boherdiserver/ingenieria",
-         "ualta": "LMOTREL",
-         "falta": "25/04/2017",
-         "uaprobacion": "MDIFAZIO",
-         "faprobacion": "03/02/2015",
-         "urecepcion": "PRIOS",
-         "frecepcion": "25/04/021",
-        
-         }
+        {
+            "codigo": "DB4-0001",
+            "descripcion": "ser1",
+            "ubicacion": "//boherdiserver/ser",
+            "ualta": "lmotrel", 
+            "falta": "15/02/2018",
+            "uaprobacion" : "mdifazio",
+            "faprobacion": "5/02/2019",
+            "urecepcion": "pdimasi",
+            "frecepcion": "13/02/1981"
+         
+          },
+          {
+            "codigo": "DB4-0002",
+            "descripcion": "cv2000",
+            "ubicacion": "/boherdiserver/cv2000",
+            "ualta":"prios",
+            "falta":"15/02/2019", 
+            "uaprobacion": "adimasi",
+            "faprobacion": "5/02/2019",
+            "urecepcion": "lmotrel",
+            "frecepcion": "15/02/1981"
+           
+          }
      ]
  }
     res.write(JSON.stringify(buscarTodosp));
     return res.end();
+    
  })
 
 app.get('/login',(req,res)=>{
