@@ -13,85 +13,102 @@
         <link href="./css/principal.css" rel="stylesheet"/>
         <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
    
-        <script>
-          function format ( d ) {
-           return '<table cellpadding="5"cellspacing="0" border="0"  style = "padding-left:50px;">' +
-           '<tr>'+
-              '<td>Usuario Alta:</td>'+ 
-              '<td>'+d.ualta+'</td>'+ 
-            '</tr>'+
-           '<tr>'+
-              '<td>Fecha Alta:</td>'+
-             '<td>'+d.falta+'</td>'+
-           '</tr>'+
-            '<tr>'+
-              '<td>Usuario Aprobación:</td>'+
-              '<td>'+d.uaprobacion+'</td>'+
-            '</tr>'+
-            '<tr>'+
-              '<td>Fecha Aprobación:</td>'+
-              '<td>'+d.faprobacion+'</td>'+
-            '</tr>'+
-            '<tr>'+
-              '<td>Usuario Recepción:</td>'+
-              '<td>'+d.urecepcion+'</td>'+
-            '</tr>'+
-            '<tr>'+
-              '<td>Fecha Recepción:</td>'+
-              '<td>'+d.frecepcion+'</td>'+
-            '</tr>'+
-          '</table>';        
-           }
-           
-          $(document).ready(function() {
-          var table = $('#examplep').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "ajax": "/buscarTodosp",
-            "columns": [
-                {
-                    "class":          'details-control',
-                    "orderable":      false,
-                    "data":           null,
-                    "defaultContent": ''
-                },
-                { "data": "codigo" },
-                { "data": "descripcion" },
-                { "data": "ubicacion" },
-              
-              ],
-            "order": [[1, 'asc']]
-            } );
     
-    // Array to track the ids of the details displayed rows
-           var detailRows = [];
- 
-           $('#examplep tbody').on( 'click', 'tr td.details-control', function () {
+        <script>
+          $(document).ready(function(){
+            if (sessionStorage["iniciales"]){
+               var iniciales = sessionStorage["iniciales"];
+               $('<p>'+ iniciales +'</p>').appendTo('#btnlogin');
+            }
+            else
+            {
+             $('<p>NN</p>').appendTo('#btnlogin');
+            }
+          });
+        </script>
+
+        <script>
+         function format ( d ) {
+          return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+              '<tr>'+
+                  '<td>Usuario Alta:</td>'+
+                  '<td>'+d.ualta+'</td>'+
+              '</tr>'+
+              '<tr>'+
+                  '<td>Fecha Alta:</td>'+
+                  '<td>'+d.falta+'</td>'+
+              '</tr>'+
+              '<tr>'+
+                  '<td>Usuario Aprobación:</td>'+
+                  '<td>'+d.uaprobacion+'</td>'+
+              '</tr>'+
+              '<tr>'+
+                  '<td>Fecha Aprobación:</td>'+
+                  '<td>'+d.faprobacion+'</td>'+
+              '</tr>'+
+              '<tr>'+
+                  '<td>Usuario Recepción:</td>'+
+                  '<td>'+d.urecepcion+'</td>'+
+              '</tr>'+
+              '<tr>'+
+                  '<td>Fecha Recepción:</td>'+
+                  '<td>'+d.frecepcion+'</td>'+
+              '</tr>'+
+          '</table>';
+         }
+    $(document).ready(function(){  
+      $("#bpt").click(function(){    
+        $(document).ready(function() {
+             var table = $('#examplep').DataTable( {
+             "ajax": "/buscarTodosp",
+             "columns": [
+                  {
+                      "className":      'details-control',
+                      "orderable":      false,
+                      "data":           null,
+                      "defaultContent": ''
+                  },
+                  { "data": "codigo" },
+                  { "data": "descripcion" },
+                  { "data": "ubicacion" }   
+              ],
+              "order": [[1, 'asc']]
+        } );
+     
+    // Add event listener for opening and closing details
+          $('#examplep tbody').on('click', 'td.details-control', function () {
               var tr = $(this).closest('tr');
               var row = table.row( tr );
-              var idx = $.inArray( tr.attr('id'), detailRows );
       
-            if ( row.child.isShown() ) {
-              tr.removeClass( 'details' );
-              row.child.hide();
-              detailRows.splice(idx,1);         
-            }
-            else {
-               tr.addClass( 'details' );
-               row.child( format( row.data() ) ).show();     
-                if ( idx === -1 ) {
-                  detailRows.push( tr.attr('id') );
-                }    
-              }       
-            });
-           table.on( 'draw', function () {
-              $.each( detailRows, function ( i, id ) {
-              $('#'+id+' td.details-control').trigger( 'click' );
-              });
-            });
+              if ( row.child.isShown() ) {
+                  // This row is already open - close it
+                  row.child.hide();
+                  tr.removeClass('shown');
+              }
+              else {
+                  // Open this row
+                  row.child( format(row.data()) ).show();
+                  tr.addClass('shown');
+              }
+          } );
+        } );
+      });  
+    });
+
+        </script> 
+
+
+        <!----script>
+          $(document).ready(function(){
+               $('#example').dataTable({
+                        "ajax": '/materiales'
+                    } );
+
+             
           });
-    
-         </script> 
+
+
+      </script-->
 
         <!----script>
           $(document).ready(function(){
@@ -105,6 +122,7 @@
                 data: {codigo:cod},
                 success: function(res){
                   $('#examplep').dataTable().fnDestroy();
+
                   $('#examplep').DataTable({         
                       data : JSON.parse(res),
                       "columns": [
@@ -120,24 +138,15 @@
                         { "data": "PLN_UBICACION" }
                       ]
                     });             
+
                   console.log(res);
                 }
               });
           });
         });
-        </script-->
-        <script>
-           $(document).ready(function(){
-             if (sessionStorage["iniciales"]){
-                var iniciales = sessionStorage["iniciales"];
-                $('<p>'+ iniciales +'</p>').appendTo('#btnlogin');
-             }
-             else
-             {
-              $('<p>NN</p>').appendTo('#btnlogin');
-             }
-        });
-      </script>
+        </script>
+        
+       
 
        <!----script>
            $(document).ready(function(){
@@ -176,13 +185,13 @@
               $('#example').dataTable();
           
           });
-        </script>
+        </script-->
         <script>
             $(document).ready(function(){
                 $('#examplem').dataTable();
             
             });
-          </script-->
+          </script>
 
       <title>Principal</title>
 
@@ -202,27 +211,29 @@
                 font-size: 3.5rem;
               }
             }
+
             @keyframes check {0% {height: 0;width: 0;}
              25% {height: 0;width: 10px;}
              50% {height: 20px;width: 10px;}
             }
-          .checkbox{background-color:#fff;display:inline-block;height:28px;margin:0 .25em;width:28px;border-radius:4px;border:1px solid #ccc;float:right}
-          .checkbox span{display:block;height:28px;position:relative;width:28px;padding:0}
-          .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:4px solid #fff;border-top:4px solid #fff;content:'';display:block;height:20px;left:3px;position:absolute;top:15px;width:10px}
-          .checkbox span:hover:after{border-color:#999}
-          .checkbox input{display:none}
-          .checkbox input:checked + span:after{-webkit-animation:check .8s;-moz-animation:check .8s;-o-animation:check .8s;animation:check .8s;border-color:#555}
-          .checkbox input:checked + .default:after{border-color:#444}
-          .checkbox input:checked + .primary:after{border-color:#2196F3}
-          .checkbox input:checked + .success:after{border-color:#8bc34a}
-          .checkbox input:checked + .info:after{border-color:#3de0f5}
-          .checkbox input:checked + .warning:after{border-color:#FFC107}
-          .checkbox input:checked + .danger:after{border-color:#f44336}
-          td.details-control {
+            .checkbox{background-color:#fff;display:inline-block;height:28px;margin:0 .25em;width:28px;border-radius:4px;border:1px solid #ccc;float:right}
+            .checkbox span{display:block;height:28px;position:relative;width:28px;padding:0}
+            .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:4px solid #fff;border-top:4px solid #fff;content:'';display:block;height:20px;left:3px;position:absolute;top:15px;width:10px}
+            .checkbox span:hover:after{border-color:#999}
+            .checkbox input{display:none}
+            .checkbox input:checked + span:after{-webkit-animation:check .8s;-moz-animation:check .8s;-o-animation:check .8s;animation:check .8s;border-color:#555}
+            .checkbox input:checked + .default:after{border-color:#444}
+            .checkbox input:checked + .primary:after{border-color:#2196F3}
+            .checkbox input:checked + .success:after{border-color:#8bc34a}
+            .checkbox input:checked + .info:after{border-color:#3de0f5}
+            .checkbox input:checked + .warning:after{border-color:#FFC107}
+            .checkbox input:checked + .danger:after{border-color:#f44336}
+
+            td.details-control {
               background: url('./images/details_open.png') no-repeat center center;
               cursor: pointer;
             }
-            tr.details td.details-control {
+            tr.shown td.details-control {
               background: url('./images/details_close.png') no-repeat center center;
             }
       </style>
@@ -361,7 +372,7 @@
                   </div>  
                 </div>  
               </form> 
-
+             
               <div style="margin-left: -10px" class="container">
                 <ul style="margin-top: 40px" class="nav nav-pills nav-justified">
                       <li class="nav-item">
@@ -375,7 +386,7 @@
                       </li>
                 </ul>
                 <div class="tab-content">
-                  <div style="background-color: #fff" id="planos" class="tab-pane active">  
+                  <div style="background-color: #fff" id="planos" class="tab-pane active">   
                     <table id="examplep" class="display" cellspacing="0" width="100%">
                       <thead>
                           <tr>
@@ -383,44 +394,24 @@
                               <th>Código</th>
                               <th>Descripción</th>
                               <th>Ubicación</th>
-                              <!----th>Office</th-->
-                              <!--th>Salary</th-->
+                             
                              
                           </tr>
                       </thead>
-                      <tfoot>
+                      <tbody>
+                       </tbody>
+                      <!----tfoot>
                           <tr>
                               <th></th>
-                              <th>Código</th>
-                              <th>Descripción</th>
-                              <th>Ubicación</th>
-                              <!----th>Office</th-->
-                              <!----th>Salary</th-->
+                              <th>Name</th>
+                              <th>Position</th>
+                              <th>Office</th>
+                              <th>Salary</th>
                              
                           </tr>
-                      </tfoot>
-                  </table> 
-                    <!----table id="examplep" class="display" style="width: 100%">
-                      <thead>
-                        <tr>
-                          <th>Fecha</th>
-                          <th>Código</th>
-                          <th>Descripción</th>
-                          <th>N°Rev</th>
-                          <th>U.Alta</th>        
-                          <th>U.Aprobación</th>
-                          <th>F.Aprobación</th>
-                          <th>U.Recepción</th>
-                          <th>F.Recepción</th>
-                          <th>Ubicación</th>
-                        </tr>
-                      </thead>
-                    
-                    <tbody>
-                     
-                    </tbody>
-                  </table-->  
-                   <div style="margin-top:80px;margin-left:320px">  
+                      </tfoot-->
+                  </table>
+                   <div style="margin-top:50px;margin-left:320px">  
                       <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
                       <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button>       
                     </div>  
@@ -471,28 +462,9 @@
                         </thead>
                         <tbody>
                             
-                            <tr>
-                                <td>LB9-001</td>
-                                <td>0</td>
-                                <td>SER</td>
-                                <td>LMOTREL</td>
-                                <td>25/04/2018</td>
-                                <td>LMOTREL</td>
-                                <td>26/04/2019</td>
-                                <td>\\BOHERDISERVER\Shared Folders\Ingeniería\01 - Proyectos\11 - BO2002\06 - Lista de Materiales</td>
-                            </tr>
-                            <tr>
-                                <td>LB9-002</td>
-                                <td>1</td>
-                                <td>SER</td>
-                                <td>LMOTREL</td>
-                                <td>27/04/2018</td>
-                                <td>LMOTREL</td>
-                                <td>29/04/2019</td>
-                                <td>\\BOHERDISERVER\Shared Folders\Ingeniería\01 - Proyectos\11 - BO2002\06 - Lista de Materiales</td>
-                            </tr>
+                           
                                 
-                          </tbody>
+                        </tbody>
                     </table>
                   </div>
                 </div>
