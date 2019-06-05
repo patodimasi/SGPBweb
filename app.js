@@ -36,7 +36,7 @@ app.get('/patricia',(req,res)=>{
 });
 
 app.get('/buscarTodosp',(req,res)=>{
-  /*   console.log("GET MATERIALES");
+    console.log("GET MATERIALES");
      planos.find(function(err, plano){
        if(err){
            res.send("Ocurrió error obteniendo los planos");
@@ -49,10 +49,7 @@ app.get('/buscarTodosp',(req,res)=>{
    
     });
     
-
-  
-    */
-   var buscarTodosp ={
+ /*  var buscarTodosp ={
        
      "data":[
         {
@@ -83,6 +80,7 @@ app.get('/buscarTodosp',(req,res)=>{
  }
     res.write(JSON.stringify(buscarTodosp));
     return res.end();
+    */
     
  })
 
