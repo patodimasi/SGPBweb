@@ -12,8 +12,46 @@
         <link rel="stylesheet" type="text/css" href="./css/bootstrap-grid.css" /> 
         <link href="./css/principal.css" rel="stylesheet"/>
         <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
-   
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+       
+
+          <script>
+          $(document).ready(function(){
+            $("#bpb").click(function(){
+              var codigo = $("#codigof").val();
+              var descripcion = $("#descripcionf").val();
+              var nrorev = $("#nrorevf").val();
+                     
+              $.ajax({
+                method : "GET",
+                async: true,
+                url:"/buscarp",
+                data: JSON.stringify({codigo:codigo,descripcion:descripcion,nrorev:nrorev}),
+                success: function(data){
+                  $('#examplep').dataTable().fnDestroy();
+                console.log(data);
+                  $('#examplep').DataTable({         
+                      data : JSON.parse(res),
+                      "columns": [
+                        {"data": "PLN_FECHA" },
+                        {"data" : "PLN_CODIGO" },
+                        { "data": "PLN_DESCRIPCION" },
+                        { "data": "PLN_NRO_REV" },
+                        { "data": "PLN_USUARIO_ALTA" },
+                        { "data": "PLN_USUARIO_APR" },
+                        { "data": "PLN_FECHA_APR" },
+                        { "data": "PLN_USUARIO_REC" },
+                        { "data": "PLN_FECHA_REC" },
+                        { "data": "PLN_UBICACION" }
+                      ]
+                    });             
+
+                  console.log(res);
+                }
+              });
+          });
+        });
+        </script>
+
         <script>
           $(document).ready(function(){
             if (sessionStorage["iniciales"]){
@@ -88,15 +126,15 @@
                        title: "Ubicación", 
                       "data": null,
                       "className": "button",
-                      "defaultContent": "<label class='btn btn-light'><input type= image src='./images/carpeta1.png'></label>"
+                      "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
                       
                   },
                   {
                        title: "Tarea", 
                       "data": null,
                       "className": "button",
-                      "defaultContent": "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-primary'>A</button><button type='button' class='btn btn-primary'>R</button><button type='button' class='btn btn-primary'>S</button>"
-                                 
+                      "defaultContent": "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-secondary' data-toggle='tooltip' data-placement='top' title='Aprobar'>A</button><button type='button' class='btn btn-secondary'>R</button><button type='button' class='btn btn-secondary'>S</button>"
+                    
                   }
                ],
         
@@ -123,6 +161,7 @@
       });  
     });
 
+    
         </script> 
 
 
@@ -174,8 +213,6 @@
         });
         </script>
         
-       
-
        <!----script>
            $(document).ready(function(){
             $("#bpt").click(function(){
@@ -372,18 +409,18 @@
                     <div class="row">
                       <div class="col-md-6">
                         <label for="codigo"><strong>Código</strong></label>
-                        <input  style="text-transform: uppercase" type="text" class="form-control" id="codigop" placeholder="" value="" required>
+                        <input  style="text-transform: uppercase" type="text" class="form-control" id="codigof" placeholder="" value="" required>
                       </div>  
                       <div class="col-md-6">
                         <label  for="nrorev"><strong>NroRev</strong></label>
-                        <input  type="text" class="form-control" id="nrorevp" placeholder="" value="" required>
+                        <input  type="text" class="form-control" id="nrorevf" placeholder="" value="" required>
                       </div>  
                     </div>  
 
                     <div class="row">
                       <div class="col-md-12">
                         <label for="descripcion"><strong> Descripción</strong></label>
-                        <input type="text" class="form-control" id="descripcionp" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="descripcionf" placeholder="" value="" required>
                       </div>
                     </div>                
                   </div>  
@@ -497,8 +534,7 @@
                         </thead>
                         <tbody>
                             
-                           
-                                
+                                             
                         </tbody>
                     </table>
                   </div>
