@@ -13,7 +13,7 @@
         <link href="./css/principal.css" rel="stylesheet"/>
         <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
    
-    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script>
           $(document).ready(function(){
             if (sessionStorage["iniciales"]){
@@ -56,40 +56,50 @@
               '</tr>'+
           '</table>';
          }
-    $(document).ready(function(){  
-      $("#bpt").click(function(){    
+         var editIcon = function ( data, type, row ) {
+        if ( type === 'display' ) {
+            return data + ' <i class="fa fa-pencil"/>';
+        }
+        return data;
+       };
+
+       $(document).ready(function(){  
+       $("#bpt").click(function(){    
         $(document).ready(function() {
           $('#examplep').dataTable().fnDestroy();
              var table = $('#examplep').DataTable( {
+
                "ajax":{
                   "url": "/buscarTodosp",
                   "dataSrc":""
                },
+               
                "columns": [
                {
                       "className":      'details-control',
                       "orderable":      false,
-                      "data":           null,
+                      "data":           null,    
                       "defaultContent": ''
                 },
-                 {"data": "PLN_CODIGO"},
-                 {"data": "PLN_DESCRIPCION"},
-                 {"data": "PLN_UBICACION"}
-               ],
-          /*   "ajax": "/buscarTodosp",
-             "columns": [
-                  {
-                      "className":      'details-control',
-                      "orderable":      false,
-                      "data":           null,
-                      "defaultContent": ''
+                 { title: "Código","className": "text-center","data": "PLN_CODIGO" },
+                 { title: 'N°Rev',"className": "text-center","data": "PLN_NRO_REV"},
+                 { title: "Descripción","className": "text-left","data": "PLN_DESCRIPCION",render: editIcon},
+                 {    
+                       title: "Ubicación", 
+                      "data": null,
+                      "className": "button",
+                      "defaultContent": "<label class='btn btn-light'><input type= image src='./images/carpeta1.png'></label>"
+                      
                   },
-                  { "data": "codigo" },
-                  { "data": "descripcion" },
-                  { "data": "ubicacion" }   
-              ],
-              "order": [[1, 'asc']]
-              */
+                  {
+                       title: "Tarea", 
+                      "data": null,
+                      "className": "button",
+                      "defaultContent": "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-primary'>A</button><button type='button' class='btn btn-primary'>R</button><button type='button' class='btn btn-primary'>S</button>"
+                                 
+                  }
+               ],
+        
               "order": [[1, 'asc']]
         } );
      
@@ -108,8 +118,8 @@
                   row.child( format(row.data()) ).show();
                   tr.addClass('shown');
               }
-          } );
-        } );
+          });
+        });
       });  
     });
 
@@ -248,11 +258,25 @@
             .checkbox input:checked + .danger:after{border-color:#f44336}
 
             td.details-control {
-              background: url('./images/details_open.png') no-repeat center center;
+              background: url('./images/details1_open.png') no-repeat center center;
               cursor: pointer;
             }
             tr.shown td.details-control {
-              background: url('./images/details_close.png') no-repeat center center;
+              background: url('./images/details1_close.png') no-repeat center center;
+            }
+
+            .btn1 {
+              background-color: DodgerBlue; /* Blue background */
+              border: none; /* Remove borders */
+              color: white; /* White text */
+              padding: 12px 16px; /* Some padding */
+              font-size: 14px; /* Set a font size */
+              cursor: pointer; /* Mouse pointer on hover */
+            }
+
+/* Darker background on mouse-over */
+            .btn1:hover {
+              background-color: RoyalBlue;
             }
       </style>
     </head>
@@ -261,9 +285,9 @@
   
       <nav class="minav navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <div class="navbar-brand col-sm-3 col-md-2 mr-3">SGPB</div>
-        <button  id="bth"  class="btn btn-danger btn-circle btn-xl"><i class="fa fa-heart">
+        <button  id="bth"  class="btn btn-danger btn-circle btn-xl"><!----i class="fa fa-heart"-->
           <div style="margin-left: -7px;color: black; margin-top:-2px" id=btnlogin></div>
-        </i>
+        <!----/i-->
       </nav> 
     
       <div class="container-fluid">
@@ -405,29 +429,22 @@
                 </ul>
                 <div class="tab-content">
                   <div style="background-color: #fff" id="planos" class="tab-pane active">   
-                    <table id="examplep" class="display" cellspacing="0" width="100%">
+                    <table id="examplep" class="display" >
                       <thead>
                           <tr>
-                              <th></th>
-                              <th>Código</th>
-                              <th>Descripción</th>
-                              <th>Ubicación</th>
-                             
+                              <th style="width: 5px"></th>
+                              <th style="width: 50px"></th>
+                              <th style="width: 50px"></th>
+                              <th style="width: 300px"></th>
+                              <th style="width: 20px;text-align: center"></th>
+                              <th style="width: 40px;text-align: center"></th>
                              
                           </tr>
                       </thead>
                       <tbody>
-                       </tbody>
-                      <!----tfoot>
-                          <tr>
-                              <th></th>
-                              <th>Name</th>
-                              <th>Position</th>
-                              <th>Office</th>
-                              <th>Salary</th>
-                             
-                          </tr>
-                      </tfoot-->
+                         
+                      </tbody>
+                     
                   </table>
                    <div style="margin-top:50px;margin-left:320px">  
                       <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
