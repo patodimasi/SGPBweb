@@ -3,9 +3,11 @@ const app = express();
 var mongoose = require('mongoose');
 var usuarios= require("./models/usuarios");
 var planos = require("./models/planos");
-//var planosh = require("./models/planosh");
 
 var url = require('url');
+var bodyParser = require("body-parser")
+
+app.use(bodyParser.json());
 
 //permite direccionar a direcciones estaticas....todas las paginas que esten en la carpeta public
 app.set('port',3000);
@@ -18,15 +20,30 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
     console.log('Base de datos conectada');
 });
 
+
+
 app.get('/buscarp',(req,res)=>{
-    var codigoplano = req.query.codigo;
-    //planos.find({PLN_CODIGO: codigoplano.toUpperCase()},function(err,docs){
-    planos.find({PLN_CODIGO: {'$regex': '.*' + codigoplano.toUpperCase() + '.*'}},function(err,docs){
-        //console.log(docs);
-        res.write(JSON.stringify(docs));
-        return res.end();
+    var codigo = req.body.codigo;
+    var nrorev = req.body.nrorev;
+   var descripcion = req.body.descripcion;
+
+   
+   
+  //  console.log("llega1");
+
+    console.log(nrorev);
+    console.log(descripcion);
+    console.log(nrorev);
+  //  console.log(descripcion);
+   // planos.find({PLN_CODIGO: {'$regex': '.*' + codigoplano.toUpperCase() + '.*'}},function(err,docs){
+     //  planos.find({PLN_CODIGO:codigo,PLN_NRO_REV:nrorev,PLN_DESCRIPCION:descripcion},function(err,docs){
+   
+
+       // console.log(docs);
+     //   res.write(JSON.stringify(docs));
+     //   return res.end();
          
-    });     
+   // });     
 });
 
 app.get('/patricia',(req,res)=>{
