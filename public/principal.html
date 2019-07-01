@@ -4,6 +4,8 @@
         <script src="./scripts/jquery-3.4.1.js"></script>
         <script src="./scripts/bootstrap.js"></script>
         <script type="text/javascript" languaje="javascript" src="./media/js/jquery.dataTables.js"></script>
+        <script src="./media/js/dataTables.cellEdit.js"></script>
+        <script src="principal.js"></script>
         
         <link rel="stylesheet" type="text/css" href="./media/css/jquery.dataTables.css"> 
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
@@ -13,45 +15,6 @@
         <link href="./css/principal.css" rel="stylesheet"/>
         <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
        
-
-          <script>
-          $(document).ready(function(){
-            $("#bpb").click(function(){
-              var codigo = $("#codigof").val();
-              var descripcion = $("#descripcionf").val();
-              var nrorev = $("#nrorevf").val();
-                     
-              $.ajax({
-                method : "GET",
-                async: true,
-                url:"/buscarp",
-                data: JSON.stringify({codigo:codigo,descripcion:descripcion,nrorev:nrorev}),
-                success: function(data){
-                  $('#examplep').dataTable().fnDestroy();
-                console.log(data);
-                  $('#examplep').DataTable({         
-                      data : JSON.parse(res),
-                      "columns": [
-                        {"data": "PLN_FECHA" },
-                        {"data" : "PLN_CODIGO" },
-                        { "data": "PLN_DESCRIPCION" },
-                        { "data": "PLN_NRO_REV" },
-                        { "data": "PLN_USUARIO_ALTA" },
-                        { "data": "PLN_USUARIO_APR" },
-                        { "data": "PLN_FECHA_APR" },
-                        { "data": "PLN_USUARIO_REC" },
-                        { "data": "PLN_FECHA_REC" },
-                        { "data": "PLN_UBICACION" }
-                      ]
-                    });             
-
-                  console.log(res);
-                }
-              });
-          });
-        });
-        </script>
-
         <script>
           $(document).ready(function(){
             if (sessionStorage["iniciales"]){
@@ -65,192 +28,7 @@
           });
         </script>
 
-        <script>
-         function format ( d ) {
-          return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-              '<tr>'+
-                  '<td>Usuario Alta:</td>'+
-                  '<td>'+d.PLN_USUARIO_ALTA+'</td>'+
-              '</tr>'+
-              '<tr>'+
-                  '<td>Fecha Alta:</td>'+
-                  '<td>'+d.PLN_FECHA+'</td>'+
-              '</tr>'+
-              '<tr>'+
-                  '<td>Usuario Aprobación:</td>'+
-                  '<td>'+d.PLN_USUARIO_APR+'</td>'+
-              '</tr>'+
-              '<tr>'+
-                  '<td>Fecha Aprobación:</td>'+
-                  '<td>'+d.PLN_FECHA_APR+'</td>'+
-              '</tr>'+
-              '<tr>'+
-                  '<td>Usuario Recepción:</td>'+
-                  '<td>'+d.PLN_USUARIO_REC+'</td>'+
-              '</tr>'+
-              '<tr>'+
-                  '<td>Fecha Recepción:</td>'+
-                  '<td>'+d.PLN_FECHA_REC+'</td>'+
-              '</tr>'+
-          '</table>';
-         }
-         var editIcon = function ( data, type, row ) {
-        if ( type === 'display' ) {
-            return data + ' <i class="fa fa-pencil"/>';
-        }
-        return data;
-       };
-
-       $(document).ready(function(){  
-       $("#bpt").click(function(){    
-        $(document).ready(function() {
-          $('#examplep').dataTable().fnDestroy();
-             var table = $('#examplep').DataTable( {
-
-               "ajax":{
-                  "url": "/buscarTodosp",
-                  "dataSrc":""
-               },
-               
-               "columns": [
-               {
-                      "className":      'details-control',
-                      "orderable":      false,
-                      "data":           null,    
-                      "defaultContent": ''
-                },
-                 { title: "Código","className": "text-center","data": "PLN_CODIGO" },
-                 { title: 'N°Rev',"className": "text-center","data": "PLN_NRO_REV"},
-                 { title: "Descripción","className": "text-left","data": "PLN_DESCRIPCION",render: editIcon},
-                 {    
-                       title: "Ubicación", 
-                      "data": null,
-                      "className": "button",
-                      "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
-                      
-                  },
-                  {
-                       title: "Tarea", 
-                      "data": null,
-                      "className": "button",
-                      "defaultContent": "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-secondary' data-toggle='tooltip' data-placement='top' title='Aprobar'>A</button><button type='button' class='btn btn-secondary'>R</button><button type='button' class='btn btn-secondary'>S</button>"
-                    
-                  }
-               ],
-        
-              "order": [[1, 'asc']]
-        } );
-     
-    // Add event listener for opening and closing details
-          $('#examplep tbody').on('click', 'td.details-control', function () {
-              var tr = $(this).closest('tr');
-              var row = table.row( tr );
-      
-              if ( row.child.isShown() ) {
-                  // This row is already open - close it
-                  row.child.hide();
-                  tr.removeClass('shown');
-              }
-              else {
-                  // Open this row
-                  row.child( format(row.data()) ).show();
-                  tr.addClass('shown');
-              }
-          });
-        });
-      });  
-    });
-
-    
-        </script> 
-
-
-        <!----script>
-          $(document).ready(function(){
-               $('#example').dataTable({
-                        "ajax": '/materiales'
-                    } );
-
-             
-          });
-
-
-      </script-->
-
-        <!----script>
-          $(document).ready(function(){
-            $("#bpb").click(function(){
-              var cod = $("#codigop").val();
-              console.log("llega");
-              $.ajax({
-                method : "GET",
-                async: true,
-                url:"/buscarp",
-                data: {codigo:cod},
-                success: function(res){
-                  $('#examplep').dataTable().fnDestroy();
-
-                  $('#examplep').DataTable({         
-                      data : JSON.parse(res),
-                      "columns": [
-                        {"data": "PLN_FECHA" },
-                        {"data" : "PLN_CODIGO" },
-                        { "data": "PLN_DESCRIPCION" },
-                        { "data": "PLN_NRO_REV" },
-                        { "data": "PLN_USUARIO_ALTA" },
-                        { "data": "PLN_USUARIO_APR" },
-                        { "data": "PLN_FECHA_APR" },
-                        { "data": "PLN_USUARIO_REC" },
-                        { "data": "PLN_FECHA_REC" },
-                        { "data": "PLN_UBICACION" }
-                      ]
-                    });             
-
-                  console.log(res);
-                }
-              });
-          });
-        });
-        </script>
-        
-       <!----script>
-           $(document).ready(function(){
-            $("#bpt").click(function(){
-              console.log("llega el click");
-              $(document).ready(function(){
-                console.log("llega el click dos");
-    	            $('#examplep').DataTable({
-               
-                    ajax: {
-                    url: "/materiales",
-                    dataSrc: ""
-                  },
-                    "columns": [
-                     {"data": "PLN_FECHA" },
-                     {"data" : "PLN_CODIGO" },
-                     { "data": "PLN_DESCRIPCION" },
-                     { "data": "PLN_NRO_REV" },
-                     { "data": "PLN_USUARIO_ALTA" },
-                     { "data": "PLN_USUARIO_APR" },
-                     { "data": "PLN_FECHA_APR" },
-                     { "data": "PLN_USUARIO_REC" },
-                     { "data": "PLN_FECHA_REC" },
-                     { "data": "PLN_UBICACION" }
-                    ]
-                  });             
-              } );        
-            });
-            
-          });
-        </script-->  
-        
-
-         <!----script>
-          $(document).ready(function(){
-              $('#example').dataTable();
-          
-          });
-        </script-->
+       
         <script>
             $(document).ready(function(){
                 $('#examplem').dataTable();
@@ -311,10 +89,41 @@
               cursor: pointer; /* Mouse pointer on hover */
             }
 
-/* Darker background on mouse-over */
-            .btn1:hover {
-              background-color: RoyalBlue;
-            }
+            .my-input-class {
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .my-confirm-class {
+            padding: 3px 6px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 4px;
+            background-color: #337ab7;
+            text-decoration: none;
+        }
+        .my-cancel-class {
+            padding: 3px 6px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 4px;
+            background-color: #a94442;
+            text-decoration: none;
+        }
+        .error {
+            border: solid 1px;
+            border-color: #a94442;
+        }
+        .destroy-button{
+            padding:5px 10px 5px 10px;
+            border: 1px blue solid;
+            background-color:lightgray;
+        }
+
       </style>
     </head>
 
@@ -413,7 +222,7 @@
                       </div>  
                       <div class="col-md-6">
                         <label  for="nrorev"><strong>NroRev</strong></label>
-                        <input  type="text" class="form-control" id="nrorevf" placeholder="" value="" required>
+                        <input  type="number" class="form-control" id="nrorevf" placeholder="" value="" required>
                       </div>  
                     </div>  
 
