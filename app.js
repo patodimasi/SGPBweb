@@ -3,11 +3,18 @@ const app = express();
 var mongoose = require('mongoose');
 var usuarios= require("./models/usuarios");
 var planos = require("./models/planos");
+//es una prueba a la base de datos p_historico
+var phistoricos= require("./models/phistoricos");
 
 var url = require('url');
 var bodyParser = require("body-parser")
 
-app.use(bodyParser.json());
+
+
+app.use(bodyParser.urlencoded({
+extended: true
+}));
+  
 
 //permite direccionar a direcciones estaticas....todas las paginas que esten en la carpeta public
 app.set('port',3000);
@@ -21,114 +28,77 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
 });
 
 
+app.get('/detallehisto',(req,res)=>{
 
-app.get('/buscarp',(req,res)=>{
-    var codigo = req.body.codigo;
-    var nrorev = req.body.nrorev;
-   var descripcion = req.body.descripcion;
-
+    //console.log(req.query.name);
    
-   
-  //  console.log("llega1");
-
-    console.log(nrorev);
-    console.log(descripcion);
-    console.log(nrorev);
-  //  console.log(descripcion);
-   // planos.find({PLN_CODIGO: {'$regex': '.*' + codigoplano.toUpperCase() + '.*'}},function(err,docs){
-     //  planos.find({PLN_CODIGO:codigo,PLN_NRO_REV:nrorev,PLN_DESCRIPCION:descripcion},function(err,docs){
-   
-
-       // console.log(docs);
-     //   res.write(JSON.stringify(docs));
-     //   return res.end();
-         
-   // });     
+    phistoricos.find({PLN_CODIGO:req.query.name}, function(err, item) {
+       // console.log(item)
+        res.write(JSON.stringify(item));
+        return res.end();
+      });
 });
 
-app.get('/patricia',(req,res)=>{
-    res.write(test)
+app.post('/buscarp',(req,res)=>{
+
+  // console.log("POST");
+ //  console.log(req.body);
+   //console.log(req.body.codigo);
+   
+   var filtro = {};
+
+   if(req.body.codigo != ''){
+       filtro['PLN_CODIGO'] = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
+   }
+   
+
+   if(req.body.nrorev != ''){
+      filtro['PLN_NRO_REV'] = req.body.nrorev
+   }
+ 
+   if(req.body.descripcion != '')
+   {
+    filtro['PLN_DESCRIPCION'] = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
+   } 
+
+   
+   planos.find(filtro, function(err, item) {
+    //console.log(item)
+    res.write(JSON.stringify(item));
     return res.end();
+  });
 
+  
 });
 
-app.get('/modificar',(req,res)=>{
-
-    var modificar ={
-       
-        "data":[
-            {
-            
-                    "DT_RowId": "row_1",
-                    "first_name": "Tiger",
-                    "last_name": "Nixon",
-                    "position": "System Architect",
-                    "email": "t.nixon@datatables.net",
-                    "office": "Edinburgh",
-                    "extn": "5421",
-                    "age": "61",
-                    "salary": "320800",
-                    "start_date": "2011-04-25"
-                  
-           
-            }
-        ]
-    }
-       res.write(JSON.stringify(modificar));
-       return res.end();
-       
-
-});
 
 app.get('/buscarTodosp',(req,res)=>{
-    console.log("GET MATERIALES");
+   
      planos.find(function(err, plano){
        if(err){
            res.send("Ocurrió error obteniendo los planos");
        }else{
-      //  console.log(plano);
+     
         res.write(JSON.stringify(plano));
         return res.end();
            
        }
    
     });
-    
- /*  var buscarTodosp ={
        
-     "data":[
-        {
-            "codigo": "DB4-0001",
-            "descripcion": "ser1",
-            "ubicacion": "//boherdiserver/ser",
-            "ualta": "lmotrel", 
-            "falta": "15/02/2018",
-            "uaprobacion" : "mdifazio",
-            "faprobacion": "5/02/2019",
-            "urecepcion": "pdimasi",
-            "frecepcion": "13/02/1981"
-         
-          },
-          {
-            "codigo": "DB4-0002",
-            "descripcion": "cv2000",
-            "ubicacion": "/boherdiserver/cv2000",
-            "ualta":"prios",
-            "falta":"15/02/2019", 
-            "uaprobacion": "adimasi",
-            "faprobacion": "5/02/2019",
-            "urecepcion": "lmotrel",
-            "frecepcion": "15/02/1981"
-           
-          }
-     ]
- }
-    res.write(JSON.stringify(buscarTodosp));
-    return res.end();
-    */
-    
  })
 
+/*app.get('/buscaritem',(req,res)=>{
+    console.log(req.query);
+
+    planos.find(req.query, function(err, item) {
+        //console.log(item)
+        res.write(JSON.stringify(item));
+        return res.end();
+      });
+   
+});     
+*/
 app.get('/login',(req,res)=>{
 
     console.log("Request recibido.")
@@ -142,11 +112,7 @@ app.get('/login',(req,res)=>{
        if(docs != "" ){
            console.log("no esta vacio");
            
-           /* usuarios.find ({USR_LOGON: q.query.usr}, {USR_INICIAL: 1},function(err,ini){
-           
-            console.log(ini);
-           });
-        */
+         
             var loginResult =
             {
                 result : "SUCCESS",
@@ -155,8 +121,6 @@ app.get('/login',(req,res)=>{
             }
             test= q.query.usr;
          
-           //res.write("/principal.html");
-           //return res.end();
            
        }
        else{
