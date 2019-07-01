@@ -9,35 +9,6 @@ function format ( d ) {
     '</table>';
 }
 
-
-function armartabla(d){
-    console.log("llega a la d")
-    console.log(d[1]);
-
-    return '<table class="table">'+
-    '<tr class="table-dark text-dark">'+
-        '<td>Usuario Alta:</td>'+
-        '<td>'+d[1].PLN_CODIGO+'</td>'+
-    '</tr>'+
-   
-    '</table>';
-   
-   /* for(var k in items){
-        
-        var tables =  '<table class="table">'+
-        '<tr class="table-dark text-dark">'+
-            '<td>Usuario Alta:</td>'+
-            '<td>'+items[k].PLN_CODIGO+'</td>'+
-        '</tr>'+
-       
-    '</table>';
-       // console.log(items[k]);
-    }
-    return tables;
-    */
-  // console.log(items);
-}
-
 function formathistorico(rowData){
     console.log(rowData.PLN_CODIGO)
     var div = $('<div/>')
@@ -52,11 +23,28 @@ function formathistorico(rowData){
             
             data: {
                 name: rowData.PLN_CODIGO
+            
             },
             success: function(res){
               
                 var jsondetalle = JSON.parse(res);
 
+                function sortJSON(data, key, orden) {
+                    return data.sort(function (a, b) {
+                        var x = a[key],
+                        y = b[key];
+                
+                        if (orden === 'asc') {
+                            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                        }
+                
+                        if (orden === 'desc') {
+                            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                        }
+                    });
+                }
+                var oJSON = sortJSON(jsondetalle, 'PLN_NRO_REV', 'desc');
+               
                 var tbody = '';
                 tbody += '<table class="table">';
                 tbody += '<thead class="thead-dark">';
@@ -83,54 +71,12 @@ function formathistorico(rowData){
               
 
             }
+            
             tbody += '</table>';
+            
+            
             div
-            .html(tbody);
-               /* var Content = ' ';
-                Content += '<tbody>';
-                Content += '<tr>';
-                Content += '<th>'+'codigo'+'</th>';
-                Content += '</tr>';
-                for (var i = 0; i < jsondetalle.length; i++) {
-                    Content += '<tr>';
-                    Content += '<td>'+jsondetalle[i].PLN_NRO_REV+'</td>';
-                    Content += '</tr>';
-                  
-
-                }
-                Content += '</tbody>';
-                div
-                .html(Content);
-
-                */
-              /* var Content = ' ';
-
-
-                Content += '<tbody>'; 
-                for (var i = 0; i < jsondetalle.length; i++) {
-                 
-                    Content += '<tr>';
-                    Content += '<td>' + jsondetalle[i].PLN_NRO_REV + '</td>'
-                    Content += '</tr>';
-                  }
-                  Content += '</tbody>';   
-                  div
-                  .html(Content);
-                  */
-                  
-              /*  var tbody = '';
-
-                $.each(jsondetalle, function (i, d) {
-                    tbody += '<tr><td>'+  d.PLN_CODIGO + '</td><td>' + d.PLN_NRO_REV + '</td></tr>';
-               
-                  
-                });
-               
-                div 
-                .html(tbody);
-                */
-              
-               
+            .html(tbody);   
               
             }
         } );   
@@ -221,7 +167,7 @@ $(document).ready(function(){
                  
                     //abrir fila
                     console.log("abrir fila");
-                    row.child( format(row.data()) ).show();
+                    row.child( formathistorico(row.data()) ).show();
                     tr.addClass('shown');
                 }
 
