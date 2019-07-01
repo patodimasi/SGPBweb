@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var planosh_schema = new Schema({
+var historicos_schema = new Schema({
     
     PLN_FECHA: {type: String},
     PLN_CODIGO: {type: String},
@@ -14,4 +14,4 @@ var planosh_schema = new Schema({
     PLN_FECHA_REC: {type: String},
     PLN_UBICACION:{type: String},
 })
-    module.exports = mongoose.model("planosh",planos_schema);
+    module.exports = mongoose.model("historicos",historicos_schema);
