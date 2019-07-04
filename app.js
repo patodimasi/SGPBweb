@@ -22,6 +22,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
+
 mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
@@ -30,47 +31,94 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
 
 app.get('/detallehisto',(req,res)=>{
 
-    //console.log(req.query.name);
+    var datos  = [];
    
-    phistoricos.find({PLN_CODIGO:req.query.name}, function(err, item) {
+/*    phistoricos.find({PLN_CODIGO:req.query.name}, function(err, item) {
        // console.log(item)
         res.write(JSON.stringify(item));
         return res.end();
       });
+      */  
+    phistoricos.find({PLN_CODIGO:req.query.name}, function(err, historico) {
+        // console.log(historico);
+        for (var i in historico){
+            datos.push({ 
+                "PLN_FECHA"  : historico[i].PLN_FECHA,
+                "PLN_CODIGO" : historico[i].PLN_CODIGO,
+                "PLN_NRO_REV" : historico[i].PLN_NRO_REV,
+                "PLN_USUARIO_ALTA:" : historico[i].PLN_USUARIO_ALTA,
+                "PLN_USUARIO_APR" :  historico[i].PLN_USUARIO_APR,
+                "PLN_FECHA_APR":  historico[i].PLN_FECHA_APR,
+                "PLN_FECHA_REC" : historico[i].PLN_FECHA_REC,
+                "PLN_USUARIO_REC": historico[i].PLN_USUARIO_REC
+             
+            });
+        }
+       
+    });
+
+    planos.find({PLN_CODIGO:req.query.name}, function(err, plano) {
+        for(var k in plano){
+            datos.push({ 
+                "PLN_FECHA"  : plano[k].PLN_FECHA,
+                "PLN_CODIGO" : plano[k].PLN_CODIGO,
+                "PLN_NRO_REV" : plano[k].PLN_NRO_REV,
+                "PLN_USUARIO_ALTA:" : plano[k].PLN_USUARIO_ALTA,
+                "PLN_USUARIO_APR" :  plano[k].PLN_USUARIO_APR,
+                "PLN_FECHA_APR":  plano[k].PLN_FECHA_APR,
+                "PLN_FECHA_REC" : plano[k].PLN_FECHA_REC,
+                "PLN_USUARIO_REC": plano[k].PLN_USUARIO_REC
+             
+            });
+        }
+      
+      res.write(JSON.stringify(datos));
+      return res.end();
+    });
+     //console.log(datos);
+    
 });
 
 app.post('/buscarp',(req,res)=>{
-
-  // console.log("POST");
- //  console.log(req.body);
-   //console.log(req.body.codigo);
-   
-   var filtro = {};
-
-   if(req.body.codigo != ''){
-       filtro['PLN_CODIGO'] = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
-   }
-   
-
-   if(req.body.nrorev != ''){
-      filtro['PLN_NRO_REV'] = req.body.nrorev
-   }
+    var  filtro = {}
  
-   if(req.body.descripcion != '')
-   {
-    filtro['PLN_DESCRIPCION'] = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
-   } 
-
+ 
+    if((req.body.codigo == '') && (req.body.nrorev == '') && (req.body.descripcion == ''))
+    {
+       
+        res.write(JSON.stringify([]));
+        return res.end();
+       
+    }
+    else
+    {
+        if(req.body.codigo != '')
+        {
+     
+            filtro['PLN_CODIGO'] = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
+        }
    
-   planos.find(filtro, function(err, item) {
-    //console.log(item)
-    res.write(JSON.stringify(item));
-    return res.end();
-  });
-
-  
+        if(req.body.nrorev != '')
+        {
+   
+            filtro['PLN_NRO_REV'] = req.body.nrorev
+        }
+   
+        if(req.body.descripcion != '')
+        {
+            filtro['PLN_DESCRIPCION'] = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
+        } 
+   
+        planos.find(filtro, function(err, item) {
+         
+           res.write(JSON.stringify(item));
+           return res.end();
+         
+        });
+    
+    }
+       
 });
-
 
 app.get('/buscarTodosp',(req,res)=>{
    
@@ -88,17 +136,7 @@ app.get('/buscarTodosp',(req,res)=>{
        
  })
 
-/*app.get('/buscaritem',(req,res)=>{
-    console.log(req.query);
 
-    planos.find(req.query, function(err, item) {
-        //console.log(item)
-        res.write(JSON.stringify(item));
-        return res.end();
-      });
-   
-});     
-*/
 app.get('/login',(req,res)=>{
 
     console.log("Request recibido.")
@@ -128,15 +166,15 @@ app.get('/login',(req,res)=>{
         console.log("ERROR");
 
         var loginResult =
-        {
-            result : "ERROR"
+            {
+                result : "ERROR"
+            }
         }
-    }
 
-    res.write(JSON.stringify(loginResult));
-    return res.end();
+        res.write(JSON.stringify(loginResult));
+        return res.end();
 
-});   
+    });   
 
 });
 app.listen(app.get('port'),()=>{
