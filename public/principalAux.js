@@ -1,3 +1,14 @@
+function format ( d ) {
+    console.log(d);
+    return '<table class="table">'+
+        '<tr class="table-dark text-dark">'+
+            '<td>Usuario Alta:</td>'+
+            '<td>'+'hhhhhhh'+'</td>'+
+        '</tr>'+
+       
+    '</table>';
+}
+
 function formathistorico(rowData){
     console.log(rowData.PLN_CODIGO)
     var div = $('<div/>')
@@ -62,11 +73,11 @@ function formathistorico(rowData){
             }
             
             tbody += '</table>';
-           
+            
             
             div
-            .html(tbody)
-            .removeClass( 'loading' );
+            .html(tbody);   
+              
             }
         } );   
     
@@ -193,11 +204,12 @@ $(document).ready(function(){
                        }
                        if((aData.PLN_ESTADO == 'PA') || (aData.PLN_ESTADO == 'PR')){
                         $('td', nRow).css('background-color', 'yellow');
-                      //  $(nRow).css('color', 'yellow').css('font-style', 'bold');
+                       // $(nRow).css('color', 'yellow').css('font-style', 'bold');
                        }
                     },
+                    
                     data: data,
-                    language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
+                    //language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
                     "columns": [
                         {
                             "className":      'details-control',
@@ -235,7 +247,7 @@ $(document).ready(function(){
                  
                 });   
 
-                table.MakeCellsEditable({
+             /*   table.MakeCellsEditable({
                     "onUpdate": myCallbackFunction,
                     "inputCss":'my-input-class',
                     "columns": [3],
@@ -259,8 +271,9 @@ $(document).ready(function(){
                     }
 
                 }
-                $('#examplep tbody').off('click', 'td.details-control');
-                $('#examplep tbody').on('click', 'td.details-control', function () {
+                */
+                $('#examplep').off('click', 'td.details-control');
+               $('#examplep tbody').on('click', 'td.details-control', function () {
                     var tr = $(this).closest('tr');
                     var row = table.row(tr);
                    

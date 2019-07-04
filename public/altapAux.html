@@ -5,8 +5,9 @@
         <script src="./scripts/bootstrap.js"></script>
         <script type="text/javascript" languaje="javascript" src="./media/js/jquery.dataTables.js"></script>
         <script src="./media/js/dataTables.cellEdit.js"></script>
-        <script src="principal.js"></script>
-
+        <script src="principalAux.js"></script>
+    
+        
         <link rel="stylesheet" type="text/css" href="./media/css/jquery.dataTables.css"> 
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
         <link rel= "shortcut icon" type= "image/ico" href="./images/1.ico"/>
@@ -15,150 +16,6 @@
         <link href="./css/principal.css" rel="stylesheet"/>
         <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
        
-
-          <script>
-        
-          $(document).ready(function(){
-            $("#bpb").click(function(){
-              var codigo = $("#codigof").val();
-              var descripcion = $("#descripcionf").val();
-              var nrorev = $("#nrorevf").val();
-                   console.log("llega"); 
-              $.ajax({
-                method : "POST",
-                async: true,
-                url:"/buscarp",
-                dataType : 'json',
-                data: {codigo,descripcion,nrorev},
-                success: function(data){
-                  console.log(data);
-                 // $('#examplep').dataTable().fnDestroy();
-               
-                  var table =  $('#examplep').DataTable({         
-                        data: data,
-                        language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
-                     
-                        "columns": [
-                        {
-                            "className":      'details-control',
-                            "orderable":      false,
-                            "data":           null,    
-                            "defaultContent": ''
-                        },    
-                        { title: "Código","className": "text-center","data": "PLN_CODIGO" },
-                        { title: 'N°Rev',"className": "text-center","data": "PLN_NRO_REV"},
-                        { title: "Descripción","className": "text-left","data": "PLN_DESCRIPCION"},
-                        {    
-                          title: "Ubicación", 
-                          "data": null,
-                          "className": "text-center",
-                          "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
-                          
-                        },
-                        {
-                          title: "Tareas", 
-                          "data": null,
-                          "className": "button",
-                          "defaultContent": "<div class='btn-group' "+ 
-                          "role='group' aria-label='Basic example'> "+
-                          "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Aprobar'><input type= 'image' src='./images/aprobar.png'></label>"+
-                          "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Recibir'><input type= 'image' src='./images/recibir.png'></label>"+
-                          "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Superar'><input type= 'image' src='./images/superar.png'></label>"
-                                        
-                        }
-                       
-                      ],
-
-                      "order": [[1, 'asc']]
-    
-                    });    
-                  /*    table.MakeCellsEditable({
-                          "onUpdate": myCallbackFunction,
-                          "inputCss":'my-input-class',
-                          "columns": [3],
-                          "confirmationButton": { // could also be true
-                              "confirmCss": 'my-confirm-class',
-                              "cancelCss": 'my-cancel-class'
-                          },
-                          "inputTypes": []
-                      });          
-                      function myCallbackFunction (updatedCell, updatedRow, oldValue) {
-                          console.log("The new value for the cell is: " + updatedCell.data());
-                          console.log("The old value for that cell was: " + oldValue);
-                          console.log("The values for each cell in that row are: " + updatedRow.data());
-                      }
-
-                      function destroyTable() {
-                          if ($.fn.DataTable.isDataTable('#myAdvancedTable')) {
-                              table.destroy();
-                              table.MakeCellsEditable("destroy");
-                          }
-                      }  
-
-                      $('#examplep tbody').on('click', 'td.details-control', function () {
-                          var tr = $(this).closest('tr');
-                          var row = table.row( tr );
-                          if ( row.child.isShown() ) {
-                              // This row is already open - close it
-                              row.child.hide();
-                              tr.removeClass('shown');
-                          }
-                          else {
-                              // Open this row
-                              row.child( format(row.data()) ).show();
-                              tr.addClass('shown');
-                          }
-
-                      }); 
-                      */  
-                      table.MakeCellsEditable({
-                          "onUpdate": myCallbackFunction,
-                          "inputCss":'my-input-class',
-                          "columns": [3],
-                          "confirmationButton": { // could also be true
-                              "confirmCss": 'my-confirm-class',
-                              "cancelCss": 'my-cancel-class'
-                          },
-                          "inputTypes": []
-                      });          
-
-                      function myCallbackFunction (updatedCell, updatedRow, oldValue) {
-                          console.log("The new value for the cell is: " + updatedCell.data());
-                          console.log("The old value for that cell was: " + oldValue);
-                          console.log("The values for each cell in that row are: " + updatedRow.data());
-                      }
-                      function destroyTable() {
-                          if ($.fn.DataTable.isDataTable('#myAdvancedTable')) {
-                              table.destroy();
-                              table.MakeCellsEditable("destroy");
-                          }
-                      }  
-
-                      $('#examplep tbody').on('click', 'td.details-control', function () {
-                          var tr = $(this).closest('tr');
-                          var row = table.row( tr );
-                          if ( row.child.isShown() ) {
-                              // This row is already open - close it
-                              row.child.hide();
-                              tr.removeClass('shown');
-                          }
-                          else {
-                              // Open this row
-                              row.child( format(row.data()) ).show();
-                              tr.addClass('shown');
-                          }
-
-                    }); 
-
-                }
-               
-              });
-
-          });
-        });
-        
-        </script>
-
         <script>
           $(document).ready(function(){
             if (sessionStorage["iniciales"]){
@@ -172,142 +29,7 @@
           });
         </script>
 
-        <script>
-         
-         function format ( d ) {
-         
-    
-          return '<table class="table">'+
-              '<tr class="table-dark text-dark">'+
-                  '<td>Usuario Alta:</td>'+
-                  '<td>'+d.PLN_USUARIO_ALTA+'</td>'+
-              '</tr>'+
-              '<tr class="table-dark text-dark">'+
-                  '<td>Fecha Alta:</td>'+
-                  '<td>'+d.PLN_FECHA+'</td>'+
-              '</tr>'+
-              '<tr class="table-dark text-dark">'+
-                  '<td>Usuario Aprobación:</td>'+
-                  '<td>'+d.PLN_USUARIO_APR+'</td>'+
-              '</tr>'+
-              '<tr class="table-dark text-dark">'+
-                  '<td>Fecha Aprobación:</td>'+
-                  '<td>'+d.PLN_FECHA_APR+'</td>'+
-              '</tr>'+
-              '<tr class="table-dark text-dark">'+
-                  '<td>Usuario Recepción:</td>'+
-                  '<td>'+d.PLN_USUARIO_REC+'</td>'+
-              '</tr>'+
-              '<tr class="table-dark text-dark">'+
-                  '<td>Fecha Recepción:</td>'+
-                  '<td>'+d.PLN_FECHA_REC+'</td>'+
-              '</tr>'+
-          '</table>';
-         }
-          var editIcon = function ( data, type, row ) {
-          if ( type === 'display' ) {
-              return data + ' <i class="fa fa-pencil"/>';
-          }
-          return data;
-        };
-
-       $(document).ready(function(){  
-       $("#bpt").click(function(){    
-        $(document).ready(function() {
-          $('#examplep').dataTable().fnDestroy();
-             var table = $('#examplep').DataTable( {
-
-               "ajax":{
-                  "url": "/buscarTodosp",
-                  "dataSrc":""
-               },
-               
-               "columns": [
-               {
-                      "className":      'details-control',
-                      "orderable":      false,
-                      "data":           null,    
-                      "defaultContent": ''
-                },
-                 { title: "Código","className": "text-center","data": "PLN_CODIGO" },
-                 { title: 'N°Rev',"className": "text-center","data": "PLN_NRO_REV"},
-                 { title: "Descripción","className": "text-left","data": "PLN_DESCRIPCION",render: editIcon},
-                 {    
-                       title: "Ubicación", 
-                      "data": null,
-                      "className": "text-center",
-                      "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
-                      
-                  },
-                  {
-                       title: "Tareas", 
-                      "data": null,
-                      "className": "button",
-                       "defaultContent": "<div class='btn-group' "+ 
-                       "role='group' aria-label='Basic example'> "+
-                       "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Aprobar'><input type= 'image' src='./images/aprobar.png'></label>"+
-                       "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Recibir'><input type= 'image' src='./images/recibir.png'></label>"+
-                       "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Superar'><input type= 'image' src='./images/superar.png'></label>"
-                                        
-                      }
-               ],
-        
-              "order": [[1, 'asc']]
-        } );
-
-     
-   
-    
-     
-        table.MakeCellsEditable({
-        "onUpdate": myCallbackFunction,
-        "inputCss":'my-input-class',
-        "columns": [3],
-        "confirmationButton": { // could also be true
-            "confirmCss": 'my-confirm-class',
-            "cancelCss": 'my-cancel-class'
-        },
-        "inputTypes": []
-      });
-    function myCallbackFunction (updatedCell, updatedRow, oldValue) {
-        console.log("The new value for the cell is: " + updatedCell.data());
-        console.log("The old value for that cell was: " + oldValue);
-        console.log("The values for each cell in that row are: " + updatedRow.data());
-    }
-
-    function destroyTable() {
-        if ($.fn.DataTable.isDataTable('#myAdvancedTable')) {
-            table.destroy();
-            table.MakeCellsEditable("destroy");
-        }
-    }
-
-
-    // Add event listener for opening and closing details
-          $('#examplep tbody').on('click', 'td.details-control', function () {
-              var tr = $(this).closest('tr');
-              var row = table.row( tr );
-      
-              if ( row.child.isShown() ) {
-                  // This row is already open - close it
-                  row.child.hide();
-                  tr.removeClass('shown');
-              }
-              else {
-                  // Open this row
-                  row.child( format(row.data()) ).show();
-                  tr.addClass('shown');
-              }
-          });
-        });
-      });  
-    });
-
-    
-        </script> 
-
-
-        
+       
         <script>
             $(document).ready(function(){
                 $('#examplem').dataTable();
@@ -319,6 +41,10 @@
 
 
       <style>
+        .bolded {
+          font-weight:bold;
+        }
+
         .bd-placeholder-img {
               font-size: 1.125rem;
               text-anchor: middle;
@@ -563,12 +289,16 @@
                               <th style="width: 300px"></th>
                               <th style="width: 20px;text-align: center"></th>
                               <th style="width: 40px;text-align: center"></th>
-                              
                              
                           </tr>
                       </thead>
                       <tbody>
-                         
+                          <th></th>
+                          <th><b></b></th>
+                          <th><b></b></th>
+                          <th><b></b></th>
+                          <th></th>
+                          <th></th>
                       </tbody>
                      
                   </table>
@@ -584,12 +314,16 @@
                             <th>Código</th>
                             <th>Descripción</th>
                             <th>N°Rev</th>        
-                           
+                            <th>U.Aprobación</th>
+                            <th>F.Aprobación</th>
+                            <th>U.Recepción</th>
+                            <th>F.Recepción</th>
+                            <th>Ubicacion</th>
                           </tr>
                         </thead>
                       
                       <tbody>
-                        <!----tr>
+                        <tr>
                           <td>EB4-0001</td>
                           <td>SER</td>
                           <td>0</td>
@@ -598,7 +332,7 @@
                           <td>LMOTREL</td>
                           <td>26/04/2019</td>
                           <td>//BOHERDISERVER\Shared Folders\Ingeniería-01</td>
-                        </tr-->
+                        </tr>
                       </tbody>
                     </table>  
 
