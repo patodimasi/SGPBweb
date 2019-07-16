@@ -28,6 +28,16 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
     console.log('Base de datos conectada');
 });
 
+
+app.get('/ModifP',(req,res)=>{
+    planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_DESCRIPCION:req.query.descripcion}}, function(err, result) {
+   
+    //deberia mostrar mensaje de error
+    });
+    
+
+});   
+
 app.get('/botonUP',(req,res)=>{
     
   //  console.log("llega_ap");
@@ -72,7 +82,8 @@ app.get('/detallehisto',(req,res)=>{
                 "PLN_FECHA_REC" : historico[i].PLN_FECHA_REC,
                 "PLN_USUARIO_REC": historico[i].PLN_USUARIO_REC,
                 "PLN_ESTADO": historico[i].PLN_ESTADO,
-                "PLN_SUPERADO":historico[i].PLN_SUPERADO
+                "PLN_SUPERADO":historico[i].PLN_SUPERADO,
+                "PLN_DESCRIPCION":historico[i].PLN_DESCRIPCION
              
             });
         }
@@ -91,7 +102,8 @@ app.get('/detallehisto',(req,res)=>{
                 "PLN_FECHA_REC" : plano[k].PLN_FECHA_REC,
                 "PLN_USUARIO_REC": plano[k].PLN_USUARIO_REC,
                 "PLN_ESTADO" : plano[k].PLN_ESTADO,
-                "PLN_SUPERADO": plano[k].PLN_SUPERADO
+                "PLN_SUPERADO": plano[k].PLN_SUPERADO,
+                "PLN_DESCRIPCION": plano[k].PLN_DESCRIPCION
              
             });
         }
