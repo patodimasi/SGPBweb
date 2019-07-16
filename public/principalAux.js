@@ -1,13 +1,23 @@
-function format ( d ) {
-    console.log(d);
-    return '<table class="table">'+
-        '<tr class="table-dark text-dark">'+
-            '<td>Usuario Alta:</td>'+
-            '<td>'+'hhhhhhh'+'</td>'+
-        '</tr>'+
-       
-    '</table>';
+function colorestado(superado,estado){
+    resultado  = '';
+    if(superado == 'NS'){
+        if((estado == "PR") || (estado == "PA")){
+            //return '<img src="./images/details_yellow.png">';
+            resultado = '<img src="./images/details_yellow.png">';
+        }      
+        else{
+           // return '<img src="./images/details_green.png">';
+           resultado = '<img src="./images/details_green.png">';
+        }
+    }
+    if(superado == 'S'){
+        //return '<img src="./images/details_red.png">';
+        resultado = '<img src="./images/details_red.png">';
+    }
+
+   return resultado;
 }
+
 
 function formathistorico(rowData){
     console.log(rowData.PLN_CODIGO)
@@ -28,7 +38,7 @@ function formathistorico(rowData){
             success: function(res){
               
                 var jsondetalle = JSON.parse(res);
-
+                
                 function sortJSON(data, key, orden) {
                     return data.sort(function (a, b) {
                         var x = a[key],
@@ -49,6 +59,7 @@ function formathistorico(rowData){
                 tbody += '<table class="table">';
                 tbody += '<thead class="thead-dark">';
                 tbody += '<tr>';
+                tbody  += '<th>'+'Estado' +'</th>';
                 tbody  += '<th>'+'Fecha Alta'+'</th>';
                 tbody  += '<th>'+'N°Rev'+'</th>';
                 tbody  += '<th>'+'Fecha Aprobación'+'</th>';
@@ -61,6 +72,7 @@ function formathistorico(rowData){
                
                for (var i = 0; i < jsondetalle.length; i++) {
                 tbody += '<tr>';
+                tbody += '<td>'+ colorestado(jsondetalle[i].PLN_SUPERADO,jsondetalle[i].PLN_ESTADO) + '</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_FECHA+'</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_NRO_REV+'</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_FECHA_APR+'</td>';
@@ -73,18 +85,17 @@ function formathistorico(rowData){
             }
             
             tbody += '</table>';
-            
+           
             
             div
-            .html(tbody);   
-              
+            .html(tbody)
+            .removeClass( 'loading' );
             }
         } );   
     
      return   div;
  
 }
-
 
 $(document).ready(function(){ 
     $("#bpt").click(function(){
@@ -113,6 +124,7 @@ $(document).ready(function(){
                        "className": "text-center",
                        "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
                     },
+                    
                     {
                         title: "Tarea", 
                        "data": null,
@@ -183,42 +195,33 @@ $(document).ready(function(){
         var codigo = $("#codigof").val();
         var descripcion = $("#descripcionf").val();
         var nrorev = $("#nrorevf").val();
-        
+       
         $.ajax({
             method : "POST",
             async: true,
             url:"/buscarp",
             dataType : 'json',
             data: {codigo,descripcion,nrorev},
+           
             success: function(data){
-               // console.log(data);
                 $('#examplep').dataTable().fnDestroy();
-               // $('#examplep').DataTable().clear();
                 table =  $('#examplep').DataTable({ 
-                    "fnRowCallback": function( nRow, aData ) {
-                        console.log(aData.PLN_ESTADO);
-                       if (aData.PLN_ESTADO == 'AC'){
-                      //  $(nRow).css('color', 'green').css('font-style', 'bold');
-                       
-                        $('td', nRow).css('background-color', 'green');
-                       }
-                       if((aData.PLN_ESTADO == 'PA') || (aData.PLN_ESTADO == 'PR')){
-                        $('td', nRow).css('background-color', 'yellow');
-                       // $(nRow).css('color', 'yellow').css('font-style', 'bold');
-                       }
-                    },
-                    
+                   
                     data: data,
-                    //language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
+                    
+                    language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
+                    
                     "columns": [
                         {
+                           
                             "className":      'details-control',
                             "defaultContent": '',
                             "data":           null,
-                           
                             "orderable":      false
+                                               
 
-                        } ,  
+                        } ,
+                         
                         { title: "Código","className": "text-center","data": "PLN_CODIGO" },
                         { title: 'N°Rev',"className": "text-center","data": "PLN_NRO_REV"},
                         { title: "Descripción","className": "text-left","data": "PLN_DESCRIPCION"},
@@ -226,9 +229,10 @@ $(document).ready(function(){
                             title: "Ubicación", 
                             "data": null,
                             "className": "text-center",
-                            "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
-                            
+                            "defaultContent": "<label class='btn btn-light' id='myBtn' data-toggle='tooltip' data-placement='top' title='Ubicación' ><input type= 'image' src='./images/carpeta1.png'></label>"
+                        
                         },
+                        
                         {
                             title: "Tareas", 
                             "data": null,
@@ -247,7 +251,7 @@ $(document).ready(function(){
                  
                 });   
 
-             /*   table.MakeCellsEditable({
+                table.MakeCellsEditable({
                     "onUpdate": myCallbackFunction,
                     "inputCss":'my-input-class',
                     "columns": [3],
@@ -261,6 +265,7 @@ $(document).ready(function(){
                 function myCallbackFunction (updatedCell, updatedRow, oldValue) {
                     console.log("The new value for the cell is: " + updatedCell.data());
                     console.log("The old value for that cell was: " + oldValue);
+                 
                     console.log("The values for each cell in that row are: " + updatedRow.data());
                 }
 
@@ -271,13 +276,63 @@ $(document).ready(function(){
                     }
 
                 }
-                */
-                $('#examplep').off('click', 'td.details-control');
-               $('#examplep tbody').on('click', 'td.details-control', function () {
+
+                function clear() {
+                    $("#ubicacion").val("");
+                    $("#Resubi").text("");
+                    $("#divlapiz").hide();
+                }
+                
+                $('#examplep tbody').on("click", "#myBtn", function(){
+                    clear()  
+                    $('#myModal').modal();
+                    
+                    
+                 });   
+              
+                $(document).ready(function(){
+                    $("#imglapiz").click(function(){
+                        if ($("#divlapiz").css('display') == 'none'){
+                            $("#divlapiz").show();
+                                
+                                $("#ubicacion").val(data[0].PLN_UBICACION);
+                        }
+                        else{
+                            $("#divlapiz").hide();
+                        }
+                   
+                    });
+                });
+                     
+                $(document).ready(function(){
+                    $("#Aup").click(function(){
+                      
+                        var ubicacion = $("#ubicacion").val();
+                        var plano = data[0].PLN_CODIGO;
+                       
+                       
+                        $.ajax({
+                            method : "GET",
+                            async: true,
+                            url:"/botonUP",
+                            data : {plano,ubicacion},
+                           
+                            success: function(respuesta){
+                                console.log(respuesta);
+                                if(respuesta == "OK"){
+                                   $("#Resubi").text("La ubicación del plano" + " " + plano + " " + "se modifico satisfactoriamente")
+                                }
+                            }
+
+                        });    
+                        
+                    });   
+                });    
+
+                $('#examplep tbody').off('click', 'td.details-control');
+                $('#examplep tbody').on('click', 'td.details-control', function () {
                     var tr = $(this).closest('tr');
                     var row = table.row(tr);
-                   
-                  
                    
                     if (row.child.isShown()) {
                         //fila que esta abierta y la cierro

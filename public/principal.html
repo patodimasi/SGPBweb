@@ -124,6 +124,12 @@
             border: 1px blue solid;
             background-color:lightgray;
         }
+        .modal-header {
+        
+          background-color:  lightgray;
+        
+        }
+        
 
       </style>
     </head>
@@ -237,45 +243,29 @@
 
                   <div class="col-md-4">
                       <div class="card" style="width: 18rem;">
+                          <div class="card-header">
+                          <strong>Estados</strong>  
+                          </div>
                           <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Última revisión</strong>
-                              <label class="checkbox active">
-                                <input type="checkbox" checked="checked" />
-                                <span class="default"></span>
-                              </label>
+                            <li class="list-group-item"> <img src="./images/details_open.png">
+                              Planos vigentes
+                             
                             </li>
-                            <li class="list-group-item"><strong>Historico</strong>
-                              <label class="checkbox">
-                                <input type="checkbox" />
-                                <span class="primary"></span>
-                              </label>
-                            </li>
-                            <li class="list-group-item"><strong>Todos</strong>
-                              <label class="checkbox">
-                                <input type="checkbox" />
-                                <span class="success"></span>
-                              </label>
-                            </li>
+                            <li class="list-group-item"><img src="./images/details_amarillo.png">
+                              Planos en condiciones de ser 
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aprobado/Recibido</li>
+                            <li class="list-group-item"><img src="./images/details_blue.png">
+                              Planos Borrados</li>
                           </ul>
-                        </div>
+                      </div>   
                   </div>  
                 </div>  
               </form> 
-             
-              <div style="margin-left: -10px" class="container">
-                <ul style="margin-top: 40px" class="nav nav-pills nav-justified">
-                      <li class="nav-item">
-                          <a class="nav-link active" data-toggle="tab" href="#planos">Planos</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" data-toggle="tab" href="#manuales">Manuales</a>
-                      </li>
-                      <li class="nav-item">
-                          <a id="mat" class="nav-link" data-toggle="tab" href="#listas">Lista de Materiales</a>
-                      </li>
-                </ul>
-                <div class="tab-content">
-                  <div style="background-color: #fff" id="planos" class="tab-pane active">   
+              <div style="margin-top:20px">  
+                      <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
+                      <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button>       
+              </div>  
+              <div style="margin-left: -10px;margin-top: 40px" class="container"> 
                     <table id="examplep" class="display" >
                       <thead>
                           <tr>
@@ -291,66 +281,58 @@
                       <tbody>
                       
                       </tbody>
-                     
-                  </table>
-                   <div style="margin-top:50px;margin-left:320px">  
+                    </table>
+
+                    <!----div style="margin-top:50px;margin-left:320px">  
                       <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
                       <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button>       
-                    </div>  
-                  </div>
-                  <div style="background-color: transparent" id="manuales" class="tab-pane fade"> 
-                    <table id="examplem" class="display" style="width: 100%">
-                        <thead>
-                          <tr>
-                            <th>Código</th>
-                            <th>Descripción</th>
-                            <th>N°Rev</th>        
-                            <th>U.Aprobación</th>
-                            <th>F.Aprobación</th>
-                            <th>U.Recepción</th>
-                            <th>F.Recepción</th>
-                            <th>Ubicacion</th>
-                          </tr>
-                        </thead>
-                      
-                      <tbody>
-                        <tr>
-                          <td>EB4-0001</td>
-                          <td>SER</td>
-                          <td>0</td>
-                          <td>LMOTREL</td>
-                          <td>26/04/2019</td>
-                          <td>LMOTREL</td>
-                          <td>26/04/2019</td>
-                          <td>//BOHERDISERVER\Shared Folders\Ingeniería-01</td>
-                        </tr>
-                      </tbody>
-                    </table>  
+                    </div-->  
+               </div>  
 
-                  </div>
-                  <div style="background-color: transparent" id="listas" class="tab-pane fade"> 
-                    <table id="example" class="display"  style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Descripción</th>
-                                <th>N°Rev</th>                              
-                                <th>U.Aprobación</th>
-                                <th>F.Aprobación</th>
-                                <th>U.Recepción</th>
-                                <th>F.Recepción</th>
-                                <th>Ubicación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                                             
-                        </tbody>
-                    </table>
+              <div class="modal fade" id="myModal">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                  
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Ubicación</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <label>Modificar Ubicación</label>
+                      <b></b>
+                      <b></b>
+                      <img id= "imglapiz" src="./images/superar.png">
+                      <b></b>
+                      <div id="divlapiz" style="display:none">
+                          <input type="text" id="ubicacion" size="60"/>
+                          <button type="button" id="Aup" class="btn btn-secondary btn-sm">Aceptar</button>
+                             
+                      </div>
+                     
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" id="Abrir" class="btn btn-primary">Abrir</button>
+                        <button type="button" id="Cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                       
+                    </div>
+                    <div class="container">
+                      
+                      <label id="Resubi"></label>
+                     
+                    </div>
+                 
+                    
                   </div>
                 </div>
-
-              </div>  
+              </div>
+              
+            </div>
+            
               
             </main>
           </div>  
