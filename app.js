@@ -28,6 +28,26 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
     console.log('Base de datos conectada');
 });
 
+app.get('/botonUP',(req,res)=>{
+    
+  //  console.log("llega_ap");
+  //  console.log(req.query.plano);
+  var msjubicacion = null;
+  planos.updateOne({PLN_CODIGO:req.query.plano}, {$set:{PLN_UBICACION:req.query.ubicacion}}, function(err, result) {
+   
+    if(err){
+        //variable mensaje error
+        msjubicacion = "ERROR"
+    }
+    else{
+        msjubicacion = "OK"
+    }
+    res.write(msjubicacion);
+    return res.end();
+     
+  });
+
+});
 
 app.get('/detallehisto',(req,res)=>{
 
@@ -40,7 +60,7 @@ app.get('/detallehisto',(req,res)=>{
       });
       */  
     phistoricos.find({PLN_CODIGO:req.query.name}, function(err, historico) {
-        // console.log(historico);
+      
         for (var i in historico){
             datos.push({ 
                 "PLN_FECHA"  : historico[i].PLN_FECHA,
@@ -50,11 +70,13 @@ app.get('/detallehisto',(req,res)=>{
                 "PLN_USUARIO_APR" :  historico[i].PLN_USUARIO_APR,
                 "PLN_FECHA_APR":  historico[i].PLN_FECHA_APR,
                 "PLN_FECHA_REC" : historico[i].PLN_FECHA_REC,
-                "PLN_USUARIO_REC": historico[i].PLN_USUARIO_REC
+                "PLN_USUARIO_REC": historico[i].PLN_USUARIO_REC,
+                "PLN_ESTADO": historico[i].PLN_ESTADO,
+                "PLN_SUPERADO":historico[i].PLN_SUPERADO
              
             });
         }
-       
+     
     });
 
     planos.find({PLN_CODIGO:req.query.name}, function(err, plano) {
@@ -67,21 +89,21 @@ app.get('/detallehisto',(req,res)=>{
                 "PLN_USUARIO_APR" :  plano[k].PLN_USUARIO_APR,
                 "PLN_FECHA_APR":  plano[k].PLN_FECHA_APR,
                 "PLN_FECHA_REC" : plano[k].PLN_FECHA_REC,
-                "PLN_USUARIO_REC": plano[k].PLN_USUARIO_REC
+                "PLN_USUARIO_REC": plano[k].PLN_USUARIO_REC,
+                "PLN_ESTADO" : plano[k].PLN_ESTADO,
+                "PLN_SUPERADO": plano[k].PLN_SUPERADO
              
             });
         }
-      
+       
       res.write(JSON.stringify(datos));
       return res.end();
     });
-     //console.log(datos);
-    
+     
 });
 
 app.post('/buscarp',(req,res)=>{
     var  filtro = {}
- 
  
     if((req.body.codigo == '') && (req.body.nrorev == '') && (req.body.descripcion == ''))
     {
