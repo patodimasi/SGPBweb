@@ -37,8 +37,10 @@
                 //url:"../login",
                 url:"../login?usr="+user.toUpperCase()+"&pass="+pass,
                 success: function(res){
-                  var jsoLogin = JSON.parse(res);
                   console.log(res);
+                  var jsoLogin = JSON.parse(res);
+                  console.log(jsoLogin);
+                  
                   if (jsoLogin.result.match("ERROR")){
                       $("#err").show();
                       $("#txtUser").val("");

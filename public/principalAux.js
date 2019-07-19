@@ -60,12 +60,14 @@ function formathistorico(rowData){
                 tbody += '<thead class="thead-dark">';
                 tbody += '<tr>';
                 tbody  += '<th>'+'Estado' +'</th>';
-                tbody  += '<th>'+'Fecha Alta'+'</th>';
+                tbody  += '<th>'+'F.Alta'+'</th>';
                 tbody  += '<th>'+'N°Rev'+'</th>';
-                tbody  += '<th>'+'Fecha Aprobación'+'</th>';
-                tbody  += '<th>'+'Usuario Aprobación'+'</th>';
-                tbody  += '<th>'+'Fecha Recepción'+'</th>';
-                tbody  += '<th>'+'Usuario Recepción'+'</th>';
+                tbody  += '<th>'+'F.Aprobación'+'</th>';
+                tbody  += '<th>'+'U.Aprobación'+'</th>';
+                tbody  += '<th>'+'F.Recepción'+'</th>';
+                tbody  += '<th>'+'U.Recepción'+'</th>';
+                tbody  += '<th>'+'Descripción'+'</th>';
+                tbody  += '<th>'+'Ubicación'+'</th>';
                 tbody  += '</tr>';
                 tbody += '<thead>';
                 
@@ -79,9 +81,10 @@ function formathistorico(rowData){
                 tbody += '<td>'+jsondetalle[i].PLN_USUARIO_APR+'</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_FECHA_REC+'</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_USUARIO_REC+'</td>';
+                tbody += '<td>'+jsondetalle[i].PLN_DESCRIPCION+'</td>';
+                tbody += '<td>'+"<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"+'</td>';
                 tbody += '</tr>';
               
-
             }
             
             tbody += '</table>';
@@ -265,8 +268,25 @@ $(document).ready(function(){
                 function myCallbackFunction (updatedCell, updatedRow, oldValue) {
                     console.log("The new value for the cell is: " + updatedCell.data());
                     console.log("The old value for that cell was: " + oldValue);
-                 
                     console.log("The values for each cell in that row are: " + updatedRow.data());
+    
+                    var codigo = data[0].PLN_CODIGO
+                    var descripcion = data[0].PLN_DESCRIPCION
+                    console.log(codigo);
+                    console.log(descripcion);
+                    $.ajax({
+                        method : "GET",
+                        async: true,
+                        url:"/ModifP",
+                        data : {codigo,descripcion},
+
+                        success: function(respuesta){
+
+
+                        }
+
+                    })      
+
                 }
 
                 function destroyTable() {
@@ -321,6 +341,9 @@ $(document).ready(function(){
                                 console.log(respuesta);
                                 if(respuesta == "OK"){
                                    $("#Resubi").text("La ubicación del plano" + " " + plano + " " + "se modifico satisfactoriamente")
+                                }
+                                else{
+                                    //pasar msj de error
                                 }
                             }
 

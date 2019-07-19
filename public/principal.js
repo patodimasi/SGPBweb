@@ -60,12 +60,14 @@ function formathistorico(rowData){
                 tbody += '<thead class="thead-dark">';
                 tbody += '<tr>';
                 tbody  += '<th>'+'Estado' +'</th>';
-                tbody  += '<th>'+'Fecha Alta'+'</th>';
+                tbody  += '<th>'+'F.Alta'+'</th>';
                 tbody  += '<th>'+'N°Rev'+'</th>';
-                tbody  += '<th>'+'Fecha Aprobación'+'</th>';
-                tbody  += '<th>'+'Usuario Aprobación'+'</th>';
-                tbody  += '<th>'+'Fecha Recepción'+'</th>';
-                tbody  += '<th>'+'Usuario Recepción'+'</th>';
+                tbody  += '<th>'+'F.Aprobación'+'</th>';
+                tbody  += '<th>'+'U.Aprobación'+'</th>';
+                tbody  += '<th>'+'F.Recepción'+'</th>';
+                tbody  += '<th>'+'U.Recepción'+'</th>';
+                tbody  += '<th>'+'Descripción'+'</th>';
+                tbody  += '<th>'+'Ubicación'+'</th>';
                 tbody  += '</tr>';
                 tbody += '<thead>';
                 
@@ -79,9 +81,10 @@ function formathistorico(rowData){
                 tbody += '<td>'+jsondetalle[i].PLN_USUARIO_APR+'</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_FECHA_REC+'</td>';
                 tbody += '<td>'+jsondetalle[i].PLN_USUARIO_REC+'</td>';
+                tbody += '<td>'+jsondetalle[i].PLN_DESCRIPCION+'</td>';
+                tbody += '<td>'+"<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"+'</td>';
                 tbody += '</tr>';
               
-
             }
             
             tbody += '</table>';
@@ -204,12 +207,30 @@ $(document).ready(function(){
             data: {codigo,descripcion,nrorev},
            
             success: function(data){
+               
                 $('#examplep').dataTable().fnDestroy();
+                
                 table =  $('#examplep').DataTable({ 
-                   
+                    
                     data: data,
                     
                     language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
+
+                    createdRow: function( row, data, dataIndex ) 
+                    {  
+                
+                        if (data.PLN_ESTADO != "AC")
+                        {
+                            console.log("distinto");
+                            $( row ).find('td:eq(0)').removeClass('details-control');
+                            $( row ).find('td:eq(0)').addClass('detailsA-control');
+                        }
+
+                        // Set the data-status attribute, and add a class
+                        
+                        //    .attr('data-status', data.status ? 'locked' : 'unlocked')
+                        //    .addClass('asset-context box');
+                    },
                     
                     "columns": [
                         {
@@ -239,8 +260,8 @@ $(document).ready(function(){
                             "className": "button",
                             "defaultContent": "<div class='btn-group' "+ 
                             "role='group' aria-label='Basic example'> "+
-                            "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Aprobar'><input type= 'image' src='./images/aprobar.png'></label>"+
-                            "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Recibir'><input type= 'image' src='./images/recibir.png'></label>"+
+                            "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' id='myBap' title='Aprobar'><input type= 'image' src='./images/recibir.png'></label>"+
+                            "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Recibir'><input type= 'image' src='./images/icons8-recibir-24.png'></label>"+
                             "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Superar'><input type= 'image' src='./images/superar.png'></label>"
                                           
                         }
@@ -265,8 +286,24 @@ $(document).ready(function(){
                 function myCallbackFunction (updatedCell, updatedRow, oldValue) {
                     console.log("The new value for the cell is: " + updatedCell.data());
                     console.log("The old value for that cell was: " + oldValue);
-                 
                     console.log("The values for each cell in that row are: " + updatedRow.data());
+
+                    var codigo = data[0].PLN_CODIGO
+                    var descripcion = data[0].PLN_DESCRIPCION
+                    console.log(codigo);
+                    console.log(descripcion);
+                    $.ajax({
+                        method : "GET",
+                        async: true,
+                        url:"/ModifP",
+                        data : {codigo,descripcion},
+
+                        success: function(respuesta){
+
+
+                        }
+
+                    })      
                 }
 
                 function destroyTable() {
@@ -277,24 +314,66 @@ $(document).ready(function(){
 
                 }
 
-                function clear() {
+                function clear_modifp() {
                     $("#ubicacion").val("");
                     $("#Resubi").text("");
                     $("#divlapiz").hide();
                 }
                 
                 $('#examplep tbody').on("click", "#myBtn", function(){
-                    clear()  
-                    $('#myModal').modal();
-                    
+                    clear_modifp()  
+                    $('#myModal').modal();          
                     
                  });   
-              
+
+             
                 $(document).ready(function(){
+                    $('#examplep tbody').on("click", "#myBap", function(){
+                   
+                    $('#modalp_a').modal();
+
+                    var codigo = $(this).parents("tr").find("td").eq(1).html();
+                    var descripcion = $(this).parents("tr").find("td").eq(3).html();
+                 
+                     
+                    $("#codigo_ap").val(codigo).prop('disabled', true);
+                    $("#descripcion_ap").val(descripcion).prop('disabled', true); 
+
+                    console.log(codigo);
+                        $.ajax({
+                            method : "GET",
+                            async: true,
+                            url:"/aprobar_p",
+                            data : {codigo},
+
+                            success: function(respuesta){
+                                if(respuesta == "NO_OK"){
+                                   
+                                   $("#body_ap").text(" " + " " + "El plano" + " " + codigo +" "+ "no esta en condiciones de ser aprobado.").prepend('<img src="images/icons8-spam-16.png" />').addClass("alert alert-danger");     
+                                }
+                                if(respuesta == "OK"){
+                                    $("#body_ap").text(" " + " "+ "El plano" + " " + codigo +" "+ "se aprobó satisfactoriamente.").prepend('<img src="images/icons8-comprobado-16.png" />').addClass("alert alert-success");     
+                                }
+                                if(respuesta == "ERROR"){
+                                    $("#body_ap").text(" " + " " + "Error al aprobar el plano" + " " + codigo).prepend('<img src="images/icons8-cancelar-16.png" />').addClass("alert alert-danger");     
+                                }
+
+                            }
+                        });
+                   
+             
+                    });    
+                   
+
+                 });   
+
+                
+                $(document).ready(function(){
+                    $("#imglapiz").unbind('click');
                     $("#imglapiz").click(function(){
                         if ($("#divlapiz").css('display') == 'none'){
                             $("#divlapiz").show();
-                                
+                               // $("#aupa").attr("href", data[0].PLN_UBICACION);
                                 $("#ubicacion").val(data[0].PLN_UBICACION);
                         }
                         else{
@@ -303,7 +382,8 @@ $(document).ready(function(){
                    
                     });
                 });
-                     
+
+               
                 $(document).ready(function(){
                     $("#Aup").click(function(){
                       
@@ -320,6 +400,8 @@ $(document).ready(function(){
                             success: function(respuesta){
                                 console.log(respuesta);
                                 if(respuesta == "OK"){
+                                    data[0].PLN_UBICACION = ubicacion;
+                                    data[0].PLN_CODIGO = plano;
                                    $("#Resubi").text("La ubicación del plano" + " " + plano + " " + "se modifico satisfactoriamente")
                                 }
                             }
@@ -329,8 +411,8 @@ $(document).ready(function(){
                     });   
                 });    
 
-                $('#examplep tbody').off('click', 'td.details-control');
-                $('#examplep tbody').on('click', 'td.details-control', function () {
+                $('#examplep tbody').off('click', 'td.details-control, td.detailsA-control');
+                $('#examplep tbody').on('click', 'td.details-control, td.detailsA-control', function () {
                     var tr = $(this).closest('tr');
                     var row = table.row(tr);
                    
@@ -362,4 +444,4 @@ $(document).ready(function(){
 
     }); 
         
-});   
+}); 

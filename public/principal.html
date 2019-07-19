@@ -6,8 +6,7 @@
         <script type="text/javascript" languaje="javascript" src="./media/js/jquery.dataTables.js"></script>
         <script src="./media/js/dataTables.cellEdit.js"></script>
         <script src="principal.js"></script>
-    
-        
+
         <link rel="stylesheet" type="text/css" href="./media/css/jquery.dataTables.css"> 
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
         <link rel= "shortcut icon" type= "image/ico" href="./images/1.ico"/>
@@ -15,6 +14,8 @@
         <link rel="stylesheet" type="text/css" href="./css/bootstrap-grid.css" /> 
         <link href="./css/principal.css" rel="stylesheet"/>
         <link href="./css/dashboard.css" rel="stylesheet" type="text/css">
+
+
        
         <script>
           $(document).ready(function(){
@@ -27,15 +28,13 @@
              $('<p>NN</p>').appendTo('#btnlogin');
             }
           });
-        </script>
-
-       
+        </script>   
         <script>
             $(document).ready(function(){
                 $('#examplem').dataTable();
             
             });
-          </script>
+        </script>
 
       <title>Principal</title>
 
@@ -80,6 +79,15 @@
             tr.shown td.details-control {
               background: url('./images/details1_close.png') no-repeat center center;
             }
+
+            td.detailsA-control {
+              background: url('./images/detailsA_open.png') no-repeat center center;
+              cursor: pointer;
+            }
+            tr.shown td.detailsA-control {
+              background: url('./images/detailsA_close.png') no-repeat center center;
+            }
+
 
             .btn1 {
               background-color: DodgerBlue; /* Blue background */
@@ -129,7 +137,7 @@
           background-color:  lightgray;
         
         }
-        
+      
 
       </style>
     </head>
@@ -305,6 +313,7 @@
                       <b></b>
                       <b></b>
                       <img id= "imglapiz" src="./images/superar.png">
+                      <!----a id="aupa" href=""> abrir </a-->
                       <b></b>
                       <div id="divlapiz" style="display:none">
                           <input type="text" id="ubicacion" size="60"/>
@@ -330,10 +339,117 @@
                   </div>
                 </div>
               </div>
+              <!---Es el modal que se muestra para aprobar planos, tengo que usar el mismo para recibir-->
+              <!----div class="modal" id="modalp_a" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Aprobar Plano</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label class="control-label">Código</label>
+                              <div>
+                                  <input type="text" class="form-control input-lg" id="codigo_ap" value="">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="control-label">Descripción</label>
+                              <div>
+                                  <input type="text" class="form-control input-lg" id="descripcion_ap">
+                              </div>
+                          </div>
+                     
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="aceptar_ap">Aceptar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      </div>
+                      <div class="container">
+                      
+                          <label type="text" id="Res_ap"></label>
+                         
+                      </div>
+                    </div>
+                  </div>
+              </div-->
+
+               <div class="modal" id="modalp_a" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Aprobar Plano</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label class="control-label">Código</label>
+                              <div>
+                                  <input type="text" class="form-control input-lg" id="codigo_ap" value="">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="control-label">Descripción</label>
+                              <div>
+                                  <input type="text" class="form-control input-lg" id="descripcion_ap">
+                              </div>
+                          </div>
+                     
+                      </div>
+                      <div class="modal-footer">
+                        <!----button type="button" class="btn btn-primary" id="aceptar_ap" >Aceptar</button-->
+                        <button type="button" class="btn btn-primary" id="aceptar_ap" data-toggle="modal" data-target="#myModal2"> 
+ 
+                           Aceptar
+                        
+                        </button> 
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      </div>
+                     
+                      <div class="modal fade" id="myModal2" role="dialog">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-sm">
+                              <div class="modal-content">
+                                
+                                  <!-- Modal body -->
+                                  <div class="modal-body"  >
+
+                                    <div  id="body_ap"> 
+                                        
+                                    </div>
+                                    
+                                  </div>
+                                  
+                                  <!-- Modal footer -->
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                            </div>  
+                            
+
+                              
+                          </div>
               
-            </div>
-            
-              
+                      </div>
+ 
+                      <!----div class="container">
+                      
+                          <label type="text" id="Res_ap"></label>
+                         
+                      </div-->
+                    </div>
+                  </div>
+              </div>
+             
+
             </main>
           </div>  
       </div>
