@@ -32,11 +32,60 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
 app.get('/ModifP',(req,res)=>{
     planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_DESCRIPCION:req.query.descripcion}}, function(err, result) {
    
-    //deberia mostrar mensaje de error
-    });
-    
-
+        //deberia mostrar mensaje de error
+     });
 });   
+
+app.get('/aprobar_p',(req,res)=>{
+    var msjerror = null;
+    
+    planos.find({PLN_CODIGO:req.query.codigo}, function(err, item) {
+    console.log(item[0].PLN_ESTADO);    
+       if(item[0].PLN_ESTADO == "PA"){
+            planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_ESTADO:"PR"}}, function(err, result) {
+                if (err){
+                    msjerror = "ERROR"
+                }
+                else{
+                    msjerror = "OK"
+                }
+                res.write(msjerror);
+                return res.end();
+
+            });
+       }
+       else{
+            msjerror = "NO_OK"
+            res.write(msjerror);
+            return res.end();
+       }
+       
+    });
+
+   // console.log(req.query.codigo);
+   // console.log(req.query.estado);
+
+  /*  if(req.query.estado == "PA"){
+        planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_ESTADO:"PR"}}, function(err, result) {
+            if (err){
+                msjerror = "ERROR"
+            }
+            else{
+                msjerror = "OK"
+            }
+            res.write(msjerror);
+            return res.end();
+        });      
+    }
+    else{
+        msjerror = "NO_OK"
+        res.write(msjerror);
+        return res.end();
+    }
+    */
+    
+});   
+
 
 app.get('/botonUP',(req,res)=>{
     
@@ -146,6 +195,7 @@ app.post('/buscarp',(req,res)=>{
         planos.find(filtro, function(err, item) {
          
            res.write(JSON.stringify(item));
+        
            return res.end();
          
         });
