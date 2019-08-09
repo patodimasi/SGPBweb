@@ -207,6 +207,7 @@ $(document).ready(function(){
             data: {codigo,descripcion,nrorev},
            
             success: function(data){
+                console.log(data)
                 $('#examplep').dataTable().fnDestroy();
                 table =  $('#examplep').DataTable({ 
                    
@@ -272,8 +273,8 @@ $(document).ready(function(){
     
                     var codigo = data[0].PLN_CODIGO
                     var descripcion = data[0].PLN_DESCRIPCION
-                    console.log(codigo);
-                    console.log(descripcion);
+                  //  console.log(codigo);
+                  //  console.log(descripcion);
                     $.ajax({
                         method : "GET",
                         async: true,
@@ -359,7 +360,7 @@ $(document).ready(function(){
                    
                     if (row.child.isShown()) {
                         //fila que esta abierta y la cierro
-                        console.log("fila que esta abierta y la cierro")
+                        //console.log("fila que esta abierta y la cierro")
                       
                         row.child.hide();
                         tr.removeClass('shown');
@@ -367,7 +368,7 @@ $(document).ready(function(){
                     }
                     else {
                         //abrir fila
-                        console.log("abrir fila");
+                       // console.log("abrir fila");
                        
                         row.child( formathistorico(row.data())).show();
                        

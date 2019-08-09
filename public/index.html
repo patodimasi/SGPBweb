@@ -27,14 +27,13 @@
       $(document).ready(function(){
         
           $("#btnIngresar").click(function(){
-
+              
               var user = $("#txtUser").val();
               var pass = $("#txtPassword").val();
               console.log("click");
               $.ajax({
                 method : "GET",
                 async:true,
-                //url:"../login",
                 url:"../login?usr="+user.toUpperCase()+"&pass="+pass,
                 success: function(res){
                   console.log(res);
@@ -48,7 +47,14 @@
                   }
                   else
                   {
+                     // console.log(jsoLogin.nombre);
+                     // console.log(jsoLogin.logon);
+                     
+
                       sessionStorage["iniciales"] = jsoLogin.iniciales;
+                      sessionStorage["nombre"] = jsoLogin.nombre;
+                      sessionStorage["logon"] = jsoLogin.logon;
+                     
                       window.location = jsoLogin.url;
                   }
                 }
