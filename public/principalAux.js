@@ -2,16 +2,13 @@ function colorestado(superado,estado){
     resultado  = '';
     if(superado == 'NS'){
         if((estado == "PR") || (estado == "PA")){
-            //return '<img src="./images/details_yellow.png">';
             resultado = '<img src="./images/details_yellow.png">';
         }      
         else{
-           // return '<img src="./images/details_green.png">';
            resultado = '<img src="./images/details_green.png">';
         }
     }
     if(superado == 'S'){
-        //return '<img src="./images/details_red.png">';
         resultado = '<img src="./images/details_red.png">';
     }
 
@@ -142,17 +139,17 @@ $(document).ready(function(){
                 ],    
                 "order": [[1, 'asc']]
             });   
-            table.MakeCellsEditable({
+           table.MakeCellsEditable({
                 "onUpdate": myCallbackFunction,
                 "inputCss":'my-input-class',
-                "columns": [3],
+                "columns": [2],
                 "confirmationButton": { // could also be true
                     "confirmCss": 'my-confirm-class',
                     "cancelCss": 'my-cancel-class'
                 },
                 "inputTypes": []
             }); 
-
+            
             function myCallbackFunction (updatedCell, updatedRow, oldValue) {
                 console.log("The new value for the cell is: " + updatedCell.data());
                 console.log("The old value for that cell was: " + oldValue);
@@ -165,6 +162,7 @@ $(document).ready(function(){
                     table.MakeCellsEditable("destroy");
                 }
             }
+            
             $('#examplep tbody').on('click', 'td.details-control', function () {
                 
                 var tr = $(this).closest('tr');
