@@ -8,6 +8,7 @@ var phistoricos= require("./models/phistoricos");
 var aplanos = require("./models/aplanos");
 const fs = require('fs');
 var url = require('url');
+mongoose.set('useFindAndModify', false);
 var bodyParser = require("body-parser")
 var groupBy = require('json-groupby')
 
@@ -29,193 +30,101 @@ mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
     console.log('Base de datos conectada');
 });
 
-
+//modifica la descripcion de un plano
 app.get('/ModifP',(req,res)=>{
-    planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_DESCRIPCION:req.query.descripcion}}, function(err, result) {
-   
-        //deberia mostrar mensaje de error
-     });
-});   
+    console.log(req.query.codigo,req.query.descripcion);
 
-function estado(estadoactual){
-    var estadofinal;
-    if(estadoactual == "PA"){
-        estadofinal = "PR"
-    }
-    else{
-        estadofinal = "AC"
-    }
-    return estadofinal;
-}
-
-app.get('/archi',(req,res)=>{
-    var file = fs.readFileSync('C:/Users/PatriciaDimasi/','binary');
-    res.setHeader('Content-Length',file.length);
-    res.write(file, 'binary');
-    res.end();
-});
-
-app.get('/aprobar_p',(req,res)=>{
-
-    console.log("Datos iniciales");
-    console.log(req.query.codigo);
-    console.log(req.query.boton_p);
-   
-    var msjerror = null
-
-    planos.find({PLN_CODIGO:req.query.codigo}, function(err, item) {
-        if(req.query.boton_p == "myBap" ){
-            console.log(item[0].PLN_ESTADO)
-            if((item[0].PLN_ESTADO == "AC") || (item[0].PLN_ESTADO == "PR")){
-              
-               msjerror =
-               {
-                   result : "ERROR",
-                   estado : "A",
-                  
-               }
-           
-               res.write(JSON.stringify(msjerror));
-               return res.end();
-            }
-            else{
-                console.log("Estado actual")
-                console.log(item[0].PLN_ESTADO)
-                console.log("Estado final que va a tener")
-                var auxestado = estado(item[0].PLN_ESTADO);
-                console.log(auxestado);
-                planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_ESTADO:auxestado}}, function(err, result) {
-                    console.log(err);
-                    console.log(result);
-                    if (err){
-                    
-                        msjerror =
-                            {
-                                result : "NO_OK",
-                                estado : "A",
-                               
-                            }
-                        
-                    }
-                    else{
-                        msjerror =
-                        {
-                            result : "OK",
-                            estado : "A",
-                           
-                        }
-                     
-                    
-                    }
-                  
-                    res.write(JSON.stringify(msjerror));
-                    return res.end();
-     
-                 });
-              
-            }
-        }
-
-        if(req.query.boton_p == "myBrp" ){
-            // console.log(item[0].PLN_ESTADO)
-             if((item[0].PLN_ESTADO == "AC") || (item[0].PLN_ESTADO == "PA")){
-               
-                msjerror =
-                {
-                    result : "ERROR",
-                    estado : "R",
-                   
-                }
-            
-                res.write(JSON.stringify(msjerror));
-                return res.end();
-             }
-             else{
-                 console.log("Estado actual")
-                 console.log(item[0].PLN_ESTADO)
-                 console.log("Estado final que va a tener")
-                 var auxestado = estado(item[0].PLN_ESTADO);
-                 console.log(auxestado);
-                 planos.updateOne({PLN_CODIGO:req.query.codigo}, {$set:{PLN_ESTADO:auxestado}}, function(err, result) {
-                     console.log(err);
-                     console.log(result);
-                     if (err){
-                     
-                         msjerror =
-                             {
-                                 result : "NO_OK",
-                                 estado : "R",
-                                
-                             }
-                         
-                     }
-                     else{
-                         msjerror =
-                         {
-                             result : "OK",
-                             estado : "R",
-                            
-                         }
-                      
-                     
-                     }
-                   
-                     res.write(JSON.stringify(msjerror));
-                     return res.end();
-      
-                  });
-               
-             }
-         }
+    aplanos.updateMany({PLN_CODIGO:req.query.codigo},{$set:{PLN_DESCRIPCION:req.query.descripcion}}, function(err, result) {
+        if(err) throw err;
        
-
-    });    
-  
+    });
+    
 });   
 
-function modificar_estado(estado,codigo) {
-    planos.updateOne({ PLN_CODIGO: codigo }, { $set: { PLN_ESTADO: estado } }, function (err, result) {
-        if (err) {
-            msjerror = "NO_OK";
-        }
-        else {
-            msjerror = "OK";
-        }
-      //  res.write((msjerror));
-      //  return res.end();
-      return msjerror;
-    });
-}
+//rechazar plano
+app.get('/rechazar_p',(req,res)=>{
+    msj_rech = []
 
-app.get('/buscarubi',(req,res)=>{
-   // console.log(req.query.cplano);
-   
-    planos.find({PLN_CODIGO:req.query.cplano}, function(err, item) {
-        //tengo que devovler en la respuesta, la ubicacion para mostrarla
-       // console.log(item[0].PLN_UBICACION);
-        res.write(item[0].PLN_UBICACION);
-        return res.end();
-    });   
-
+    aplanos.findOneAndUpdate({_id:req.query.inforp}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
+         if (err) throw err;
+         else{
+             msj_rech.push(item);
+             res.write(JSON.stringify(msj_rech)); 
+             return res.end();       
+         }
+    })
+    
 });
+
+//confirma la nueva revision de un plano
+app.get('/confirmar_nuevarev_p',(req,res)=>{
+    msjnrev = null;
+    console.log(req.query);
+    aplanos.create(req.query, function(err, resultadonrv) {
+        if (err) throw err;
+        else{
+            msjrev = "OK";
+            /*  res.write(JSON.stringify(resultadonrv)); 
+            return res.end();   
+            */    
+            res.write(JSON.stringify(msjrev)); 
+            return res.end(); 
+        }
+    })
+    
+    
+})
+
+
+//aprueba un plano en el detalle
+app.get('/aprobar_dp',(req,res)=>{
+    msj_apro = []
+    var f = new Date();
+    console.log(req.query.logon);
+    fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
+
+    //primero busco si hay un plano en verde, ya que tendra que ser cambiado a rojo, si hay lo pongo en un arreglo
+    aplanos.findOneAndUpdate({PLN_CODIGO:req.query.codigo,PLN_ESTADO:"V"}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
+        if (err) throw err;
+        else{
+           if(item != null){
+                msj_apro.push(item);
+           }  
+           //modifico el plano en amarillo, pasandolo a verde con el usuario y fecha de aprobacion
+            aplanos.findOneAndUpdate({_id:req.query.id_p}, {$set:{PLN_ESTADO:"V",PLN_USUARIO_APR:req.query.logon,PLN_FECHA_APR:fecha}},{new:true}, function(err, result) {  
+                if (err) throw err;
+                else{
+                    msj_apro.push(result);
+                    res.write(JSON.stringify(msj_apro)); 
+                    return res.end();          
+                 }
+
+            })
+        
+        }
+         
+    })
+    
+})
 
 app.get('/maxp',(req,res)=>{
     var nummax = null;
 
-    var max = planos.find().sort({'PLN_CODIGO': -1}).limit(1)
+    var max = aplanos.find().sort({'PLN_CODIGO': -1}).limit(1)
 
     max.exec(function(err, maxResult){
-        if(err){
+        if(err) throw err;
 
-        }
         else{
-            console.log("else");
-            nummax = parseInt((maxResult[0].PLN_CODIGO.split('-')[1])) + 1 ;
-            console.log(nummax);
-          //  res.write("hhhh")
-            res.write(JSON.stringify("DB4-" + nummax));
-            return res.end();
-      
+          console.log(maxResult);
+          nummax = ((maxResult[0].PLN_CODIGO.split('-')[1]));
+          console.log(nummax + 1);
+          nummax = parseInt((maxResult[0].PLN_CODIGO.split('-')[1])) + 1 ;
+           
+          
+          res.write(JSON.stringify("DB4-" + nummax));
+          return res.end();
+            
         }
        
     });
@@ -228,25 +137,16 @@ app.get('/altap',(req,res)=>{
     fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
    
     var myobj = 
-        { PLN_FECHA: fecha,PLN_CODIGO:req.query.codigo,PLN_DESCRIPCION:req.query.descripcion,PLN_UBICACION:req.query.ubicacion, PLN_NRO_REV:0,PLN_ESTADO:"PA",
-         PLN_USUARIO_ALTA:req.query.logon,PLN_SUPERADO:"NS",PLN_USUARIO_APR: "",PLN_FECHA_APR:"", PLN_USUARIO_REC:"", PLN_FECHA_REC:""};
+        { PLN_FECHA: fecha,PLN_CODIGO:req.query.codigo,PLN_DESCRIPCION:req.query.descripcion,PLN_UBICACION:req.query.ubicacion, PLN_NRO_REV:0,PLN_ESTADO:"A",
+         PLN_USUARIO_ALTA:req.query.logon,PLN_USUARIO_APR: "",PLN_FECHA_APR:""};
      
-    planos.create(myobj, function(err, resultadop) {
+    aplanos.create(myobj, function(err, resultadop) {
         if (err){
-            /*var msjerror = {
-                resultado : "NO_OK",
-                msj: err
-
-            }
-            */
+          
            var msjerror = "NO_OK"
         }
         else{
-          /*  var msjerror = {
-                resultado : "OK",
-                msj: resultadop
-
-            }*/
+        
             var msjerror = "OK"
             console.log("1 document inserted");
             res.write(JSON.stringify(msjerror));
@@ -254,40 +154,7 @@ app.get('/altap',(req,res)=>{
         }    
     });    
 });
-
-app.get('/modifubi',(req,res)=>{
-
-  var msjubicacion = null;
-  planos.updateOne({PLN_CODIGO:req.query.cplano}, {$set:{PLN_UBICACION:req.query.ubicacion}}, function(err, result) {
-   
-    if(err){
-        //variable mensaje error
-        msjubicacion = "ERROR"
-      /*  msjubicacion =
-        {
-            result : "ERROR",
-            codigo : req.query.cplano,
-            
-        }
-        */
-    }
-    else{
-      /*  msjubicacion =
-        {
-            result : "OK",
-            codigo : req.query.cplano,
-            
-        }
-        */
-        msjubicacion = "OK"
-    }
-    res.write((msjubicacion));
-    return res.end();
-     
-  });
-
-});
-
+//trae todas las revisiones (detalle) del plano seleccionado
 app.get('/detallehisto',(req,res)=>{
     //traigo todos los planos que coincidan con la busqueda, ya no tengo dos tablas
 
@@ -295,57 +162,13 @@ app.get('/detallehisto',(req,res)=>{
         res.write(JSON.stringify(plano));
         return res.end();
     });
-   /* var datos  = [];
-   
-    phistoricos.find({PLN_CODIGO:req.query.name}, function(err, historico) {
-      
-        for (var i in historico){
-            datos.push({ 
-                "PLN_FECHA"  : historico[i].PLN_FECHA,
-                "PLN_CODIGO" : historico[i].PLN_CODIGO,
-                "PLN_NRO_REV" : historico[i].PLN_NRO_REV,
-                "PLN_USUARIO_ALTA:" : historico[i].PLN_USUARIO_ALTA,
-                "PLN_USUARIO_APR" :  historico[i].PLN_USUARIO_APR,
-                "PLN_FECHA_APR":  historico[i].PLN_FECHA_APR,
-                "PLN_FECHA_REC" : historico[i].PLN_FECHA_REC,
-                "PLN_USUARIO_REC": historico[i].PLN_USUARIO_REC,
-                "PLN_ESTADO": historico[i].PLN_ESTADO,
-                "PLN_SUPERADO":historico[i].PLN_SUPERADO,
-                "PLN_DESCRIPCION":historico[i].PLN_DESCRIPCION
-             
-            });
-        }
-     
-    });
-
-    planos.find({PLN_CODIGO:req.query.name}, function(err, plano) {
-        for(var k in plano){
-            datos.push({ 
-                "PLN_FECHA"  : plano[k].PLN_FECHA,
-                "PLN_CODIGO" : plano[k].PLN_CODIGO,
-                "PLN_NRO_REV" : plano[k].PLN_NRO_REV,
-                "PLN_USUARIO_ALTA:" : plano[k].PLN_USUARIO_ALTA,
-                "PLN_USUARIO_APR" :  plano[k].PLN_USUARIO_APR,
-                "PLN_FECHA_APR":  plano[k].PLN_FECHA_APR,
-                "PLN_FECHA_REC" : plano[k].PLN_FECHA_REC,
-                "PLN_USUARIO_REC": plano[k].PLN_USUARIO_REC,
-                "PLN_ESTADO" : plano[k].PLN_ESTADO,
-                "PLN_SUPERADO": plano[k].PLN_SUPERADO,
-                "PLN_DESCRIPCION": plano[k].PLN_DESCRIPCION
-             
-            });
-        }
-       
-      res.write(JSON.stringify(datos));
-      return res.end();
-    });
-    */
-     
+  
 });
 
+//busca un plano
 app.post('/buscarp',(req,res)=>{
     var  filtro = {}
-
+    
     if((req.body.codigo == '') && (req.body.nrorev == '') && (req.body.descripcion == ''))
     {
        
@@ -357,50 +180,24 @@ app.post('/buscarp',(req,res)=>{
     {
         if(req.body.codigo != '')
         {
-     
-            filtro['PLN_CODIGO'] = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
+            filtro.PLN_CODIGO = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
+           
+          
         }
    
         if(req.body.nrorev != '')
         {
-   
-            filtro['PLN_NRO_REV'] = req.body.nrorev
+            filtro.PLN_NRO_REV = parseInt(req.body.nrorev);
+          
         }
    
         if(req.body.descripcion != '')
         {
-            filtro['PLN_DESCRIPCION'] = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
+            filtro.PLN_DESCRIPCION = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
+            
         } 
         
-   /*     aplanos.aggregate([{$match: filtro},
-                         {$group:{_id:"$PLN_CODIGO",PLANOS:{ '$push': "$$ROOT"}}}],function(err,resp){
-         console.log(resp);
-        });
-      
-*/
-      /*  aplanos.aggregate([
-            { $match: 
-            
-                    filtro  
-            },
-            { $group: {
-                "_id": "$PLN_CODIGO",
-                "max_num_sold":{$max:"$PLN_NRO_REV"},
-                
-                "PLANO": { 
-                    $push: 
-                    "$$ROOT"
-                }
-            }}
-        ],  function(err,docs) {
-               // res.write(JSON.stringify(docs));
-              //  return res.end();
-              console.log(docs);
-            }
-        );     
-            */
-
-           aplanos.aggregate([
+        aplanos.aggregate([
             { $match: 
             
                 filtro  
@@ -410,64 +207,31 @@ app.post('/buscarp',(req,res)=>{
                     "PLN_CODIGO":{$first: "$PLN_CODIGO"},
                     "PLN_NRO_REV" : {$first:"$PLN_NRO_REV"},
                     "PLN_DESCRIPCION" :{$first:"$PLN_DESCRIPCION"},
-                    "PLN_ESTADO":{$first:"$PLN_ESTADO"}
+                    "PLN_ESTADO":{$first:"$PLN_ESTADO"},
+                    "PLN_USUARIO_ALTA":{$first:"$PLN_USUARIO_ALTA"},
+                    "PLN_FECHA":{$first:"$PLN_FECHA"},
+                    "PLN_FECHA_APR": {$first:"$PLN_FECHA_APR"},
+                    "PLN_USUARIO_APR": {$first:"$PLN_USUARIO_APR"},
+                    "PLN_FECHA_REC": {$first:"$PLN_FECHA_REC"},
+                    "PLN_USUARIO_REC": {$first:"$PLN_USUARIO_REC"},
+                    "ID":{$first:"$_id"},
+                    
             }}
             ]
             ,  function(err,docs) {
                  res.write(JSON.stringify(docs));
                  return res.end();
-               //console.log(docs);
+              
              }
-         );     
-
+         );    
           
-        
+
     }
 
+   
 });
 
-/*app.post('/buscarp',(req,res)=>{
-    var  filtro = {}
- 
-    if((req.body.codigo == '') && (req.body.nrorev == '') && (req.body.descripcion == ''))
-    {
-       
-        res.write(JSON.stringify([]));
-        return res.end();
-       
-    }
-    else
-    {
-        if(req.body.codigo != '')
-        {
-     
-            filtro['PLN_CODIGO'] = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
-        }
-   
-        if(req.body.nrorev != '')
-        {
-   
-            filtro['PLN_NRO_REV'] = req.body.nrorev
-        }
-   
-        if(req.body.descripcion != '')
-        {
-            filtro['PLN_DESCRIPCION'] = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
-        } 
-   
-        planos.find(filtro, function(err, item) {
-         
-           res.write(JSON.stringify(item));
-        
-           return res.end();
-         
-        });
-    
-    }
-       
-});
-*/
-
+//busca todos los planos
 app.get('/buscarTodosp',(req,res)=>{
    
      planos.find(function(err, plano){
@@ -484,6 +248,7 @@ app.get('/buscarTodosp',(req,res)=>{
        
  })
 
+ //login usuario
 
 app.get('/login',(req,res)=>{
 
