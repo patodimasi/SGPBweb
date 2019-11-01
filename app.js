@@ -1,16 +1,17 @@
+#!/usr/bin/env node
 const express = require('express');
 const app = express();
 var mongoose = require('mongoose');
 var usuarios= require("./models/usuarios");
 var planos = require("./models/planos");
-//es una prueba a la base de datos p_historico
-var phistoricos= require("./models/phistoricos");
 var aplanos = require("./models/aplanos");
-const fs = require('fs');
 var url = require('url');
 mongoose.set('useFindAndModify', false);
-var bodyParser = require("body-parser")
-var groupBy = require('json-groupby')
+var bodyParser = require("body-parser");
+const fs = require('fs');
+var path = require('path');
+var _ = require('lodash');
+var program = require('commander');
 
 
 app.use(bodyParser.urlencoded({
@@ -24,10 +25,147 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-
-mongoose.connect('mongodb://localhost:27017/SGPB',function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
+});
+
+app.get('/getUbicacion', function(req, res){
+    
+    
+    planos.find({_id:req.query.id_ubi}, function(err, plano) {
+        if(err) throw err;
+
+        fs.exists(plano[0].PLN_UBICACION,function(exists){
+            console.log(plano[0].PLN_UBICACION);
+            if(exists){
+                var ubiResult =
+                {
+                    resultado : "OK",
+                    url :    "/altapAux.html",
+                    ubicacion : plano[0].PLN_UBICACION       
+                }
+              //  res.write(JSON.stringify(respuesta)); 
+                //return res.end(); 
+                
+            }else{
+                 var ubiResult =
+                {
+                    resultado : "NOOK"
+             
+                }
+            }
+           
+            res.write(JSON.stringify(ubiResult)); 
+            return res.end(); 
+        });
+        /*if(err){
+           throw err;
+           var ubiResult =
+            {
+                resultado : "NOOK"
+             
+            }
+        }
+      
+        else{
+            global.currentDir =  plano[0].PLN_UBICACION
+            
+            var ubiResult =
+            {
+                resultado : "OK",
+                url :    "/altapAux.html",
+                ubicacion : plano[0].PLN_UBICACION       
+            }
+            
+        }
+     
+        res.write(JSON.stringify(ubiResult)); 
+        return res.end();    
+   
+        */
+    });
+    
+    
+});
+
+app.get('/aceptarmodif_ubi', function(req, res) {
+    console.log(req.query.aceptar_ubip);
+    console.log(req.query.ubi_modifp);
+    var msjerror = null;
+
+    planos.updateOne({_id:req.query.aceptar_ubip},{$set:{PLN_UBICACION:req.query.ubi_modifp}}, function(err, result) {
+        if(err){
+            msjerror = "NO_OK"
+        }
+        else{
+            msjerror = "OK"
+            res.write(JSON.stringify(msjerror)); 
+            return res.end();   
+        }
+       
+      console.log(result);
+    });
+})
+
+app.get('/modif_ubi', function(req, res) {
+
+    planos.find({_id: req.query.ubiplano},function(err,plano){
+        if (err){
+            throw err;
+        }
+       
+        res.write(JSON.stringify(plano[0].PLN_UBICACION)); 
+        return res.end();   
+    })
+
+})
+
+app.get('/files', function(req, res) {
+
+    let dir = req.query.ubi;
+    console.log("la primera dir" + "" + dir)
+    currentDir =  dir;
+    var query = req.query.path || '';
+    console.log("el query" + "" + query);
+    if (query) currentDir = path.join(dir, query);
+    console.log("browsing ", currentDir);
+    fs.readdir(currentDir, function (err, files) {
+        if (err) {
+           throw err;
+         }
+         var data = [];
+         files
+         .filter(function (file) {
+             return true;
+         }).forEach(function (file) {
+           try {
+                   //console.log("processing ", file);
+                   var stats = fs.statSync(path.join(currentDir,file));
+                   var time = stats["atime"];
+                   var date = time.toString().substr(4,11);
+   
+                   var isDirectory = fs.statSync(path.join(currentDir,file)).isDirectory();
+                   if (isDirectory) {
+                     data.push({ Name : file,Date : date, IsDirectory: true, Path : path.join(query, file)  });
+                   } else {
+                     var ext = path.extname(file);
+                     if(program.exclude && _.contains(program.exclude, ext)) {
+                       console.log("excluding file ", file);
+                       return;
+                     }       
+                     data.push({ Name : file,Date:date, Ext : ext, IsDirectory: false, Path : path.join(query, file) });
+                   }
+   
+           } catch(e) {
+             console.log(e); 
+           }        
+   
+         });
+         data = _.sortBy(data, function(f) { return f.Name});
+         res.json(data);
+    });
+    
 });
 
 //modifica la descripcion de un plano
@@ -45,7 +183,7 @@ app.get('/ModifP',(req,res)=>{
 app.get('/rechazar_p',(req,res)=>{
     msj_rech = []
 
-    aplanos.findOneAndUpdate({_id:req.query.inforp}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
+    planos.findOneAndUpdate({_id:req.query.inforp}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
          if (err) throw err;
          else{
              msj_rech.push(item);
@@ -74,7 +212,6 @@ app.get('/confirmar_nuevarev_p',(req,res)=>{
     
     
 })
-
 
 //aprueba un plano en el detalle
 app.get('/aprobar_dp',(req,res)=>{
@@ -158,7 +295,7 @@ app.get('/altap',(req,res)=>{
 app.get('/detallehisto',(req,res)=>{
     //traigo todos los planos que coincidan con la busqueda, ya no tengo dos tablas
 
-    aplanos.find({PLN_CODIGO:req.query.name}, function(err, plano) {
+    planos.find({PLN_CODIGO:req.query.name}, function(err, plano) {
         res.write(JSON.stringify(plano));
         return res.end();
     });
@@ -197,7 +334,7 @@ app.post('/buscarp',(req,res)=>{
             
         } 
         
-        aplanos.aggregate([
+        planos.aggregate([
             { $match: 
             
                 filtro  
@@ -219,6 +356,7 @@ app.post('/buscarp',(req,res)=>{
             }}
             ]
             ,  function(err,docs) {
+                console.log(docs);
                  res.write(JSON.stringify(docs));
                  return res.end();
               
@@ -233,6 +371,7 @@ app.post('/buscarp',(req,res)=>{
 
 //busca todos los planos
 app.get('/buscarTodosp',(req,res)=>{
+    console.log("llega");
    
      planos.find(function(err, plano){
        if(err){
@@ -246,7 +385,7 @@ app.get('/buscarTodosp',(req,res)=>{
    
     });
        
- })
+})
 
  //login usuario
 
@@ -293,6 +432,7 @@ app.get('/login',(req,res)=>{
     });   
 
 });
+
 app.listen(app.get('port'),()=>{
     console.log('server on port',app.get('port'));
 })
