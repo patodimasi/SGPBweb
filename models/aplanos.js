@@ -12,7 +12,8 @@ var aplanos_schema = new Schema({
     PLN_USUARIO_APR: {type: String},
     PLN_FECHA_APR: {type: String},
     PLN_FECHA_REC: {type: String},
-    PLN_USUARIO_REC: {type: String}
+    PLN_USUARIO_REC: {type: String},
+    PLN_UBICACION: {type:String},
   
 })
     module.exports = mongoose.model("aplanos",aplanos_schema);
