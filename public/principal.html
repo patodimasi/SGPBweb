@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
         integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="./media/lib/font-awesome/css/font-awesome.min.css">
 
 
     <link rel="stylesheet" href="./css/main.css">
@@ -23,11 +24,11 @@
 </head>
 <style>
       td.details-control {
-        background: url('./images/detailsV_open.png') no-repeat center center;
+        background: url('./images/detailsblue-abrir.png') no-repeat center center;
         cursor: pointer;
       }
       tr.shown td.details-control {
-        background: url('./images/detailsR_close.png') no-repeat center center;
+        background: url('./images/detailsblue-cerrar.png') no-repeat center center;
       }
       
       .my-input-class {
@@ -119,7 +120,7 @@
                         <strong><span id="usrnombre" class="user-name"></strong>
                            
                         </span>
-                        <span class="user-role">Administrator</span>
+                        <!--span class="user-role">Administrator</span-->
                         <span class="user-status">
                             <i class="fa fa-circle"></i>
                             <span>Online</span>
@@ -484,7 +485,8 @@
                 <div style="margin-top:20px">  
             
                     <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
-                    <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button>       
+                    <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button> 
+                    <!--button id=bpubicacion type="button" class="btn btn-secondary btn-sm">Ubicacion</button-->     
                 </div> 
 
                 <div style="margin-left: -15px;margin-top: 40px" class="container"> 
@@ -506,13 +508,64 @@
                 </div>   
             </div>
 
+              <!--Modal2 aceptacion ubicacion-->
+              <div class="modal fade" id="myModalubiok" tabindex="-1" role="dialog"  aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" >
+                                <a id=icon_ubi href="#close-modal" class="close-modal" onclick="$('#myModalubiok').modal('hide')"></a>
+                            </div>
+                            <div  class="modal-body">
+                                <div class= modal-bodyp style="margin-left: 42px;margin-top:-25px">
+                                    <strong> </strong> 
+                                </div> 
+                                
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            <!--Modal Ubicacion ultimo-->
+            <div class="modal fade" id="myModalU">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header" style="background-color: #999">
+                          <strong> Modificar Ubicación </strong>           
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                          <label>Ubicación Actual</label>
+                          <input type="text" id="ubicacionp" size="60"/>
+                          <!--b></b>
+                          <b></b>
+                          <img id= "imglapiz" src="./images/superar.png">
+                          
+                          <b></b>
+                          <div id="divlapiz" style="display:none">
+                              <input type="text" id="ubicacion" size="50"/>
+                              <button type="button" id="Aup" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#myModal3">Aceptar</button>
+                          </div-->
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" id="Aceptarmodifp" class="btn btn-primary">Aceptar</button>
+                            <button type="button" id="Cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        <div class="container">
+                          <label id="Resubi"></label>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>    
             <!--Modal Ubicacion-->
             <div class="modal fade" id="myModal">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <!-- Modal Header -->
-                    <div class="modal-header" style="background-color: #999">
-                      <h4 class="modal-title">Ubicación</h4>                  
+                    <div class="modal-header">
+                      <stronf class="modal-title">Modificar ubicación</h4>                  
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -692,6 +745,26 @@
                             <div  class="modal-body">
                                 <div style="margin-left: 42px;margin-top:-25px">
                                     <strong><h>La nueva revisión del plano se realizo correctamente</h></strong> 
+                                </div> 
+                                
+                            </div>
+                            <!--div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div-->
+                        </div>
+                    </div>
+                </div>
+
+                 <!--Modal2 error ubicacion-->
+                 <div class="modal fade" id="myModalubi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" >
+                                <a id=icon_ubi href="#close-modal" class="close-modal" onclick="$('#myModalubi').modal('hide')"></a>
+                            </div>
+                            <div  class="modal-body">
+                                <div style="margin-left: 60px;margin-top:-25px">
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;La ubicación del plano no existe</strong> 
                                 </div> 
                                 
                             </div>

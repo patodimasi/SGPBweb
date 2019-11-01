@@ -54,13 +54,22 @@
                       sessionStorage["iniciales"] = jsoLogin.iniciales;
                       sessionStorage["nombre"] = jsoLogin.nombre;
                       sessionStorage["logon"] = jsoLogin.logon;
-                     
                       window.location = jsoLogin.url;
                   }
                 }
               });
           });
       });
+      
+      $(document).ready(function(){
+        $("#txtPassword").keydown(function(e){
+          console.log("Lega al passqord")
+          if(e.which === 13){
+            $("#btnIngresar").click();
+          }
+        });  
+      });
+
    </script>
   </head>   
 
@@ -73,9 +82,9 @@
         <!----label for="inputPassword" class="sr-only">Password</label-->
         <input  type="password" id="txtPassword" class="form-control" placeholder="Contraseña" required> 
         <div class="checkbox mb-3">
-            <label>
+            <!--label>
               <input type="checkbox" value="remember-me"> Recordar contraseña
-            </label>  
+            </label-->  
         </div>  
         <button type="button" id ="btnIngresar" class="btn btn-lg btn-primary btn-block" role="button">Ingresar</button>
         <div id="err" style="color:red; display: none;">Error de autenticacion</div>

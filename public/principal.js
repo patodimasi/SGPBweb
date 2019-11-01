@@ -1,3 +1,4 @@
+
 function colorestado(estado){
     var resultado = new Object();
 
@@ -19,8 +20,24 @@ function colorestado(estado){
     return resultado;
 }
 
+
+function existe_ubicacion(idubicacion){
+    var boton = null;
+
+    if(idubicacion == ""){
+
+        boton =  'disabled';
+    }
+     else{
+       
+        boton =  "";
+    }
+ 
+     return boton;
+}  
+
 function formatdetalle(rowData){
-    console.log(rowData);
+   // console.log(rowData);
     var div = $('<div/>')
         .addClass( 'loading' )
         .text( 'Loading...' );
@@ -37,7 +54,22 @@ function formatdetalle(rowData){
             success: function(res){
                 //aca tengo todas las versiones de los planos
                 var jsondetalle = JSON.parse(res);
-              
+                function sortJSON(data, key, orden) {
+                    return data.sort(function (a, b) {
+                        var x = a[key],
+                        y = b[key];
+                
+                        if (orden === 'asc') {
+                            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                        }
+                
+                        if (orden === 'desc') {
+                            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                        }
+                    });
+                }
+                var oJSON = sortJSON(jsondetalle, 'PLN_NRO_REV', 'asc');
+                //console.log(jsondetalle);
                // prueba(jsondetalle);
 
                 var tbody = '';
@@ -49,7 +81,7 @@ function formatdetalle(rowData){
                 tbody  += '<th>'+'N°Rev'+'</th>';
                 tbody  += '<th>'+'F.Aprobación'+'</th>';
                 tbody  += '<th>'+'U.Aprobación'+'</th>';
-                tbody  += '<th>'+'Ubicación'+'</th>';
+                tbody  += '<th>'+'&nbsp;&nbsp;Ubicación'+'</th>';
                 tbody  += '<th>'+'&nbsp;&nbsp;&nbsp;Tareas'+'</th>';
                 tbody  += '</tr>';
                 tbody += '<thead>';
@@ -62,7 +94,10 @@ function formatdetalle(rowData){
                     tbody += '<td>'+jsondetalle[i].PLN_NRO_REV+'</td>';
                     tbody += '<td>'+'<label id="mybfa'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_FECHA_APR+'</label>'+'</td>';
                     tbody += '<td>'+'<label id="mybua'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_USUARIO_APR+'</label>'+'</td>';
-                    tbody += '<td>'+"<button  style='margin-left: 17px;border-width: 1px' id='myBtn' class='Abrirup fa fa-folder-open data-toggle='tooltip' title='Ubicación'/>"+'</td>';
+                 
+                    var boton =  existe_ubicacion(jsondetalle[i].PLN_UBICACION);
+                    tbody += '<td>'+"<button id='mybtnubi"+"/"+jsondetalle[i]._id + "' ' "+boton+" ' style='margin-left: 17px;border-width: 1px' class='Abrirup fa fa-folder-open data-toggle='tooltip' title='Ubicación'/>" + 
+                             "<button id='mybtnmodifubi"+"/"+jsondetalle[i]._id + "' class='GetModifUbi fa fa-pencil-square'></button>" +  '</td>';
                     tbody += '<td>'+"<button id='"+jsondetalle[i]._id +"/"+jsondetalle[i].PLN_CODIGO+ "'  ' " + myString.deshabilitar_e +" '  style='margin-left: 11px;border-width: 1px'  class='GetDetalle fa fa-thumbs-up' data-toggle='tooltip' title='Aprobar'/>"+
                                   "<button id='"+jsondetalle[i]._id+ "' style='border-width: 1px' ' " + myString.deshabilitar_r +" ' class='GetRechazar fa fa-times' data-toggle='tooltip' title='Rechazar'/>"+
                              '</td>';
@@ -85,6 +120,7 @@ function formatdetalle(rowData){
      return   div;
      
 }
+
 //Rechazar
 $('#examplep tbody').on('click', 'button.GetRechazar', function () {
     //En esta funcion lo que ago es cambiar el estado de verde a rojo y bloquear el boton
@@ -105,7 +141,6 @@ $('#examplep tbody').on('click', 'button.GetRechazar', function () {
     })
     
 })
-
 
 function Actualizar_detalle(jsondetalle){
 
@@ -133,6 +168,68 @@ function Actualizar_detalle(jsondetalle){
     }
  
 }
+//modificar ubicacion
+$('#examplep tbody').on('click', 'button.GetModifUbi', function () {
+ 
+    $('#myModalU').modal();
+    infoubi = $(this).attr("id");
+    id_p = (infoubi.split('/')[0]);
+    var ubiplano = (infoubi.split('/')[1]);
+    window["ubiplano"] = ubiplano;
+    console.log("primer id" + " " + ubiplano);
+
+    $.ajax({
+        method : "GET",
+        async:true,
+        url:"/modif_ubi",
+        dataType : 'json',
+        data:{ubiplano},
+
+        success: function(res){ 
+            $('#ubicacionp').val(res);
+           
+        }
+    });
+
+})   
+
+//aceptar modificacion ubicacion
+$(document).ready(function(){
+    $("#Aceptarmodifp").click(function(){
+        aceptar_ubip = window["ubiplano"];
+        ubi_modifp = $('#ubicacionp').val();
+     
+        $.ajax({
+            method : "GET",
+            async:true,
+            url:"/aceptarmodif_ubi",
+            dataType : 'json',
+            data:{aceptar_ubip,ubi_modifp},
+
+            success: function(res){
+                var modal = $('#myModalubiok');
+
+                if (res  == "OK"  ){
+                    console.log("llega");
+                    modal.find('.modal-bodyp strong').text('La modificación de la ubicación del plano se realizo correctamente');
+                }
+                else{
+                    modal.find('.modal-bodyp').text('Error al modificar la ubicación del plano');
+                }
+            }
+
+        })
+
+        $('#myModalU').modal('hide');  
+       
+    })
+})            
+
+$("#Aceptarmodifp").on( "click", function() {
+   
+    $('#myModalubiok').modal('show');  
+  
+});
 
 //aprobar
 $('#examplep tbody').on('click', 'button.GetDetalle', function () {
@@ -155,13 +252,12 @@ $('#examplep tbody').on('click', 'button.GetDetalle', function () {
            
         }
         
-
     })
     
   
 })
 
-//Muestra los datos de una nueva revision
+//Muestra en pantalla los datos de una nueva revision para un plano
 $('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
     $('#myModal1').modal();
     infodp = JSON.parse($(this).attr("id"));
@@ -182,9 +278,9 @@ $('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
     $("#fechaaltanrp").val(fecha);
   
 })
-//confirma la nueva revision
-$("#signin").on( "click", function() {
 
+//Confirma la nueva revision y agrega a la base de datos esa revision
+$("#signin").on( "click", function() {
     var PLN_FECHA  =  $("#fechaaltanrp").val();
     var PLN_CODIGO =  $("#codigonr").val();
     var PLN_DESCRIPCION =  $("#descripcionnr").val();
@@ -193,37 +289,34 @@ $("#signin").on( "click", function() {
     var PLN_USUARIO_ALTA = $("#usuarioanr").val();
     var PLN_USUARIO_APR =  "";
     var PLN_FECHA_APR =  "";
-   // var PLN_FECHA_REC =  $("#frecnr").val();
-    //var PLN_USUARIO_REC =  $("#usuariorecnr").val();
-
+    var PLN_UBICACION = "";
+  
     $.ajax({
         method : "GET",
         async:true,
         url:"/confirmar_nuevarev_p",
         dataType : 'json',
-        data:{ PLN_FECHA,PLN_CODIGO,PLN_DESCRIPCION,PLN_NRO_REV,PLN_ESTADO,PLN_USUARIO_ALTA,PLN_USUARIO_APR,PLN_FECHA_APR},
+        data:{ PLN_FECHA,PLN_CODIGO,PLN_DESCRIPCION,PLN_NRO_REV,PLN_ESTADO,PLN_USUARIO_ALTA,PLN_USUARIO_APR,PLN_FECHA_APR,PLN_UBICACION},
 
         success: function(res){ 
-         if (res == "OK"){
-             console.log("llega");
-             $("#bpb").click();
-           
-         }
-               
+            if (res == "OK"){
+                console.log("llega");
+                $("#bpb").click();
+            }   
         }
         
     })
   
     $('#myModal1').modal('hide');  
 });
-//trigger next modal
+
+//Oculta el modal de la nueva revision y muestra el modal del resultado de la operacion
 $("#signin").on( "click", function() {
    
     $('#myModal2').modal('show');  
-  
 });
 
-//buscar todos
+//Busca todos los planos
 $(document).ready(function(){ 
     $("#bpt").click(function(){
         $(document).ready(function() {
@@ -235,35 +328,32 @@ $(document).ready(function(){
                     "url": "/buscarTodosp",
                     "dataSrc":""
                 },
+                 
                 "columns": [
                     {
-                        "className":      'details-control',
-                        "orderable":      false,
-                        "data":           null,    
-                        "defaultContent": ''
-                    },  
-                    { title: "Código","className": "text-center","data": "PLN_CODIGO" },
-                    { title: 'N°Rev',"className": "text-center","data": "PLN_NRO_REV"},
-                    { title: "Descripción","className": "text-center","data": "PLN_DESCRIPCION"},
-                    {    
-                        title: "Ubicación", 
-                       "data": null,
-                       "className": "text-center",
-                       "defaultContent": "<label class='btn btn-light'><input type= 'image' src='./images/carpeta1.png'></label>"
-                    },
                     
-                    {
-                        title: "Tarea", 
-                       "data": null,
-                       "className": "button",
-                       "defaultContent": "<div class='btn-group' "+ 
-                       "role='group' aria-label='Basic example'> "+
-                       "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Aprobar'><input type= 'image' src='./images/aprobar.png'></label>"+
-                       "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Recibir'><input type= 'image' src='./images/recibir.png'></label>"+
-                       "<label class='btn btn-light' data-toggle='tooltip' data-placement='top' title='Superar'><input type= 'image' src='./images/superar.png'></label>"
-                    }
+                        "class":          "details-control",
+                        "orderable":      false,
+                        "data":           null,
+                        "defaultContent": ""
+                  
+                   
+                    } ,
+                    
+                    { title: "Código","className": "text-center","data": "PLN_CODIGO" },
+                  
+                    { title: "Descripción","className": "text-left","data": "PLN_DESCRIPCION"},
+                    { title: "Nueva Revisión", 
+                        "data": null,
+                        "className": "text-center",
+                        'render': function (data, type, row) {
+                            return "<button id='"+JSON.stringify(data)+ "' class='GetNuevaRev fa fa-plus' data-toggle='tooltip' title='Nueva Revisión'/>"
+                        }
+                    },
+                  
+                            
+                ],
 
-                ],    
                 "order": [[1, 'asc']]
             });   
             table.MakeCellsEditable({
@@ -277,46 +367,57 @@ $(document).ready(function(){
                 "inputTypes": []
             }); 
 
-            function myCallbackFunction (updatedCell, updatedRow, oldValue) {
-                console.log("The new value for the cell is: " + updatedCell.data());
-                console.log("The old value for that cell was: " + oldValue);
-                console.log("The values for each cell in that row are: " + updatedRow.data());
-            }
+           function myCallbackFunction (updatedCell, updatedRow, oldValue) {
+                    console.log("The new value for the cell is: " + updatedCell.data());
+                    console.log("The old value for that cell was: " + oldValue);
+                    console.log("The values for each cell in that row are: " + JSON.stringify(updatedRow.data()));
+                    var codigo = (updatedRow.data().PLN_CODIGO);
+                    var descripcion = (updatedRow.data().PLN_DESCRIPCION);
+                    
+
+                    $.ajax({
+                        method : "GET",
+                        async: true,
+                        url:"/ModifP",
+                        dataType : 'json',
+                        data : {codigo,descripcion},
+                       
+
+                    })      
+                    
+            }    
               
-            function destroyTable() {
-                if ($.fn.DataTable.isDataTable('#myAdvancedTable')) {
-                    table.destroy();
-                    table.MakeCellsEditable("destroy");
-                }
-            }
-            $('#examplep tbody').on('click', 'td.details-control', function () {
-                
-                var tr = $(this).closest('tr');
-                var row = table.row( tr );
-             
-                if ( row.child.isShown() ) {
-                   
-                   
-                    //fila que esta abierta y la cierro
-                    console.log("fila que esta abierta y la cierro")
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                 
-                    //abrir fila
-                    console.log("abrir fila");
-                    row.child( formathistorico(row.data()) ).show();
-                
-                
-                }
-
-            });   
-
+                $('#examplep tbody').off('click', 'td.details-control');
+                $('#examplep tbody').on('click', 'td.details-control', function () {
+                    var tr = $(this).closest('tr');
+                    var row = table.row(tr);
+                      
+                    if (row.child.isShown()) {
+                        //fila que esta abierta y la cierro
+                        // console.log("fila que esta abierta y la cierro")
+                       
+                        row.child.hide();
+                        tr.removeClass('shown');
+                        
+                    }
+                    else {
+                        //abrir fila
+                      
+                        row.child( formatdetalle(row.data())).show();
+                     
+                        
+                        tr.addClass('shown');
+                        
+                    } 
+                    
+                    
+                });
 
         });     
     });    
 });
+
+
 
 //login usuario
 
@@ -362,10 +463,10 @@ $(document).ready(function(){
 $(document).ready(function(){
     $("#altaplano").click(function(){
         var codigo =  $("#maxcodigo").val();
-        var ubicacion = $("#descplano").val();
-        var descripcion = $("#ubiplano").val();
+        var ubicacion = $("#ubiplano").val();
+        var descripcion = $("#descplano").val();
         var logon = sessionStorage["logon"];
-
+        
         //envio al servidor los datos del formulario
         $.ajax({
             method : "GET",
@@ -393,11 +494,28 @@ $("#altaplano").on( "click", function() {
   
 });
 
+$("#codigof").keydown(function(e){
+    if(e.which === 13){
+        $("#bpb").click();
+    }
+});
+
+$("#nrorevf").keydown(function(e){
+    if(e.which === 13){
+        $("#bpb").click();
+    }
+});
+
+$("#descripcionf").keydown(function(e){
+    if(e.which === 13){
+        $("#bpb").click();
+    }
+});
 
 //Buscar un plano
 $(document).ready(function(){
     $("#bpb").click(function(){
-        
+        console.log("llega");
         var codigo = $("#codigof").val();
         var descripcion = $("#descripcionf").val();
         var nrorev = $("#nrorevf").val();
@@ -518,3 +636,36 @@ $(document).ready(function(){
 
 });     
 
+//Envia la ruta de la ubicacion y concatena el html altapAux + ubi = ruta
+$('#examplep tbody').on('click', 'button.Abrirup', function () {
+
+    infoubi = $(this).attr("id");
+    id_ubi = infoubi.split("/")[1];
+    $.ajax({
+        method : "GET",
+        async: true,
+        url:"/getUbicacion",
+        dataType : 'json',
+        data: {id_ubi},
+            
+        success: function(respuesta){
+            
+           if(respuesta.resultado == "OK"){
+                var varUrl = respuesta.url + '?ubi=' + respuesta.ubicacion;
+               
+                console.log("Es la varURL" + " " + varUrl);
+                
+                window.open(varUrl,'_blank');
+           }
+           else{ 
+               console.log("llega no aca");
+               $('#myModalubi').modal();
+                
+           }
+           
+           
+        }
+
+    })
+
+})
