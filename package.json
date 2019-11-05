@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/patodimasi/SGPBweb#readme",
   "dependencies": {
+    "commander": "^3.0.2",
     "express": "^4.16.4",
     "mongoose": "^5.5.11",
     "mssql": "^5.1.0"
