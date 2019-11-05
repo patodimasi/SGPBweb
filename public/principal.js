@@ -177,6 +177,7 @@ $('#examplep tbody').on('click', 'button.GetModifUbi', function () {
     var ubiplano = (infoubi.split('/')[1]);
     window["ubiplano"] = ubiplano;
     console.log("primer id" + " " + ubiplano);
+    
 
     $.ajax({
         method : "GET",
