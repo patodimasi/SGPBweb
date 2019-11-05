@@ -198,7 +198,7 @@ app.get('/rechazar_p',(req,res)=>{
 app.get('/confirmar_nuevarev_p',(req,res)=>{
     msjnrev = null;
     console.log(req.query);
-    aplanos.create(req.query, function(err, resultadonrv) {
+    planos.create(req.query, function(err, resultadonrv) {
         if (err) throw err;
         else{
             msjrev = "OK";
@@ -221,14 +221,14 @@ app.get('/aprobar_dp',(req,res)=>{
     fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 
     //primero busco si hay un plano en verde, ya que tendra que ser cambiado a rojo, si hay lo pongo en un arreglo
-    aplanos.findOneAndUpdate({PLN_CODIGO:req.query.codigo,PLN_ESTADO:"V"}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
+    planos.findOneAndUpdate({PLN_CODIGO:req.query.codigo,PLN_ESTADO:"V"}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
         if (err) throw err;
         else{
            if(item != null){
                 msj_apro.push(item);
            }  
            //modifico el plano en amarillo, pasandolo a verde con el usuario y fecha de aprobacion
-            aplanos.findOneAndUpdate({_id:req.query.id_p}, {$set:{PLN_ESTADO:"V",PLN_USUARIO_APR:req.query.logon,PLN_FECHA_APR:fecha}},{new:true}, function(err, result) {  
+            planos.findOneAndUpdate({_id:req.query.id_p}, {$set:{PLN_ESTADO:"V",PLN_USUARIO_APR:req.query.logon,PLN_FECHA_APR:fecha}},{new:true}, function(err, result) {  
                 if (err) throw err;
                 else{
                     msj_apro.push(result);
@@ -247,13 +247,13 @@ app.get('/aprobar_dp',(req,res)=>{
 app.get('/maxp',(req,res)=>{
     var nummax = null;
 
-    var max = aplanos.find().sort({'PLN_CODIGO': -1}).limit(1)
+    var max = planos.find().sort({'PLN_CODIGO': -1}).limit(1)
 
     max.exec(function(err, maxResult){
         if(err) throw err;
 
         else{
-          console.log(maxResult);
+          console.log("El maximo del plano es:" + " " + maxResult[0].PLN_CODIGO);
           nummax = ((maxResult[0].PLN_CODIGO.split('-')[1]));
           console.log(nummax + 1);
           nummax = parseInt((maxResult[0].PLN_CODIGO.split('-')[1])) + 1 ;
@@ -265,6 +265,7 @@ app.get('/maxp',(req,res)=>{
         }
        
     });
+    
   
 });
 
@@ -277,7 +278,7 @@ app.get('/altap',(req,res)=>{
         { PLN_FECHA: fecha,PLN_CODIGO:req.query.codigo,PLN_DESCRIPCION:req.query.descripcion,PLN_UBICACION:req.query.ubicacion, PLN_NRO_REV:0,PLN_ESTADO:"A",
          PLN_USUARIO_ALTA:req.query.logon,PLN_USUARIO_APR: "",PLN_FECHA_APR:""};
      
-    aplanos.create(myobj, function(err, resultadop) {
+    planos.create(myobj, function(err, resultadop) {
         if (err){
           
            var msjerror = "NO_OK"
