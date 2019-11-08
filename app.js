@@ -25,7 +25,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
@@ -372,19 +372,32 @@ app.post('/buscarp',(req,res)=>{
 
 //busca todos los planos
 app.get('/buscarTodosp',(req,res)=>{
-    console.log("llega");
+    planos.aggregate([
    
-     planos.find(function(err, plano){
-       if(err){
-           res.send("Ocurrió error obteniendo los planos");
-       }else{
-     
-        res.write(JSON.stringify(plano));
-        return res.end();
-           
-       }
-   
-    });
+        {$sort: {"PLN_NRO_REV":-1}},
+        {$group:{"_id": "$PLN_CODIGO",
+            "PLN_CODIGO":{$first: "$PLN_CODIGO"},
+            "PLN_NRO_REV" : {$first:"$PLN_NRO_REV"},
+            "PLN_DESCRIPCION" :{$first:"$PLN_DESCRIPCION"},
+            "PLN_ESTADO":{$first:"$PLN_ESTADO"},
+            "PLN_USUARIO_ALTA":{$first:"$PLN_USUARIO_ALTA"},
+            "PLN_FECHA":{$first:"$PLN_FECHA"},
+            "PLN_FECHA_APR": {$first:"$PLN_FECHA_APR"},
+            "PLN_USUARIO_APR": {$first:"$PLN_USUARIO_APR"},
+            "PLN_FECHA_REC": {$first:"$PLN_FECHA_REC"},
+            "PLN_USUARIO_REC": {$first:"$PLN_USUARIO_REC"},
+            "ID":{$first:"$_id"},
+            
+        }}
+    ]
+        ,function(err,docs) {
+            if(err) throw err;
+            console.log(docs);
+            res.write(JSON.stringify(docs));
+            return res.end();
+      
+        }
+    );    
        
 })
 
