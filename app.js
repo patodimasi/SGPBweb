@@ -25,7 +25,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
