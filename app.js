@@ -25,7 +25,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
@@ -172,7 +172,7 @@ app.get('/files', function(req, res) {
 app.get('/ModifP',(req,res)=>{
     console.log(req.query.codigo,req.query.descripcion);
 
-    aplanos.updateMany({PLN_CODIGO:req.query.codigo},{$set:{PLN_DESCRIPCION:req.query.descripcion}}, function(err, result) {
+    planos.updateMany({PLN_CODIGO:req.query.codigo},{$set:{PLN_DESCRIPCION:req.query.descripcion}}, function(err, result) {
         if(err) throw err;
        
     });
