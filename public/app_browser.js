@@ -65,6 +65,7 @@ var options = {
         table.fnAddData(data);
         currentPath = path;
       });
+         
         e.preventDefault();
     });
     
@@ -112,6 +113,8 @@ table.fnAddData(data);
 
 });
 
+
+
 $(document).ready(function(){
   $('#copy-btn').click(function() {
     var dummy = document.createElement('input'),
@@ -130,6 +133,9 @@ $(document).ready(function(){
       alert("Error al copiar la ruta");
     }
   });
+
+ 
+
 });
 
 })(jQuery);
