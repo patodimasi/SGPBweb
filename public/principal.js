@@ -76,24 +76,26 @@ function formatdetalle(rowData){
                 tbody += '<table id="tabledetalle" class="table">';
                 tbody += '<thead class="thead-dark">';
                 tbody += '<tr>';
-                tbody  += '<th>'+'Estado' +'</th>';
-                tbody  += '<th>'+'F.Alta'+'</th>';
-                tbody  += '<th>'+'N°Rev'+'</th>';
-                tbody  += '<th>'+'F.Aprobación'+'</th>';
-                tbody  += '<th>'+'U.Aprobación'+'</th>';
-                tbody  += '<th>'+'&nbsp;&nbsp;Ubicación'+'</th>';
-                tbody  += '<th>'+'&nbsp;&nbsp;&nbsp;Tareas'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'Estado' +'</th>';
+                tbody  += '<th style=" text-align: center">'+'N°Rev'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'F.Alta'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'U.Alta'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'F.Aprobación'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'U.Aprobación'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'&nbsp;&nbsp;Ubicación'+'</th>';
+                tbody  += '<th style=" text-align: center">'+'&nbsp;&nbsp;&nbsp;Tareas'+'</th>';
                 tbody  += '</tr>';
                 tbody += '<thead>';
 
                 for (var i = 0; i < jsondetalle.length; i++) {
                     var myString = (colorestado(jsondetalle[i].PLN_ESTADO));
-                    tbody += '<tr>';
+                    tbody += '<tr style=" text-align: center">';
                     tbody += '<td>'+"<img id='"+jsondetalle[i]._id+"' src='"+myString.imagen+"' >"+'</td>';
-                    tbody += '<td>'+jsondetalle[i].PLN_FECHA+'</td>';
-                    tbody += '<td>'+jsondetalle[i].PLN_NRO_REV+'</td>';
-                    tbody += '<td>'+'<label id="mybfa'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_FECHA_APR+'</label>'+'</td>';
-                    tbody += '<td>'+'<label id="mybua'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_USUARIO_APR+'</label>'+'</td>';
+                    tbody += '<td style=" text-align: center">'+jsondetalle[i].PLN_NRO_REV+'</td>';
+                    tbody += '<td style=" text-align: center">'+jsondetalle[i].PLN_FECHA+'</td>';
+                    tbody += '<td style=" text-align: center">'+jsondetalle[i].PLN_USUARIO_ALTA+'</td>';
+                    tbody += '<td style=" text-align: center">'+'<label id="mybfa'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_FECHA_APR+'</label>'+'</td>';
+                    tbody += '<td style=" text-align: center">'+'<label id="mybua'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_USUARIO_APR+'</label>'+'</td>';
                  
                     var boton =  existe_ubicacion(jsondetalle[i].PLN_UBICACION);
                     tbody += '<td>'+"<button id='mybtnubi"+"/"+jsondetalle[i]._id + "' ' "+boton+" ' style='margin-left: 17px;border-width: 1px' class='Abrirup fa fa-folder-open data-toggle='tooltip' title='Ubicación'/>" + 
