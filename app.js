@@ -90,6 +90,16 @@ app.get('/getUbicacion', function(req, res){
     
 });
 
+app.get('/b', function(req, res) {
+    let file;
+    var direccionfinal = req.headers.referer.split("ubi=")[1];
+    console.log(direccionfinal);
+  
+    file = direccionfinal + "\\" + req.query.f;
+   
+    res.sendFile(decodeURI(file));
+})
+
 app.get('/aceptarmodif_ubi', function(req, res) {
     console.log(req.query.aceptar_ubip);
     console.log(req.query.ubi_modifp);
@@ -122,24 +132,15 @@ app.get('/modif_ubi', function(req, res) {
 
 })
 
-app.get('/b', function(req, res) {
-    let file;
-    var direccionfinal = req.headers.referer.split("ubi=")[1];
-
-    file = direccionfinal + "\\" + req.query.f;
-   
-    res.sendFile(file);
-})
-
-
-
 app.get('/files', function(req, res) {
 
     let dir = req.query.ubi;
+   // console.log("la primera dir" + "" + dir)
     currentDir =  dir;
     var query = req.query.path || '';
+   // console.log("el query" + "" + query);
     if (query) currentDir = path.join(dir, query);
-   
+   // console.log("browsing ", currentDir);
     fs.readdir(currentDir, function (err, files) {
         if (err) {
            throw err;
@@ -157,10 +158,8 @@ app.get('/files', function(req, res) {
    
                    var isDirectory = fs.statSync(path.join(currentDir,file)).isDirectory();
                    if (isDirectory) {
-                      
                      data.push({ Name : file,Date : date, IsDirectory: true, Path : path.join(query, file)  });
                    } else {
-                    
                      var ext = path.extname(file);
                      if(program.exclude && _.contains(program.exclude, ext)) {
                        console.log("excluding file ", file);
