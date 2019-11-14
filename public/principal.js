@@ -650,8 +650,9 @@ $('#examplep tbody').on('click', 'button.Abrirup', function () {
         data: {id_ubi},
             
         success: function(respuesta){
-            
+         
            if(respuesta.resultado == "OK"){
+               
                 var varUrl = respuesta.url + '?ubi=' + respuesta.ubicacion;
                
                 console.log("Es la varURL" + " " + varUrl);
