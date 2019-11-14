@@ -15,9 +15,10 @@ var program = require('commander');
 
 
 app.use(bodyParser.urlencoded({
-extended: true
+    extended: true
 }));
   
+
 
 //permite direccionar a direcciones estaticas....todas las paginas que esten en la carpeta public
 app.set('port',3000);
@@ -25,7 +26,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
@@ -121,15 +122,24 @@ app.get('/modif_ubi', function(req, res) {
 
 })
 
+app.get('/b', function(req, res) {
+    let file;
+    var direccionfinal = req.headers.referer.split("ubi=")[1];
+
+    file = direccionfinal + "\\" + req.query.f;
+   
+    res.sendFile(file);
+})
+
+
+
 app.get('/files', function(req, res) {
 
     let dir = req.query.ubi;
-    console.log("la primera dir" + "" + dir)
     currentDir =  dir;
     var query = req.query.path || '';
-    console.log("el query" + "" + query);
     if (query) currentDir = path.join(dir, query);
-    console.log("browsing ", currentDir);
+   
     fs.readdir(currentDir, function (err, files) {
         if (err) {
            throw err;
@@ -147,8 +157,10 @@ app.get('/files', function(req, res) {
    
                    var isDirectory = fs.statSync(path.join(currentDir,file)).isDirectory();
                    if (isDirectory) {
+                      
                      data.push({ Name : file,Date : date, IsDirectory: true, Path : path.join(query, file)  });
                    } else {
+                    
                      var ext = path.extname(file);
                      if(program.exclude && _.contains(program.exclude, ext)) {
                        console.log("excluding file ", file);
