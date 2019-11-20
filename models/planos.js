@@ -14,8 +14,8 @@ var planos_schema = new Schema({
     PLN_FECHA_REC: {type: String},
     PLN_UBICACION:{type: String},
     PLN_ESTADO:{type: String},
-    PLN_SUPERADO:{type: String}
-
+    PLN_SUPERADO:{type: String},
+    PLN_COMENTARIO:{type: String}
 
 
 })
