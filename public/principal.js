@@ -275,6 +275,7 @@ $('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
     $("#usuarioaprnr").val(infodp.PLN_USUARIO_APR);
     $("#frecnr").val(infodp.PLN_FECHA_REC);
     $("#usuariorecnr").val(infodp.PLN_USUARIO_REC);
+    $("#Textarearev").val(" ");
 
     $("#nuevarevp").val(infodp.PLN_NRO_REV + 1);
     $("#descripcion_nrp").val(infodp.PLN_DESCRIPCION);
@@ -284,12 +285,15 @@ $('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
 
 //Confirma la nueva revision y agrega a la base de datos esa revision
 $("#signin").on( "click", function() {
+    var logon = sessionStorage["logon"];
+
     var PLN_FECHA  =  $("#fechaaltanrp").val();
     var PLN_CODIGO =  $("#codigonr").val();
     var PLN_DESCRIPCION =  $("#descripcionnr").val();
     var PLN_NRO_REV =  parseInt($("#nuevarevp").val());
     var PLN_ESTADO = "A";
-    var PLN_USUARIO_ALTA = $("#usuarioanr").val();
+  //  var PLN_USUARIO_ALTA = $("#usuarioanr").val();
+    var PLN_USUARIO_ALTA = logon;
     var PLN_USUARIO_APR =  "";
     var PLN_FECHA_APR =  "";
     var PLN_UBICACION = "";
