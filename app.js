@@ -363,6 +363,7 @@ app.post('/buscarp',(req,res)=>{
                     "PLN_USUARIO_APR": {$first:"$PLN_USUARIO_APR"},
                     "PLN_FECHA_REC": {$first:"$PLN_FECHA_REC"},
                     "PLN_USUARIO_REC": {$first:"$PLN_USUARIO_REC"},
+                    "PLN_COMENTARIO" : {$first:"$PLN_COMENTARIO"},
                     "ID":{$first:"$_id"},
                     
             }}
@@ -397,6 +398,7 @@ app.get('/buscarTodosp',(req,res)=>{
             "PLN_USUARIO_APR": {$first:"$PLN_USUARIO_APR"},
             "PLN_FECHA_REC": {$first:"$PLN_FECHA_REC"},
             "PLN_USUARIO_REC": {$first:"$PLN_USUARIO_REC"},
+            "PLN_COMENTARIO": {$first:"$PLN_COMENTARIO"},
             "ID":{$first:"$_id"},
             
         }}
