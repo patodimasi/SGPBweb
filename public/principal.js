@@ -51,6 +51,7 @@ function formatdetalle(rowData){
                 name: rowData.PLN_CODIGO
             
             },
+          
             success: function(res){
                 //aca tengo todas las versiones de los planos
                 var jsondetalle = JSON.parse(res);
@@ -68,6 +69,7 @@ function formatdetalle(rowData){
                         }
                     });
                 }
+              
                 var oJSON = sortJSON(jsondetalle, 'PLN_NRO_REV', 'asc');
                 //console.log(jsondetalle);
                // prueba(jsondetalle);
@@ -91,7 +93,14 @@ function formatdetalle(rowData){
                     var myString = (colorestado(jsondetalle[i].PLN_ESTADO));
                     tbody += '<tr style=" text-align: center">';
                     tbody += '<td>'+"<img id='"+jsondetalle[i]._id+"' src='"+myString.imagen+"' >"+'</td>';
-                    tbody += '<td style=" text-align: center">'+jsondetalle[i].PLN_NRO_REV+'</td>';
+                    //tbody += '<td style=" text-align: center" data-toggle="tooltip"  title='+jsondetalle[i].PLN_COMENTARIO+' >'+jsondetalle[i].PLN_NRO_REV+'</td>';
+                  
+                    //tbody += '<td style=" text-align: center" data-toggle="tooltip"  title='+jsondetalle[i].PLN_COMENTARIO+'>'+jsondetalle[i].PLN_NRO_REV+'</td>';
+                  //  tbody += '<td style=" text-align: center" data-toggle="tooltip"  title="'+jsondetalle[i].PLN_COMENTARIO+'">'+jsondetalle[i].PLN_NRO_REV+'</td>';
+
+                    tbody +=  '<td><span rel="tooltip" data-toggle="tooltipcom" data-placement="top" title="'+jsondetalle[i].PLN_COMENTARIO+'"  class="souligne">'+jsondetalle[i].PLN_NRO_REV+'</span></td>';
+
+
                     tbody += '<td style=" text-align: center">'+jsondetalle[i].PLN_FECHA+'</td>';
                     tbody += '<td style=" text-align: center">'+jsondetalle[i].PLN_USUARIO_ALTA+'</td>';
                     tbody += '<td style=" text-align: center">'+'<label id="mybfa'+jsondetalle[i]._id+'"> '+jsondetalle[i].PLN_FECHA_APR+'</label>'+'</td>';
@@ -108,8 +117,12 @@ function formatdetalle(rowData){
                 }
                 
                 tbody += '</table>';
+
+                $('body').tooltip({
+                    selector: '[data-toggle="tooltipcom"]'
+                   
+                });
                
-                
                 div
                 .html(tbody)
                 .removeClass( 'loading' );
@@ -292,7 +305,6 @@ $("#signin").on( "click", function() {
     var PLN_DESCRIPCION =  $("#descripcionnr").val();
     var PLN_NRO_REV =  parseInt($("#nuevarevp").val());
     var PLN_ESTADO = "A";
-  //  var PLN_USUARIO_ALTA = $("#usuarioanr").val();
     var PLN_USUARIO_ALTA = logon;
     var PLN_USUARIO_APR =  "";
     var PLN_FECHA_APR =  "";
@@ -337,10 +349,7 @@ $(document).ready(function(){
                     "url": "/buscarTodosp",
                     "dataSrc":""
                 },
-                "drawCallback": function (settings, json) {
-                    $('[data-toggle="tooltip"]').tooltip('update');
-                    
-                },  
+              
                 "columns": [
                     {
                     
@@ -367,11 +376,7 @@ $(document).ready(function(){
                 ],
 
                 "order": [[1, 'asc']],
-                createdRow: function (row, data, dataIndex) {
-                    $(row).find('td:eq(1)').attr('title', data["PLN_COMENTARIO"]);
-                    $(row).find('td:eq(1)').attr('data-toggle', "tooltip");
-                  
-                }
+              
                 
             });   
             table.MakeCellsEditable({
@@ -550,11 +555,7 @@ $(document).ready(function(){
 
                 table =  $('#examplep').DataTable({     
                     data: respuesta,
-                    "drawCallback": function (settings, json) {
-                        $('[data-toggle="tooltip"]').tooltip('update');
-                        
-                    },
-                      
+                  
                     language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
                     
                     "columns": [
@@ -583,12 +584,7 @@ $(document).ready(function(){
                     ],
                        
                     "order": [[1, 'asc']] ,
-                    createdRow: function (row, data, dataIndex) {
-                        $(row).find('td:eq(1)').attr('title', data["PLN_COMENTARIO"]);
-                        $(row).find('td:eq(1)').attr('data-toggle', "tooltip");
-                      
-                    }
-                       
+                 
                 });    
               
                 //modificar la descripcion
