@@ -440,8 +440,6 @@ $(document).ready(function(){
     });    
 });
 
-
-
 //login usuario
 
 $(document).ready(function(){
@@ -452,6 +450,9 @@ $(document).ready(function(){
     else
     {
      $('<p>NN</p>').appendTo('#usrnombre');
+     
+     $("#pantallap").addClass("disabledbutton");
+       
     }
 });
 

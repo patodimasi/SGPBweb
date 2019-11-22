@@ -103,9 +103,12 @@
         background-image: url('./images/icons8-cancel-30.png');
 
       } 
-      
+      .disabledbutton {
+        pointer-events: none;
+        opacity: 0.4;
+      }
 </style>
-<body>
+<body id = "pantallap">
     <div class="page-wrapper default-theme sidebar-bg  toggled">
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
@@ -196,9 +199,24 @@
                         <li class="sidebar-dropdown">
                             <a href="#">
                                 <i class="fa fa-users"></i>
-                                <span class="menu-text">Usuarios</span>
-                                
+                                <span class="menu-text">Usuarios</span> 
                             </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#">Alta</a>     
+                                    </li>
+                                    <li>
+                                        <a href="#">Consultas</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Restablecer Contraseña</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Seleccionar Foto</a>
+                                    </li>
+                                </ul>
+                            </div>
                            
                         </li>
                         <li class="sidebar-dropdown">
@@ -801,29 +819,6 @@
                           <button type="button" id="CerrarAlta" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
 
-                        <!--div id="myModal4" class="modal">
-                            <div class="modal-dialog modal-dialog-centered">
-                              <div class="modal-dialog modal-sm">
-                                <div class="modal-content">
-                                    <div class="modal-header" id="encabezado_alta">
-                                      <a id=icon_ubi href="#close-modal" class="close-modal" onclick="$('#myModal4').modal('hide')"></a>
-                                    </div>
-                                    
-                                    <div class="modal-body">
-                                        <div  id="body_alta"> 
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="modal-footer">
-                                    
-                                     
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>                 
-                            </div>
-                        </div-->
-
                       </div>
                     </div>
                 </div>
@@ -845,6 +840,22 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal usuario NN-->
+                <div class="modal fade" id="MymodalNN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" >
+                                <a id=icon_ubi href="#close-modal" class="close-modal" onclick="$('#MymodalNN').modal('hide')"></a>
+                            </div>
+                            <div  class="modal-body">
+                                <div style="margin-left: 42px;margin-top:-25px">
+                                    <strong><h>Se necesita loguearse antes de ingresar al sistema </h></strong> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>  
 
         </main>
         <!-- page-content" -->
