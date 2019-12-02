@@ -107,6 +107,10 @@
         pointer-events: none;
         opacity: 0.4;
       }
+      .contents > div {
+        display: none;
+      }
+      
 </style>
 <body id = "pantallap">
     <div class="page-wrapper default-theme sidebar-bg  toggled">
@@ -126,7 +130,7 @@
                         <strong><span id="usrnombre" class="user-name"></strong>
                            
                         </span>
-                        <!--span class="user-role">Administrator</span-->
+                      
                         <span class="user-status">
                             <i class="fa fa-circle"></i>
                             <span>Online</span>
@@ -161,9 +165,8 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="#">Planos</a>
-                                            
-                                        
+                                        <a data-menu-item="dconsultas" class="personal-menu-item dconsultas" href="#">Planos</a>
+                                     
                                     </li>
                                     <li>
                                         <a href="#">Manuales</a>
@@ -204,10 +207,10 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="#">Alta</a>     
+                                        <a  href="#">Alta</a>     
                                     </li>
                                     <li>
-                                        <a href="#">Consultas</a>
+                                        <a  data-menu-item="dcusuarios" class="personal-menu-item profile dcusuarios" href="#">Consultas</a>
                                     </li>
                                     <li>
                                         <a href="#">Restablecer Contraseña</a>
@@ -226,22 +229,7 @@
                             </a>
                             
                         </li>
-                        <!----li class="sidebar-dropdown">
-                            <a href="#">
-                                <i class="fa fa-globe"></i>
-                                <span class="menu-text">Maps</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="#">Google maps</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Open street map</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li-->
+                      
                         <li class="header-menu">
                             <span>Extra</span>
                         </li>
@@ -252,18 +240,6 @@
                                
                             </a>
                         </li>
-                        <!----li>
-                            <a href="#">
-                                <i class="fa fa-calendar"></i>
-                                <span class="menu-text">Calendar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-folder"></i>
-                                <span class="menu-text">Examples</span>
-                            </a>
-                        </li-->
                     </ul>
                 </div>
                 <!-- sidebar-menu  -->
@@ -412,100 +388,48 @@
             </div>
         </nav>
         <!-- page-content  -->
-        <main class="page-content pt-2">
-            <div id="overlay" class="overlay"></div>
-            <div class="container-fluid p-5">
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <h2>Consulta Planos</h2>
-                        
-                    </div>
+        <main  class="page-content pt-2">
+            <div class="container-fluid p-5 contents">
+                <div id="dconsultas">
+                    <!--h2>Lessons text here</h2-->
+                    
+                       
+                </div>
+                <div id="dcusuarios" >
+                    <!--h2>profile text here</h2-->
                    
-                </div>
-             
-                <div class="row">
-                  
-
-                </div>
-
-
-                <hr>
-                
-               
-                <form class="form">
-                  <div class="row">
-                      <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-6">
-                              <label for="codigo"><strong>Código</strong></label>
-                              <input  style="text-transform: uppercase" type="text" class="form-control" id="codigof" placeholder="" value="" required>
-                            </div>  
-                            <div class="col-md-6">
-                              <label  for="nrorev"><strong>NroRev</strong></label>
-                              <input  type="number" class="form-control" id="nrorevf" placeholder="" value="" required>
-                            </div>  
-                        </div>  
-      
-                        <div class="row">
-                            <div class="col-md-12">
-                              <label for="descripcion"><strong> Descripción</strong></label>
-                              <input type="text" class="form-control" id="descripcionf" placeholder="" value="" required>
-                            </div>
-                        </div>                
-                      </div>
-                        <div class="col-md-4">
-                                <img style="margin-top:-170px" src="./images/logocolores3.png">
-                            <div class="card" style="width: 18rem;margin-top: -10px">
-                                <div class="card-header">
-                                <strong>Estados</strong>  
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                  <li class="list-group-item"> <img src="./images/details_green.png">
-                                    Planos vigentes
-                                   
-                                  </li>
-                                  <li class="list-group-item"><img src="./images/details_yellow.png">
-                                    Planos en condiciones de ser 
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aprobados</li>
-                                  <li class="list-group-item"><img src="./images/details_red.png">
-                                    Planos no vigentes</li>
-                                </ul>
-                            </div>   
-                        </div>  
-                  </div>      
-                </form>
-                <div>
-                    <!--button type="button" id=mybtnAlta class="btn btn-info btn-circle btn-xl" data-toggle="tooltip" data-placement="top" title="Alta Plano"><i class="fa fa-plus"></i-->
-                    <button type="button" id=mybtnAlta class="btn btn-info btn-circle btn-xl" data-toggle="tooltip"  title="Alta Plano"><i class="fa fa-plus"></i>
-                </div>
-                <div style="margin-top:20px">  
-            
-                    <button id=bpb type="button" class="btn btn-primary btn-sm">Buscar</button>
-                    <button id=bpt type="button" class="btn btn-secondary btn-sm">Todos</button> 
-                    <!--button id=bpubicacion type="button" class="btn btn-secondary btn-sm">Ubicacion</button-->     
-                </div> 
-
-                <div style="margin-left: -15px;margin-top: 40px" class="container"> 
-                        <table id="examplep" class="display" >
-                          <thead>
-                              <tr>
-                                  <th style="width: 5px"></th>
-                                  <th style="width: 70px"></th>
-                                  <th style="width: 350px"></th>
-                                  <th style="width: 70px"></th>
-                                
-                                
-                              </tr>
-                          </thead>
-                          <tbody>
-                          
-                          </tbody>
-                        </table>
-                </div>   
+                </div>     
             </div>
-
-              <!--Modal2 aceptacion ubicacion-->
-              <div class="modal fade" id="myModalubiok" tabindex="-1" role="dialog"  aria-hidden="true">
+        </main>    
+       
+            <!--Modal Ubicacion ultimo-->
+            <div class="modal fade" id="myModalU">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        
+                        <div class="modal-header" style="background-color: #999">
+                          <strong> Modificar Ubicación </strong>           
+                        </div>
+                        
+                        <div class="modal-body">
+                          <label>Ubicación Actual</label>
+                          <input type="text" id="ubicacionp" size="60"/>
+                       
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" id="Aceptarmodifp" onclick="Aceptarmodif()" class="btn btn-primary">Aceptar</button>
+                            <button type="button" id="Cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        <div class="container">
+                          <label id="Resubi"></label>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>    
+              <!--Modal Aceptar ubicacion-->
+            <div class="modal fade" id="myModalubiok" tabindex="-1" role="dialog"  aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -521,62 +445,27 @@
                         </div>
                     </div>
                 </div>
-            <!--Modal Ubicacion ultimo-->
-            <div class="modal fade" id="myModalU">
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <!-- Modal Header -->
-                        <div class="modal-header" style="background-color: #999">
-                          <strong> Modificar Ubicación </strong>           
-                        </div>
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                          <label>Ubicación Actual</label>
-                          <input type="text" id="ubicacionp" size="60"/>
-                          <!--b></b>
-                          <b></b>
-                          <img id= "imglapiz" src="./images/superar.png">
-                          
-                          <b></b>
-                          <div id="divlapiz" style="display:none">
-                              <input type="text" id="ubicacion" size="50"/>
-                              <button type="button" id="Aup" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#myModal3">Aceptar</button>
-                          </div-->
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button type="button" id="Aceptarmodifp" class="btn btn-primary">Aceptar</button>
-                            <button type="button" id="Cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                        <div class="container">
-                          <label id="Resubi"></label>
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>    
             <!--Modal Ubicacion-->
-            <div class="modal fade" id="myModal">
+            <!--div class="modal fade" id="myModal">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
-                    <!-- Modal Header -->
+                  
                     <div class="modal-header">
                       <stronf class="modal-title">Modificar ubicación</h4>                  
                     </div>
-                    <!-- Modal body -->
+                    
                     <div class="modal-body">
                       <label>Modificar Ubicación</label>
                       <b></b>
                       <b></b>
                       <img id= "imglapiz" src="./images/superar.png">
-                      <!----a id="aupa" href=""> abrir </a-->
                       <b></b>
                       <div id="divlapiz" style="display:none">
                           <input type="text" id="ubicacion" size="50"/>
                           <button type="button" id="Aup" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#myModal3">Aceptar</button>
                       </div>
                     </div>
-                    <!-- Modal footer -->
+                   
                     <div class="modal-footer">
                         <button type="button" id="AbrirUP" class="btn btn-primary">Abrir</button>
                         <button type="button" id="Cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -585,21 +474,21 @@
                       <label id="Resubi"></label>
                     </div>
                     <!--Sub Modal correspondiente a ubicacion-->
-                    <div class="modal fade" id="myModal3" role="dialog">
+                    <!--div class="modal fade" id="myModal3" role="dialog">
                         <div class="modal-dialog modal-dialog-centered">
                           <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div class="modal-header"  id="encabezado_u">
                                   <a href="#close-modal" rel="modal:close" class="close-modal" onclick="$('#myModal3').modal('hide')"></a>
                                 </div>
-                                <!-- Modal body -->
+                              
                                 <div class="modal-body">
                                   <div  id="body_bp"> 
                                   </div>
                                 </div>
-                                <!-- Modal footer -->
+                               
                                 <div class="modal-footer">
-                                  <!----button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button-->
+                                
                                 </div>
                               </div>
                             </div>
@@ -611,7 +500,7 @@
               </div>
               
               <!--Modal Aprobar-->
-                <div class="modal" id="modalp_a" tabindex="-1" role="dialog">
+                <!--div class="modal" id="modalp_a" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header" style="background-color: #999">
@@ -624,7 +513,6 @@
                                 
                             </div>
                             <div class="modal-footer">
-                                <!----button type="button" id = "aceptar_app"  class="btn btn-primary">Aprobar</button-->
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -721,24 +609,23 @@
                                     </div>  
                                 </div>
                                 <div style="margin-top: 10px" class="row">
-                                    <!--div class="form-group"-->
+                                  
                                         <strong><label style="margin-left:5px" for="exampleFormControlTextarea1">Comentarios</label></strong>
                                         <textarea class="form-control" id="Textarearev" rows="3"></textarea>
-                                    <!--/div-->    
+                                       
                                 </div>
                             </div>
                         </div>  
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="signin">Aceptar</button>
+                            <button type="button" class="btn btn-primary" onclick="Confirmarnr()" id="signin">Aceptar</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                   </div>
                 </div>
-                <!--Modal1 prueba-->
                   
                 <!--Modal2 prueba-->
-                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <!--div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -750,15 +637,13 @@
                                 </div> 
                                 
                             </div>
-                            <!--div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            </div-->
+                           
                         </div>
                     </div>
-                </div>
+                </div-->
 
-                 <!--Modal2 error ubicacion-->
-                 <div class="modal fade" id="myModalubi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                 <!--Modal Error en la ubicacion-->
+                <div class="modal fade" id="myModalubi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -766,18 +651,16 @@
                             </div>
                             <div  class="modal-body">
                                 <div style="margin-left: 60px;margin-top:-25px">
-                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;La ubicación del plano no existe</strong> 
+                                    <b> </b> 
                                 </div> 
                                 
                             </div>
-                            <!--div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            </div-->
+                           
                         </div>
                     </div>
                 </div>
 
-                <!--Modal Alta-->
+                <!--Modal Alta de documento-->
                 <div class="modal" id="MymodalAltap" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
@@ -815,7 +698,7 @@
                           
                         </div>
                         <div class="modal-footer">
-                          <button type="button" id ="altaplano" data-toggle="modal"  class="btn btn-secondary">Aceptar</button>
+                          <button type="button" id ="altaplano" onclick="Altadoc()"data-toggle="modal"  class="btn btn-secondary">Aceptar</button>
                           <button type="button" id="CerrarAlta" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
 
@@ -834,15 +717,13 @@
                                 </div> 
                                     
                             </div>
-                                <!--div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                </div-->
+                               
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal usuario NN-->
-                <div class="modal fade" id="MymodalNN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <!--div class="modal fade" id="MymodalNN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -856,7 +737,104 @@
                         </div>
                     </div>
                 </div>  
-
+          </div>     
+          <div  id="profile">
+           
+                <div class="container-fluid p-5">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <h2>Pro Sidebar</h2>
+                                <p>This is a responsive sidebar template with dropdown menu based on bootstrap framework.</p>
+        
+                            </div>
+                            <div class="form-group col-md-12">
+                                <iframe
+                                    src="https://ghbtns.com/github-btn.html?user=azouaoui-med&repo=pro-sidebar-template&type=star&count=true&size=small"
+                                    frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
+                                <iframe
+                                    src="https://ghbtns.com/github-btn.html?user=azouaoui-med&repo=pro-sidebar-template&type=fork&count=true&size=small"
+                                    frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
+                            </div>
+        
+                            <div class="form-group col-md-12">
+                                <a id="toggle-sidebar" class="btn btn-secondary rounded-0" href="#">
+                                    <span>Toggle Sidebar</span>
+                                </a>
+                                <a id="pin-sidebar" class="btn btn-outline-secondary rounded-0" href="#">
+                                    <span>Pin Sidebar</span>
+                                </a>
+        
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <h3>Themes</h3>
+                                <p>Here are more themes that you can use</p>
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <a href="#" data-theme="default-theme" class="theme default-theme selected"></a>
+                                <a href="#" data-theme="chiller-theme" class="theme chiller-theme"></a>
+                                <a href="#" data-theme="legacy-theme" class="theme legacy-theme"></a>
+                                <a href="#" data-theme="ice-theme" class="theme ice-theme"></a>
+                                <a href="#" data-theme="cool-theme" class="theme cool-theme"></a>
+                                <a href="#" data-theme="light-theme" class="theme light-theme"></a>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <p>You can also use background image </p>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <a href="#" data-bg="bg1" class="theme theme-bg selected"></a>
+                                <a href="#" data-bg="bg2" class="theme theme-bg"></a>
+                                <a href="#" data-bg="bg3" class="theme theme-bg"></a>
+                                <a href="#" data-bg="bg4" class="theme theme-bg"></a>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="toggle-bg" checked>
+                                    <label class="custom-control-label" for="toggle-bg">Background image</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="toggle-border-radius">
+                                    <label class="custom-control-label" for="toggle-border-radius">Border radius</label>
+                                </div>
+                            </div>
+        
+                        </div>
+        
+        
+                        <hr>
+                        <div class="row ">
+                            <div class="form-group col-md-12">
+                                <small>Made with <i class="fa fa-heart text-danger" aria-hidden="true"></i> by <span
+                                        class="text-secondary font-weight-bold">Mohamed
+                                        Azouaoui</span></small>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <a href="https://github.com/azouaoui-med" target="_blank"
+                                    class="btn btn-sm bg-secondary shadow-sm rounded-0 text-light mr-3 mb-3">
+                                    <i class="fab fa-github" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://twitter.com/azouaoui_med" target="_blank"
+                                    class="btn btn-sm bg-secondary shadow-sm rounded-0 text-light mr-3 mb-3">
+                                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://www.instagram.com/azouaoui_med/" target="_blank"
+                                    class="btn btn-sm bg-secondary shadow-sm rounded-0 text-light mr-3 mb-3">
+                                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/mohamed-azouaoui/" target="_blank"
+                                    class="btn btn-sm bg-secondary shadow-sm rounded-0 text-light mr-3 mb-3">
+                                    <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+          </div>
         </main>
         <!-- page-content" -->
        
@@ -882,6 +860,9 @@
 
     <script src="/main.js"></script>
     <script src="principal.js"></script>
+    <script src="consultas.js"></script>
+    <script src="consultap.js"></script>
+    <script src="usuarios.js"></script>
     <script type="text/javascript" languaje="javascript" src="./media/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="./media/css/jquery.dataTables.css"> 
     <script src="./media/js/dataTables.cellEdit.js"></script>

@@ -1,5 +1,5 @@
 
-function colorestado(estado){
+/*function colorestado(estado){
     var resultado = new Object();
 
     if(estado == 'V'){
@@ -19,9 +19,9 @@ function colorestado(estado){
     }
     return resultado;
 }
+*/
 
-
-function existe_ubicacion(idubicacion){
+/*function existe_ubicacion(idubicacion){
     var boton = null;
 
     if(idubicacion == ""){
@@ -35,8 +35,8 @@ function existe_ubicacion(idubicacion){
  
      return boton;
 }  
-
-function formatdetalle(rowData){
+*/
+/*function formatdetalle(rowData){
    // console.log(rowData);
     var div = $('<div/>')
         .addClass( 'loading' )
@@ -135,9 +135,9 @@ function formatdetalle(rowData){
      return   div;
      
 }
-
+*/
 //Rechazar
-$('#examplep tbody').on('click', 'button.GetRechazar', function () {
+/*$('#examplep tbody').on('click', 'button.GetRechazar', function () {
     //En esta funcion lo que ago es cambiar el estado de verde a rojo y bloquear el boton
     inforp = $(this).attr("id");
     console.log(inforp);
@@ -156,8 +156,8 @@ $('#examplep tbody').on('click', 'button.GetRechazar', function () {
     })
     
 })
-
-function Actualizar_detalle(jsondetalle){
+*/
+/*function Actualizar_detalle(jsondetalle){
 
     for(var i = 0;i < jsondetalle.length;i++){
         var myString = (colorestado(jsondetalle[i].PLN_ESTADO));
@@ -183,8 +183,9 @@ function Actualizar_detalle(jsondetalle){
     }
  
 }
+*/
 //modificar ubicacion
-$('#examplep tbody').on('click', 'button.GetModifUbi', function () {
+/*$('#examplep tbody').on('click', 'button.GetModifUbi', function () {
  
     $('#myModalU').modal();
     infoubi = $(this).attr("id");
@@ -208,10 +209,11 @@ $('#examplep tbody').on('click', 'button.GetModifUbi', function () {
     });
 
 })   
-
+*/
 //aceptar modificacion ubicacion
-$(document).ready(function(){
+/*$(document).ready(function(){
     $("#Aceptarmodifp").click(function(){
+        
         aceptar_ubip = window["ubiplano"];
         ubi_modifp = $('#ubicacionp').val();
      
@@ -246,9 +248,9 @@ $("#Aceptarmodifp").on( "click", function() {
     $('#myModalubiok').modal('show');  
   
 });
-
+*/
 //aprobar
-$('#examplep tbody').on('click', 'button.GetDetalle', function () {
+/*$('#examplep tbody').on('click', 'button.GetDetalle', function () {
     //obtengo el codigo y el id imagen de la fila presionada
     infodp = $(this).attr("id");
     var logon = sessionStorage["logon"];
@@ -272,9 +274,9 @@ $('#examplep tbody').on('click', 'button.GetDetalle', function () {
     
   
 })
-
+*/
 //Muestra en pantalla los datos de una nueva revision para un plano
-$('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
+/*$('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
     $('#myModal1').modal();
     infodp = JSON.parse($(this).attr("id"));
     var f = new Date();
@@ -295,9 +297,9 @@ $('#examplep tbody').on('click', 'button.GetNuevaRev', function () {
     $("#fechaaltanrp").val(fecha);
   
 })
-
+*/
 //Confirma la nueva revision y agrega a la base de datos esa revision
-$("#signin").on( "click", function() {
+/*$("#signin").on( "click", function() {
     var logon = sessionStorage["logon"];
 
     var PLN_FECHA  =  $("#fechaaltanrp").val();
@@ -329,15 +331,15 @@ $("#signin").on( "click", function() {
   
     $('#myModal1').modal('hide');  
 });
-
+*/
 //Oculta el modal de la nueva revision y muestra el modal del resultado de la operacion
-$("#signin").on( "click", function() {
+/*$("#signin").on( "click", function() {
    
     $('#myModal2').modal('show');  
 });
-
+*/
 //Busca todos los planos
-$(document).ready(function(){ 
+/*$(document).ready(function(){ 
     $("#bpt").click(function(){
         $(document).ready(function() {
             $('#examplep').dataTable().fnDestroy();
@@ -439,9 +441,8 @@ $(document).ready(function(){
         });     
     });    
 });
-
+*/
 //login usuario
-
 $(document).ready(function(){
     if (sessionStorage["nombre"]){
       var nombre = sessionStorage["nombre"];
@@ -457,7 +458,7 @@ $(document).ready(function(){
 });
 
 //buscar el maximo de un plano para luego realizar el alta del mismo
-$(document).ready(function(){
+/*$(document).ready(function(){
     $("#mybtnAlta").click(function(){
         //limpio los campos del formulario
         $("#maxcodigo").val("");
@@ -517,8 +518,8 @@ $("#altaplano").on( "click", function() {
     $('#MymodalAltah').modal('show');  
   
 });
-
-$("#codigof").keydown(function(e){
+*/
+/*$("#codigof").keydown(function(e){
     if(e.which === 13){
         $("#bpb").click();
     }
@@ -535,9 +536,9 @@ $("#descripcionf").keydown(function(e){
         $("#bpb").click();
     }
 });
-
+*/
 //Buscar un plano
-$(document).ready(function(){
+/*$(document).ready(function(){
     $("#bpb").click(function(){
         console.log("llega");
         var codigo = $("#codigof").val();
@@ -660,8 +661,9 @@ $(document).ready(function(){
 
 });     
 
+*/
 //Envia la ruta de la ubicacion y concatena el html altapAux + ubi = ruta
-$('#examplep tbody').on('click', 'button.Abrirup', function () {
+/*$('#examplep tbody').on('click', 'button.Abrirup', function () {
 
     infoubi = $(this).attr("id");
     id_ubi = infoubi.split("/")[1];
@@ -693,4 +695,17 @@ $('#examplep tbody').on('click', 'button.Abrirup', function () {
 
     })
 
+})
+*/
+$(document).ready(function() {
+    $('div#dconsultas').show();
+    $('body').on('click','a.personal-menu-item', function(e) {
+        e.preventDefault();
+    
+    var selectedItem = $(this).attr('data-menu-item'); 
+    var $selected = $('#' + selectedItem).show();
+    $('.contents > div').not($selected).hide();
+  
+   });
+   
 })
