@@ -444,7 +444,6 @@ app.listen(app.get('port'),()=>{
 // ------------------------------------------ USUARIOS ------------------------------------------------
 
 //buscar los usuarios
-
 app.get('/buscarTodosu',(req,res)=>{
    
     usuarios.find(function(err, usuario){
