@@ -26,14 +26,14 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
 
+// -------------------------------------------- DOCUMENTOS ------------------------------------------
 app.get('/getUbicacion', function(req, res){
-    
-    
+        
     planos.find({_id:req.query.id_ubi}, function(err, plano) {
         if(err) throw err;
 
@@ -60,31 +60,7 @@ app.get('/getUbicacion', function(req, res){
             res.write(JSON.stringify(ubiResult)); 
             return res.end(); 
         });
-        /*if(err){
-           throw err;
-           var ubiResult =
-            {
-                resultado : "NOOK"
-             
-            }
-        }
-      
-        else{
-            global.currentDir =  plano[0].PLN_UBICACION
-            
-            var ubiResult =
-            {
-                resultado : "OK",
-                url :    "/altapAux.html",
-                ubicacion : plano[0].PLN_UBICACION       
-            }
-            
-        }
-     
-        res.write(JSON.stringify(ubiResult)); 
-        return res.end();    
-   
-        */
+       
     });
     
     
@@ -259,10 +235,10 @@ app.get('/maxp',(req,res)=>{
     var nummax = null;
 
     var max = planos.find().sort({'PLN_CODIGO': -1}).limit(1)
-
+    
     max.exec(function(err, maxResult){
         if(err) throw err;
-
+        
         else{
           console.log("El maximo del plano es:" + " " + maxResult[0].PLN_CODIGO);
           nummax = ((maxResult[0].PLN_CODIGO.split('-')[1]));
@@ -369,7 +345,7 @@ app.post('/buscarp',(req,res)=>{
             }}
             ]
             ,  function(err,docs) {
-                console.log(docs);
+               // console.log(docs);
                  res.write(JSON.stringify(docs));
                  return res.end();
               
@@ -464,4 +440,19 @@ app.listen(app.get('port'),()=>{
     console.log('server on port',app.get('port'));
 })
 
+// ----------------------------------------------------------------------------------------------------
+// ------------------------------------------ USUARIOS ------------------------------------------------
 
+//buscar los usuarios
+
+app.get('/buscarTodosu',(req,res)=>{
+   
+    usuarios.find(function(err, usuario){
+        if(err) throw err;
+    
+        res.write(JSON.stringify(usuario));
+        return res.end();
+  
+   });
+      
+})
