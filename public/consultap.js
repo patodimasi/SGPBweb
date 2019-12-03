@@ -62,6 +62,7 @@ $(document).ready(function(){
             "<table id='examplep' class='display'>" +
                 "<thead>" +
                     "<tr>"+
+                    
                         "<th style='width: 5px'></th>"+
                         "<th style='width: 70px'></th>"+
                         "<th style='width: 350px'></th>"+

@@ -66,6 +66,7 @@ $(document).ready(function(){
         "<div style='margin-left: -15px;margin-top: 40px' class='container'>"+
             "<table id='tusuarios' class='display'>" +
                 "<tr>"+
+                    "<th style='width: 150px'></th>"+
                     "<th style='width: 250px'></th>"+
                     "<th style='width: 250px'></th>"+
                     "<th style='width: 250px'></th>"+
