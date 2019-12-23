@@ -66,7 +66,7 @@ $(document).ready(function(){
         "<div style='margin-left: -15px;margin-top: 40px' class='container'>"+
             "<table id='tusuarios' class='display'>" +
                 "<tr>"+
-                    "<th style='width: 150px'></th>"+
+                   // "<th style='width: 150px'></th>"+
                     "<th style='width: 250px'></th>"+
                     "<th style='width: 250px'></th>"+
                     "<th style='width: 250px'></th>"+
@@ -92,7 +92,7 @@ $(document).ready(function(){
             },
 
             "columns": [
-                {
+              /*  {
                 
                     "class":          "details-control",
                     "orderable":      false,
@@ -101,12 +101,12 @@ $(document).ready(function(){
               
                
                 } ,
-                
+                */
                 { title: "Usuario","className": "text-center","data": "USR_LOGON" },
               
-                { title: "Nombre","className": "text-left","data": "USR_NOMBRE"},
-                { title: "Apellido","className": "text-left","data": "USR_APELLIDO" },
-                { title: "Estado","className": "text-left","data": "USR_ESTADO" },   
+                { title: "Nombre","className": "text-center","data": "USR_NOMBRE"},
+                { title: "Apellido","className": "text-center","data": "USR_APELLIDO" },
+                { title: "Estado","className": "text-center","data": "USR_ESTADO" },   
                
               
                         
@@ -117,7 +117,7 @@ $(document).ready(function(){
             
         })
 
-        $('#tusuarios tbody').on('click', 'td.details-control', function () {
+       /* $('#tusuarios tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row( tr );
      
@@ -132,24 +132,7 @@ $(document).ready(function(){
                 tr.addClass('shown');
             }
         } );
+        */
     });
 });
 
-function format ( d ) {
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Estado:</td>'+
-            '<td>'+d.USR_ESTADO+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Fecha de Alta:</td>'+
-            '<td>'+d.USR_FECHA_ALTA+'</td>'+
-        '</tr>'+
-       /* '<tr>'+
-            '<td>Permisos:</td>'+
-            '<td>'+d.USR_+'</td>'+
-        '</tr>'+
-        */
-    '</table>';
-}

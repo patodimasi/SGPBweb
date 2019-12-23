@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var usuarios= require("./models/usuarios");
 var planos = require("./models/planos");
 var aplanos = require("./models/aplanos");
+var permisos = require("./models/permisos");
 var url = require('url');
 mongoose.set('useFindAndModify', false);
 var bodyParser = require("body-parser");
@@ -26,7 +27,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
@@ -345,7 +346,7 @@ app.post('/buscarp',(req,res)=>{
             }}
             ]
             ,  function(err,docs) {
-               // console.log(docs);
+                 console.log(docs);
                  res.write(JSON.stringify(docs));
                  return res.end();
               
@@ -412,6 +413,7 @@ app.get('/login',(req,res)=>{
                 url : "/principal.html",
                 iniciales : docs[0].USR_INICIAL, 
                 nombre : docs[0].USR_NOMBRE + " " + docs[0].USR_APELLIDO,
+                codigo : docs[0].USR_CODIGO,
                 logon : docs[0].USR_LOGON
             }
             test= q.query.usr;
@@ -454,4 +456,14 @@ app.get('/buscarTodosu',(req,res)=>{
         
    });
       
-})
+});
+
+app.get('/mostrar_usu',(req,res)=>{
+    //console.log(req.query.codigo);
+    permisos.find({PER_CODIGO: req.query.codigo},function(err, permiso) {
+       // console.log(permiso);
+        res.write(JSON.stringify(permiso));
+        return res.end();
+    });
+    
+});

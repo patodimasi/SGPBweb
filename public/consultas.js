@@ -1,5 +1,5 @@
 // ------------------ BUSCAR un solo documento, viene del boton bpb y Muestra el historico de cada documento -----------------------
-function Consulta(codigo,nrorev,descripcion){
+/*function Consulta(codigo,nrorev,descripcion){
     console.log("LLEGA ")
     var codigo = codigo.value;
     var descripcion = descripcion.value;
@@ -109,6 +109,8 @@ function Consulta(codigo,nrorev,descripcion){
     }); 
          
  };
+
+ 
 //detalle de cada documento
  function Formatdetalle(rowData){
      var div = $('<div/>')
@@ -628,3 +630,4 @@ function Aceptarmodif(){
    
 
 }
+*/
