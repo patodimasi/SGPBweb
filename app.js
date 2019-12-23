@@ -457,7 +457,7 @@ app.get('/buscarTodosu',(req,res)=>{
    });
       
 });
-
+//muestra los permisos del usuario
 app.get('/mostrar_usu',(req,res)=>{
     //console.log(req.query.codigo);
     permisos.find({PER_CODIGO: req.query.codigo},function(err, permiso) {
@@ -467,3 +467,28 @@ app.get('/mostrar_usu',(req,res)=>{
     });
     
 });
+//guarda los permisos modificados
+app.get('/modpermiso_usu',(req,res)=>{
+    // console.log(req.query.logon);
+     //console.log(req.query.permisos[0]);
+     usuarios.find({USR_LOGON: req.query.logon},function(err, usuario) {
+         if(err) throw err;
+         permisos.updateOne({PER_CODIGO:usuario[0].USR_CODIGO},{$set:{PER_INGJ:req.query.permisos[0],PER_INGS:req.query.permisos[1],
+             PER_CC:req.query.permisos[2],PER_P:req.query.permisos[3],PER_ADMIN:req.query.permisos[4],PER_ROOT:req.query.permisos[5]}}, function(err, result) {
+ 
+             if (err){
+                 var msj = "ERROR"
+             }
+             else{
+                 var msj = "OK"
+             }
+ 
+             res.write(JSON.stringify(msj));
+             return res.end();
+ 
+         });
+ 
+     });
+     
+     
+ });
