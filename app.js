@@ -471,7 +471,7 @@ app.get('/mostrar_usu',(req,res)=>{
 app.get('/modpermiso_usu',(req,res)=>{
     // console.log(req.query.logon);
      //console.log(req.query.permisos[0]);
-     usuarios.find({USR_LOGON: req.query.logon},function(err, usuario) {
+    usuarios.find({USR_LOGON: req.query.logon},function(err, usuario) {
          if(err) throw err;
          permisos.updateOne({PER_CODIGO:usuario[0].USR_CODIGO},{$set:{PER_INGJ:req.query.permisos[0],PER_INGS:req.query.permisos[1],
              PER_CC:req.query.permisos[2],PER_P:req.query.permisos[3],PER_ADMIN:req.query.permisos[4],PER_ROOT:req.query.permisos[5]}}, function(err, result) {
@@ -486,9 +486,48 @@ app.get('/modpermiso_usu',(req,res)=>{
              res.write(JSON.stringify(msj));
              return res.end();
  
-         });
+        });
  
-     });
+    });
      
      
- });
+});
+ //Buscar un usuario en particular
+app.post('/buscarusu',(req,res)=>{
+    var  filtro = {}
+    // console.log(req.body.nombre,req.body.apellido);
+    if((req.body.nombre == '') && (req.body.apellido == '')){
+        res.write(JSON.stringify([]));
+        return res.end();
+    }
+
+    else
+    {
+        if(req.body.nombre != '')
+        {
+            filtro.USR_NOMBRE = {'$regex': '.*' + req.body.nombre + '.*',$options : 'i'}
+        }
+        if(req.body.apellido != '')
+        {
+            filtro.USR_APELLIDO = {'$regex': '.*' + req.body.apellido + '.*',$options : 'i'}
+        }
+
+        usuarios.find(filtro,function(err,usuario){
+            if (err){
+                throw err;
+            }
+           
+            res.write(JSON.stringify(usuario));
+            return res.end();
+        })
+    
+    }
+  
+});
+
+//se da de baja un usuario
+app.get('/baja_usu',(req,res)=>{
+
+   
+ 
+});
