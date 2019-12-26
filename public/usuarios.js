@@ -16,62 +16,44 @@ $(document).ready(function(){
                     "<div class='row'>"+
                         "<div class='col-md-12'>"+
                             "<label for='codigo'><strong>Nombre</strong></label>"+
-                            "<input  style='text-transform: uppercase' type='text' class='form-control' id='nombref' placeholder='' value='' required></input>"+
-                        "</div>"+
-                        
-                       /* "<div class='col-md-4'>"+
-                            "<button style='margin-top:35px'>Buscar</button>"+
-                         "</div>"+
-                         */   
+                            "<input id='nombreusu' type='text' class='form-control' id='nombref' placeholder='' value='' required></input>"+
+                        "</div>"+ 
                     "</div>"+
                     "<div class='row'>"+
                         "<div class='col-md-12'>"+
                             "<label for='descripcion'><strong> Apellido</strong></label>"+
-                            "<input type='text' class='form-control' id='apellidof' placeholder='' value='' required>"+
+                            "<input type='text' class='form-control' id='apellidousu' placeholder='' value='' required>"+
                         "</div>"+
                     "</div>"+
                 "</div>"+
                 "<div class='col-md-4'>"+
                     "<img style='margin-top:-170px' src='./images/logocolores3.png'>"+
-                    /*"<div class='card' style='width: 18rem;margin-top: -10px'>"+
-                        "<div class='card-header'>"+
-                            "<strong>Estados</strong>"+ 
-                        "</div>"+
-                        "<ul class='list-group list-group-flush'>"+
-                            "<li class='list-group-item'> <img src='./images/details_green.png'>"+
-                                "Planos vigentes" +
-                            "</li>"+
-                            "<li class='list-group-item'><img src='./images/details_yellow.png'>"+
-                                " Planos pendiente de aprobación"+
-                                
-                            "</li>"+
-                            "<li class='list-group-item'><img src='./images/details_red.png'>"+
-                                " Planos no vigentes"+
-                            "</li>"+
-                        "</ul>"+
-                    "</div>"+
-                    */
+                   
                 "</div>"+
             "</div>"+
         "</form>" +
-       /* "<div>"+
-             "<button type='button' id=mybtnAlta onclick='Btnalta()' class='btn btn-info btn-circle btn-xl' data-toggle='tooltip'  title='Alta Plano'><i class='fa fa-plus'></i>"+
-        "</div>"+
-        */
+      
         "<div style='margin-top:20px'>"+
-            "<button id=bpb type='button' class='btn btn-primary btn-sm'>Buscar</button>"+
+            "<button id=bpbusuario onclick='Consultausu(nombreusu,apellidousu)' type='button' class='btn btn-primary btn-sm'>Buscar</button>"+
             "<button id=bptusuario type='button' style='margin-left:5px' class='btn btn-secondary btn-sm'>Todos</button>"+    
         "</div>"+
          
         "<div style='margin-left: -15px;margin-top: 40px' class='container'>"+
             "<table id='tusuarios' class='display'>" +
-                "<tr>"+
-                   // "<th style='width: 150px'></th>"+
-                    "<th style='width: 250px'></th>"+
-                    "<th style='width: 250px'></th>"+
-                    "<th style='width: 250px'></th>"+
-                    "<th style='width: 250px'></th>"+  
-                "</tr>"+
+                "<thead>" +
+                    "<tr>"+
+                        //"<th style='width: 150px'></th>"+
+                        "<th style='width: 250px'></th>"+
+                        "<th style='width: 250px'></th>"+
+                        "<th style='width: 250px'></th>"+
+                        "<th style='width: 250px'></th>"+  
+                        "<th style='width: 250px'></th>"+ 
+                        "<th style='width: 250px'></th>"+ 
+                    "</tr>"+
+                "</thead>" +  
+                "<tbody>"+
+
+                "</tbody>"+  
             "</table>"+
         "</div>"   
         
@@ -82,7 +64,7 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $("#bptusuario").click(function(){
-        console.log("llega con el click");
+       
         var table = $('#tusuarios').DataTable({
 
             language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
@@ -92,20 +74,10 @@ $(document).ready(function(){
             },
 
             "columns": [
-              /*  {
-                
-                    "class":          "details-control",
-                    "orderable":      false,
-                    "data":           null,
-                    "defaultContent": ""
-              
-               
-                } ,
-                */
-                { title: "Usuario","className": "text-center","data": "USR_LOGON" },
               
                 { title: "Nombre","className": "text-center","data": "USR_NOMBRE"},
                 { title: "Apellido","className": "text-center","data": "USR_APELLIDO" },
+                { title: "Usuario","className": "text-center","data": "USR_LOGON" },
                 { title: "Estado","className": "text-center","data": "USR_ESTADO" },   
                
                 { title: "Permisos", 
@@ -121,7 +93,8 @@ $(document).ready(function(){
                 "data": null,
                 "className": "text-center",
                     'render': function (data, type, row) {
-                        return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                        return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                     
                     }
                 },
                         
@@ -278,4 +251,79 @@ $(document).ready(function(){
         $("#PER_ADMIN").attr("disabled", true);
         $("#PER_ROOT").attr("disabled", true);
     })
-})
+});
+
+// ---------------------------------------------------------------------------------------------------------------------------------  
+//-------------------------Busca un usuario en particular---------------------------------------------------------------------------
+
+function Consultausu(nombre, apellido){
+    var nombre = nombre.value;
+    var apellido = apellido.value;
+
+    $.ajax({
+        method : "POST",
+        async: true,
+        url:"/buscarusu",
+        dataType : 'json',
+        data: {nombre,apellido},
+
+        success: function(respuesta){
+            console.log(respuesta);
+            $('#tusuarios').dataTable().fnDestroy();
+
+            table =  $('#tusuarios').DataTable({ 
+                data: respuesta,
+
+                language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
+
+                "columns": [
+              
+                    { title: "Nombre","className": "text-center","data": "USR_NOMBRE"},
+                    { title: "Apellido","className": "text-center","data": "USR_APELLIDO" },
+                    { title: "Usuario","className": "text-center","data": "USR_LOGON" },
+                    { title: "Estado","className": "text-center","data": "USR_ESTADO" },  
+                   
+                    { title: "Permisos", 
+                    "data": null,
+                    "className": "text-center",
+                        'render': function (data, type, row) {
+                            
+                            return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip'  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
+                        }
+                    },
+                   
+                    { title: "Baja", 
+                    "data": null,
+                    "className": "text-center",
+                        'render': function (data, type, row) {
+                            return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                        }
+                    },
+                    
+                ],
+                    "order": [[1, 'asc']] ,
+            });
+            
+        }
+
+    })
+};
+
+function Baja(item){
+    infousu = $(item).attr("id");
+    console.log(infousu);
+   /* $.ajax({
+        method : "GET",
+        async:true,
+        url:"/baja_usu",
+        dataType : 'json',
+        data:{infousu},
+     
+        success: function(res){ 
+          
+           
+        }
+        
+    })
+    */
+}

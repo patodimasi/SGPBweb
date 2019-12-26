@@ -98,7 +98,6 @@ function Consulta(codigo,nrorev,descripcion){
     var descripcion = descripcion.value;
     var nrorev = nrorev.value;
    
-
     var maxrev;
     $.ajax({
         method : "POST",
@@ -107,7 +106,7 @@ function Consulta(codigo,nrorev,descripcion){
         dataType : 'json',
         data: {codigo,descripcion,nrorev},
         success: function(respuesta){
-            
+           
             $('#examplep').dataTable().fnDestroy();
 
             table =  $('#examplep').DataTable({     
