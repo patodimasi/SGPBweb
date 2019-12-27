@@ -493,23 +493,24 @@ app.get('/modpermiso_usu',(req,res)=>{
      
 });
  //Buscar un usuario en particular
-app.post('/buscarusu',(req,res)=>{
+app.get('/buscarusu',(req,res)=>{
     var  filtro = {}
+    
     // console.log(req.body.nombre,req.body.apellido);
-    if((req.body.nombre == '') && (req.body.apellido == '')){
+    if((req.query.nombre == '') && (req.query.apellido == '')){
         res.write(JSON.stringify([]));
         return res.end();
     }
 
     else
     {
-        if(req.body.nombre != '')
+        if(req.query.nombre != '')
         {
-            filtro.USR_NOMBRE = {'$regex': '.*' + req.body.nombre + '.*',$options : 'i'}
+            filtro.USR_NOMBRE = {'$regex': '.*' + req.query.nombre + '.*',$options : 'i'}
         }
-        if(req.body.apellido != '')
+        if(req.query.apellido != '')
         {
-            filtro.USR_APELLIDO = {'$regex': '.*' + req.body.apellido + '.*',$options : 'i'}
+            filtro.USR_APELLIDO = {'$regex': '.*' + req.query.apellido + '.*',$options : 'i'}
         }
 
         usuarios.find(filtro,function(err,usuario){
