@@ -65,6 +65,7 @@ $(document).ready(function(){
 $(document).ready(function(){
     $("#bptusuario").click(function(){
        
+        $('#tusuarios').dataTable().fnDestroy();
         var table = $('#tusuarios').DataTable({
 
             language:{"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"},
@@ -250,6 +251,7 @@ $(document).ready(function(){
         $("#PER_P").attr("disabled", true);
         $("#PER_ADMIN").attr("disabled", true);
         $("#PER_ROOT").attr("disabled", true);
+        
     })
 });
 
