@@ -263,7 +263,7 @@ function Consultausu(nombre, apellido){
     var apellido = apellido.value;
 
     $.ajax({
-        method : "POST",
+        method : "GET",
         async: true,
         url:"/buscarusu",
         dataType : 'json',
