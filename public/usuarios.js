@@ -206,7 +206,7 @@ function Permiso(item){
         dataType : 'json',
         data:{codigo},
         success: function(res){ 
-            
+            console.log(res)
             if(res[0].PER_INGJ == 'N'){
                // $("#PER_INGJ").attr("disabled", true);
                 $("#PER_INGJ").attr('checked', false);
