@@ -106,7 +106,7 @@ function Consulta(codigo,nrorev,descripcion){
         dataType : 'json',
         data: {codigo,descripcion,nrorev},
         success: function(respuesta){
-           
+            
             $('#examplep').dataTable().fnDestroy();
 
             table =  $('#examplep').DataTable({     
@@ -414,7 +414,7 @@ function Colorestado(estado){
 function Rechazarp(item){  
     //En esta funcion lo que ago es cambiar el estado de verde a rojo y bloquear el boton
     inforp = $(item).attr("id");
-    
+    console.log("Es el rechazar" + " " + inforp);
     $.ajax({
         method : "GET",
         async:true,

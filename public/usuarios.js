@@ -32,9 +32,11 @@ $(document).ready(function(){
                 "</div>"+
             "</div>"+
         "</form>" +
-      
+        "<div>"+
+             "<button style='margin-top:20px' type='button' id=mybtnAltau onclick='Btnaltau()' class='btn btn-info btn-circle btn-xl' data-toggle='tooltip'  title='Alta Plano'><i class='fa fa-plus'></i>"+
+        "</div>"+
         "<div style='margin-top:20px'>"+
-            "<button id=bpbusuario onclick='Consultausu(nombreusu,apellidousu)' type='button' class='btn btn-primary btn-sm'>Buscar</button>"+
+            "<button id=bpbusuario onclick='Consultausu(nombreusu.value,apellidousu.value)' type='button' class='btn btn-primary btn-sm'>Buscar</button>"+
             "<button id=bptusuario type='button' style='margin-left:5px' class='btn btn-secondary btn-sm'>Todos</button>"+    
         "</div>"+
          
@@ -42,7 +44,7 @@ $(document).ready(function(){
             "<table id='tusuarios' class='display'>" +
                 "<thead>" +
                     "<tr>"+
-                        //"<th style='width: 150px'></th>"+
+                        
                         "<th style='width: 250px'></th>"+
                         "<th style='width: 250px'></th>"+
                         "<th style='width: 250px'></th>"+
@@ -61,6 +63,12 @@ $(document).ready(function(){
     );
         
 });
+
+//alta usuario
+function Btnaltau(){
+    $('#myModalaltausuario').modal();
+    
+}
 
 $(document).ready(function(){
     $("#bptusuario").click(function(){
@@ -259,8 +267,6 @@ $(document).ready(function(){
 //-------------------------Busca un usuario en particular---------------------------------------------------------------------------
 
 function Consultausu(nombre, apellido){
-    var nombre = nombre.value;
-    var apellido = apellido.value;
 
     $.ajax({
         method : "GET",
@@ -270,7 +276,7 @@ function Consultausu(nombre, apellido){
         data: {nombre,apellido},
 
         success: function(respuesta){
-            console.log(respuesta);
+            //console.log(respuesta)
             $('#tusuarios').dataTable().fnDestroy();
 
             table =  $('#tusuarios').DataTable({ 
@@ -290,7 +296,7 @@ function Consultausu(nombre, apellido){
                     "className": "text-center",
                         'render': function (data, type, row) {
                             
-                            return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip'  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
+                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
                         }
                     },
                    
@@ -298,7 +304,7 @@ function Consultausu(nombre, apellido){
                     "data": null,
                     "className": "text-center",
                         'render': function (data, type, row) {
-                            return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
                         }
                     },
                     
@@ -311,10 +317,13 @@ function Consultausu(nombre, apellido){
     })
 };
 
+// ---------------------------------------------------------------------------------------------------------------------------------  
+//-------------------------Baja de un usuario---------------------------------------------------------------------------
+
 function Baja(item){
-    infousu = $(item).attr("id");
-    console.log(infousu);
-   /* $.ajax({
+    infousu = JSON.parse($(item).attr("id"));
+
+    $.ajax({
         method : "GET",
         async:true,
         url:"/baja_usu",
@@ -322,10 +331,25 @@ function Baja(item){
         data:{infousu},
      
         success: function(res){ 
-          
-           
+         
+          Consultausu(res[0].USR_NOMBRE, res[0].USR_APELLIDO);
         }
         
     })
-    */
+    
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------  
+//-------------------------Generar un usuario---------------------------------------------------------------------------------------
+
+$(document).ready(function(){
+    $("#generarusu").click(function(){
+        console.log("llega al permiso");
+        //primero tiene que validar que se aya ingrasado nombre y apellido
+        //y luego lo genera
+    
+       if($("#nombrealtau").val()=="" || $("#apellidoaltau").val()=="" ){
+            alert("Debe completar el nombre y el apellido");
+       }
+    });
+});    

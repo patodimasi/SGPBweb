@@ -946,7 +946,106 @@
                 </div>
             </div>
         </div>
+
+         <!--Modal Alta usuarios-->
+         <div class="modal fade" id="myModalaltausuario">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #999">
+                        <strong> Alta usuario</strong>           
+                    </div>
+                    <div class="modal-body">
+                        <div style="margin-top: 5px" class="row">
+                            <div style="margin-left:15px" class="col-md-1">
+                                <strong>Nombre</strong>
+                            </div>
+                            <div class="col-md-2">
+                                <input id= "nombrealtau" style="margin-left: 20px;width: 100px;"></input>
+                            </div>
+                        </div>  
+
+                        <div style="margin-top: 15px" class="row">
+                            <div style="margin-left:15px" class="col-md-1">
+                                <strong>Apellido</strong>   
+                            </div>
+                            <div class="col-md-2">
+                                <input id="apellidoaltau" style="margin-left: 20px;width: 100px"></input>
+                            </div>
+                          
+                        </div>
+
+                        <div style="margin-top: 10px" class="row">
+                            <div  class="col-md-2" style="margin-left: 15px">
+                                <strong>Usuario</strong>   
+                            </div>
+                            <div class="col-md-2">
+                                <input   disabled= 'true' style="margin-left:-21px;width: 100px"></input>
+                            </div>  
+                            <div class="col-md-2">
+                                <button id="generarusu"  class="btn-primary" >Generar</button>
+                            </div>  
+                        </div>
+
+                        <div class="card" style="width: 28rem;margin-top:20px;margin-left:15px"> 
+                            <div class="card-body">
+                              <h5 class="card-title">Permisos</h5>
+                                <div class="row">
+                                    <div class="col-sm">
+                                    <!-- check ing.j-->
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name=type id="PER_INGJ" value="1">
+                                            <label class="form-check-label" for="materialInline1">Ingenieria junior</label>
+                                        </div>
+
+                                        <!-- check ing.s-->
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name=type id="PER_INGS" value="2">
+                                            <label class="form-check-label" for="materialInline2">Ingenieria senior</label>
+                                        </div>
+
+                                        <!-- check c.calidad-->
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name=type id="PER_CC" value="3" >
+                                            <label class="form-check-label" for="materialInline3">Control de calidad</label>
+                                        </div>
+                                    
+                                    </div>
+
+                                    <div class="col-sm">
+                                        <div class="form-check form-check-inline">
+                                            <input  type="checkbox" name=type id="PER_P" value="4" >
+                                            <label class="form-check-label" for="materialInline4">Producción</label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name=type id="PER_ADMIN" value="5">
+                                            <label class="form-check-label" for="materialInline5">Administración</label>
+                                            
+                                        </div>
+                                        
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name=type id="PER_ROOT" value="6" >
+                                            <label class="form-check-label" for="materialInline6">Super usuario</label>
+                                        </div>
+                                    </div>    
+                                </div>    
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="Aceptaraltausu(this)" class="btn btn-primary" >Aceptar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                    <div class="container">
+                        <label id="Resubi"></label>
+                    </div>
+                           
+                </div>
+            </div>
+        </div>  
        
+
+
     </div>
 
 

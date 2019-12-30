@@ -38,7 +38,7 @@
                 success: function(res){
                   console.log(res);
                   var jsoLogin = JSON.parse(res);
-                  console.log(jsoLogin);
+                  //console.log(jsoLogin);
                   
                   if (jsoLogin.result.match("ERROR")){
                       $("#err").show();
