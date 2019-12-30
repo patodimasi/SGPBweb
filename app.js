@@ -174,6 +174,7 @@ app.get('/rechazar_p',(req,res)=>{
     planos.findOneAndUpdate({_id:req.query.inforp}, {$set:{PLN_ESTADO:"R"}},{new:true}, function(err, item) {
          if (err) throw err;
          else{
+             
              msj_rech.push(item);
              res.write(JSON.stringify(msj_rech)); 
              return res.end();       
@@ -400,7 +401,6 @@ app.get('/login',(req,res)=>{
     var q = url.parse(req.url, true);
     usuarios.find({USR_LOGON: q.query.usr,USR_PASS: q.query.pass},function(err,docs){
      
-     // console.log(docs);
       var loginResult = null;
 
        if(docs != "" ){
@@ -430,10 +430,10 @@ app.get('/login',(req,res)=>{
             }
         }
         console.log(loginResult);
-        console.log(JSON.stringify(loginResult));
+        //console.log(JSON.stringify(loginResult));
         res.write(JSON.stringify(loginResult));
         return res.end();
-
+        
     });   
 
 });
@@ -528,7 +528,22 @@ app.get('/buscarusu',(req,res)=>{
 
 //se da de baja un usuario
 app.get('/baja_usu',(req,res)=>{
+    usuarios.updateOne({_id: req.query.infousu},{$set:{USR_ESTADO: 'BA'}},{new:true}, function(err, result) {
+            
+        if (err){
+            throw err;
+        }
+        else{
+            usuarios.find({_id: req.query.infousu}, function(err, result) {
+                res.write(JSON.stringify(result));
+                return res.end();
+            });
+                
+        }
+            
+           
+    });
+     
 
-   
- 
+
 });
