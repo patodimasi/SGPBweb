@@ -876,22 +876,23 @@
                             <div class="card-body">
                               <h5 class="card-title">Permisos</h5>
                                 <div class="row">
+                                
                                     <div class="col-sm">
-                                    <!-- check ing.j-->
+                                        <!-- check ing.j-->
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" name=type id="PER_INGJ" value="1" checked disabled>
+                                            <input type="checkbox" disabled name=type id="PER_INGJ" value="1" >
                                             <label class="form-check-label" for="materialInline1">Ingenieria junior</label>
                                         </div>
 
                                         <!-- check ing.s-->
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" name=type id="PER_INGS" value="2" checked disabled>
+                                            <input type="checkbox" disabled  name=type id="PER_INGS" value="2">
                                             <label class="form-check-label" for="materialInline2">Ingenieria senior</label>
                                         </div>
 
                                         <!-- check c.calidad-->
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" name=type id="PER_CC" value="3" checked disabled>
+                                            <input type="checkbox" disabled name=type id="PER_CC" value="3" >
                                             <label class="form-check-label" for="materialInline3">Control de calidad</label>
                                         </div>
                                     <a href="#" id="modif_permiso" style= "margin-top:40px" class="btn btn-secondary">Modificar Permisos</a>
@@ -899,21 +900,22 @@
 
                                     <div class="col-sm">
                                         <div class="form-check form-check-inline">
-                                            <input  type="checkbox" name=type id="PER_P" value="4" checked disabled>
+                                            <input  type="checkbox" disabled name=type id="PER_P" value="4" >
                                             <label class="form-check-label" for="materialInline4">Producción</label>
                                         </div>
 
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" name=type id="PER_ADMIN" value="5" checked disabled>
+                                            <input type="checkbox"  disabled name=type id="PER_ADMIN" value="5" >
                                             <label class="form-check-label" for="materialInline5">Administración</label>
                                             
                                         </div>
                                         
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" name=type id="PER_ROOT" value="6" checked disabled>
+                                            <input type="checkbox" disabled name=type id="PER_ROOT" value="6" >
                                             <label class="form-check-label" for="materialInline6">Super usuario</label>
                                         </div>
-                                    </div>    
+                                    </div> 
+                                
                                 </div>    
                             </div>
                         </div>    
@@ -979,7 +981,7 @@
                                 <strong>Usuario</strong>   
                             </div>
                             <div class="col-md-2">
-                                <input   disabled= 'true' style="margin-left:-21px;width: 100px"></input>
+                                <input id="logonusu"  disabled= 'true' style="margin-left:-21px;width: 100px"></input>
                             </div>  
                             <div class="col-md-2">
                                 <button id="generarusu"  class="btn-primary" >Generar</button>
@@ -993,8 +995,8 @@
                                     <div class="col-sm">
                                     <!-- check ing.j-->
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" name=type id="PER_INGJ" value="1">
-                                            <label class="form-check-label" for="materialInline1">Ingenieria junior</label>
+                                            <input type="checkbox" name=type id="PER_INGJ" value="1" checked>
+                                            <label class="form-check-label" for="materialInline1" >Ingenieria junior</label>
                                         </div>
 
                                         <!-- check ing.s-->

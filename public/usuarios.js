@@ -215,35 +215,28 @@ function Permiso(item){
         data:{codigo},
         success: function(res){ 
             console.log(res)
-            if(res[0].PER_INGJ == 'N'){
-               // $("#PER_INGJ").attr("disabled", true);
-                $("#PER_INGJ").attr('checked', false);
+        
+            if(res[0].PER_INGJ == 'S'){
+                $("#PER_INGJ").attr('checked', true);
             }                   
-         
-            if(res[0].PER_INGS == 'N'){
-              //  $("#PER_INGS").attr("disabled", true);
-                $("#PER_INGS").attr('checked', false);
-            }
-           
-            if(res[0].PER_CC == 'N'){
-                //$("#PER_CC").attr("disabled", true);
-                $("#PER_CC").attr('checked', false);
-            }
-
-            if(res[0].PER_P == 'N'){
-                //$("#PER_P").attr("disabled", true);
-                $("#PER_P").attr('checked', false);
-            }
+            if(res[0].PER_INGS == 'S'){
             
-            if(res[0].PER_ADMIN == 'N'){
-                //$("#PER_ADMIN").attr("disabled", true);
-                $("#PER_ADMIN").attr('checked', false);
+                $("#PER_INGS").attr('checked', true);  
             }
-
-            if(res[0].PER_ROOT == 'N'){
-                //$("#PER_ROOT").attr("disabled", true);
-                $("#PER_ROOT").attr('checked', false);
+            if(res[0].PER_CC == 'S'){
+                $("#PER_CC").attr('checked', true); 
             }
+            if(res[0].PER_P == 'S'){
+                $("#PER_P").attr('checked', true);  
+            }
+            if(res[0].PER_ADMIN == 'S'){
+                $("#PER_ADMIN").attr('checked', true);   
+            }
+            if(res[0].PER_ROOT == 'S'){
+                $("#PER_ROOT").attr('checked', true);
+            }
+               
+            
         }
         
     });
@@ -251,16 +244,17 @@ function Permiso(item){
 };
 
 $(document).ready(function(){
-    $("#Cerrarper").click(function(){
-    //habilito todos los checkbox
-        $("#PER_INGJ").attr("disabled", true);
-        $("#PER_INGS").attr("disabled", true);
-        $("#PER_CC").attr("disabled", true);
-        $("#PER_P").attr("disabled", true);
-        $("#PER_ADMIN").attr("disabled", true);
-        $("#PER_ROOT").attr("disabled", true);
+   $("#Cerrarper").click(function(){
+   
+        $("#PER_INGJ").attr("checked", false);
+        $("#PER_INGS").attr("checked", false);
+        $("#PER_CC").attr("checked", false);
+        $("#PER_P").attr("checked", false);
+        $("#PER_ADMIN").attr("checked", false);
+        $("#PER_ROOT").attr("checked", false);
         
     })
+   
 });
 
 // ---------------------------------------------------------------------------------------------------------------------------------  
@@ -344,12 +338,40 @@ function Baja(item){
 
 $(document).ready(function(){
     $("#generarusu").click(function(){
-        console.log("llega al permiso");
+       
         //primero tiene que validar que se aya ingrasado nombre y apellido
         //y luego lo genera
     
        if($("#nombrealtau").val()=="" || $("#apellidoaltau").val()=="" ){
             alert("Debe completar el nombre y el apellido");
        }
+       else
+       {
+        var nombre = $(nombrealtau).val();
+        var apellido =  $(apellidoaltau).val();
+        var logon = nombre.charAt(0) + apellido;
+
+        $("#logonusu").val(logon).attr( "disabled", true);
+
+       }
+
+      
     });
 });    
+
+// ---------------------------------------------------------------------------------------------------------------------------------  
+//-------------------------Da de alta (btn) un usuario en la base de datos---------------------------------------------------------------------------------------
+
+function Aceptaraltausu(item){
+    //se tiene que fijar que aya generado el usuario y un permiso
+    console.log("llegamos al alta");
+ 
+    if($("#logonusu").val()=="")
+    {
+        alert("Debe generar un usuario");
+    }
+    
+    
+    
+    
+}
