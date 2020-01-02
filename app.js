@@ -20,7 +20,6 @@ app.use(bodyParser.urlencoded({
 }));
   
 
-
 //permite direccionar a direcciones estaticas....todas las paginas que esten en la carpeta public
 app.set('port',3000);
 app.use(express.static(__dirname + '/public/'));
