@@ -15,6 +15,16 @@ var _ = require('lodash');
 var program = require('commander');
 
 
+var weekdays = {
+    PER_INGJ : 'N',
+    PER_INGS : 'N',
+    PER_CC : 'N',
+    PER_P: 'N',
+    PER_ADMIN: 'N',
+    PER_ROOT: 'N'
+}
+
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -543,6 +553,66 @@ app.get('/baja_usu',(req,res)=>{
            
     });
      
-
-
 });
+
+// alta usuario
+app.get('/alta_usu',(req,res)=>{
+   
+    console.log(req.query.nombre,req.query.apellido,req.query.logon,req.query.estado_check);
+
+    var f = new Date();
+    
+    fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
+    console.log(fecha);
+    var maximo = usuarios.find().sort({'USR_CODIGO':-1}).limit(1); // for MAX
+    var codigo_usr;
+    
+    maximo.exec(function(err, maxResult){
+        if(err) throw err;
+        
+        else{
+          console.log("El maximo del usuario es:" + " " + maxResult[0].USR_CODIGO);
+          codigo_usr = parseInt(maxResult[0].USR_CODIGO) + 1;
+            
+          var myobjusuario = 
+          {
+              USR_CODIGO: codigo_usr,USR_NOMBRE: req.query.nombre,USR_APELLIDO: req.query.apellido,USR_LOGON: req.query.logon,
+              USR_PASS: req.query.logon, USR_ESTADO: 'AC',USR_FECHA_ALTA: fecha ,
+          };
+     
+         
+
+          usuarios.create(myobjusuario, function(err, resultadop) {
+            if(err) throw err;
+           // console.log(req.query.estado_check);
+            getFullName(req.query.estado_check);
+            //console.log("eSTE ES EL FULL NAME" + " " + fullName);
+            var myobjpermiso = 
+            {
+                PER_CODIGO: codigo_usr, PER_INGJ: weekdays.PER_INGJ, PER_INGS: weekdays.PER_INGS, PER_CC: weekdays.PER_CC,
+                PER_P: weekdays.PER_P, PER_ADMIN: weekdays.PER_ADMIN,PER_ROOT: weekdays.PER_ROOT,
+            };
+
+            permisos.create(myobjpermiso, function (error, resultadousu){
+                if (err) throw err;
+                var mensaje = "OK";
+                res.write(JSON.stringify(mensaje));
+                return res.end();
+            });
+            
+          });    
+          
+        }
+       
+    });
+    
+});
+
+function getFullName(weekDay) {
+    for( var prop in weekdays ) { 
+        if (prop == weekDay){   
+            weekdays[ prop ] = 'S';
+        }
+    }
+}
+    
