@@ -1035,8 +1035,8 @@
                         </div>    
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="Aceptaraltausu(this)" class="btn btn-primary" >Aceptar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick="Aceptaraltausu(nombrealtau.value,apellidoaltau.value)" class="btn btn-primary" >Aceptar</button>
+                        <button type="button" id= "ceraralta_usu" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                     <div class="container">
                         <label id="Resubi"></label>
@@ -1045,7 +1045,24 @@
                 </div>
             </div>
         </div>  
-       
+        <!--Modal OK Alta usuario-->
+        <div class="modal fade" id="myModalalta_usu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <a id=icon_ubi href="#close-modal" class="close-modal" onclick="$('#myModalalta_usu').modal('hide')"></a>
+                    </div>
+                    <div  class="modal-body">
+                        <div style="margin-left: 60px;margin-top:-25px">
+                            <b>El Alta del usuario se dio correctamente </b> 
+                        </div> 
+                        
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
 
 
     </div>

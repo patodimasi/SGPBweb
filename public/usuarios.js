@@ -33,7 +33,7 @@ $(document).ready(function(){
             "</div>"+
         "</form>" +
         "<div>"+
-             "<button style='margin-top:20px' type='button' id=mybtnAltau onclick='Btnaltau()' class='btn btn-info btn-circle btn-xl' data-toggle='tooltip'  title='Alta Plano'><i class='fa fa-plus'></i>"+
+             "<button style='margin-top:20px' type='button' id=mybtnAltau onclick='Btnaltau()' class='btn btn-info btn-circle btn-xl' data-toggle='tooltip'  title='Alta Usuario'><i class='fa fa-plus'></i>"+
         "</div>"+
         "<div style='margin-top:20px'>"+
             "<button id=bpbusuario onclick='Consultausu(nombreusu.value,apellidousu.value)' type='button' class='btn btn-primary btn-sm'>Buscar</button>"+
@@ -362,16 +362,48 @@ $(document).ready(function(){
 // ---------------------------------------------------------------------------------------------------------------------------------  
 //-------------------------Da de alta (btn) un usuario en la base de datos---------------------------------------------------------------------------------------
 
-function Aceptaraltausu(item){
-    //se tiene que fijar que aya generado el usuario y un permiso
-    console.log("llegamos al alta");
- 
+function Aceptaraltausu(nombre, apellido){
+    var estado_check;
+    var logon;
+
+    $('#myModalaltausuario').modal('hide');  
+   
     if($("#logonusu").val()=="")
     {
         alert("Debe generar un usuario");
     }
     
+    logon = $("#logonusu").val();
+    $('input[type=checkbox]:checked').each(function() {
+       // console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
+        estado_check = $(this).prop("id");
+       
+    });
+    console.log(estado_check,nombre,apellido,logon);
+    $.ajax({
+        method : "GET",
+        async:true,
+        url:"/alta_usu",
+        dataType : 'json',
+        data:{estado_check,nombre,apellido,logon},
+     
+        success: function(res){ 
+         if(res == "OK"){
+            $("#myModalalta_usu").modal('show');
+         
+         }
+          
+        }
+        
+    })
     
-    
-    
-}
+};
+
+//cerrar alta usuario
+$(document).ready(function(){
+    $("#ceraralta_usu").click(function(){
+        $("#nombrealtau").val(" ");
+        $("#apellidoaltau").val(" ");
+        $("#logonusu").val(" ");
+    });
+});    
