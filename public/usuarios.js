@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
  
     $("#dcusuarios").html("<div class='row'>" +
@@ -63,11 +62,28 @@ $(document).ready(function(){
     );
         
 });
+function desbloquear_estado(estado){
+    var boton = null;
+
+    if(estado == 'BA'){
+
+        boton =  'disabled';
+    }
+     else{
+       
+        boton =  " ";
+    }
+ 
+     return boton;
+}
 
 //alta usuario
 function Btnaltau(){
+    $("#nombrealtau").val('');
+    $("#apellidoaltau").val('');
+    $("#logonusu").val('');
     $('#myModalaltausuario').modal();
-    
+
 }
 
 $(document).ready(function(){
@@ -94,15 +110,17 @@ $(document).ready(function(){
                 "className": "text-center",
                     'render': function (data, type, row) {
                         
-                        return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +"  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
+                        return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip' ' " + desbloquear_estado(data.USR_ESTADO) +" title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
                     }
                 },
                
                 { title: "Baja", 
+             
                 "data": null,
                 "className": "text-center",
                     'render': function (data, type, row) {
-                        return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +" title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                        console.log(data.USR_ESTADO);
+                        return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' ' " + desbloquear_estado(data.USR_ESTADO) +" ' title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
                      
                     }
                 },
@@ -139,7 +157,7 @@ function Aceptarmodif(item){
         }
     }
 
-    var logon =  $('#usuario').val();
+    var logon =  $('#usuariopermiso').val();
     console.log(permisos);
 
     $.ajax({
@@ -168,7 +186,6 @@ function Aceptarmodif(item){
 // ---------------------------------------------------------------------------------------------------------------------------------  
 // ------------------ Prohibe que se pueda modificar mas de un checkbox--------------------------------------------------------------
 $("input:checkbox").on('click', function() {
-    console.log("llega el checkkkkkkkkk")
     var box = $(this);
     if (box.is(":checked")) {
       var group = "input:checkbox[name='" + box.attr("name") + "']";
@@ -198,11 +215,11 @@ $(document).ready(function(){
 function Permiso(item){
     infodp = JSON.parse($(item).attr("id"));
  
-    $('#myModalpermiso').modal();
-  //  $('#Aceptarmodifpu').attr('disabled', true);
-    $("#nombre").val(infodp.USR_NOMBRE);
-    $("#apellido").val(infodp.USR_APELLIDO);
-    $("#usuario").val(infodp.USR_LOGON);
+  /*  $('#myModalpermiso').modal();
+  
+    $("#nombrepermiso").val(infodp.USR_NOMBRE);
+    $("#apellidopermiso").val(infodp.USR_APELLIDO);
+    $("#usuariopermiso").val(infodp.USR_LOGON);
     
     codigo = infodp.USR_CODIGO;
     
@@ -214,33 +231,41 @@ function Permiso(item){
         dataType : 'json',
         data:{codigo},
         success: function(res){ 
+            console.log("Esto son los permisos");
             console.log(res)
-        
+           
             if(res[0].PER_INGJ == 'S'){
                 $("#PER_INGJ").attr('checked', true);
+                console.log("llega al ingj");
             }                   
             if(res[0].PER_INGS == 'S'){
             
-                $("#PER_INGS").attr('checked', true);  
+                $("#PER_INGS").prop('checked', true);  
+                console.log("llega al INGS");
             }
             if(res[0].PER_CC == 'S'){
                 $("#PER_CC").attr('checked', true); 
+                console.log("llega al cc");
             }
             if(res[0].PER_P == 'S'){
                 $("#PER_P").attr('checked', true);  
+                console.log("llega al P");
             }
             if(res[0].PER_ADMIN == 'S'){
-                $("#PER_ADMIN").attr('checked', true);   
+                $("#PER_ADMIN").attr('checked', true);  
+                console.log("llega al admin"); 
             }
             if(res[0].PER_ROOT == 'S'){
                 $("#PER_ROOT").attr('checked', true);
+                console.log("llega al root");
             }
                
             
         }
         
+        
     });
-    
+    */
 };
 
 $(document).ready(function(){
@@ -252,6 +277,13 @@ $(document).ready(function(){
         $("#PER_P").attr("checked", false);
         $("#PER_ADMIN").attr("checked", false);
         $("#PER_ROOT").attr("checked", false);
+        
+        $("#PER_INGJ").attr("disabled", true);
+        $("#PER_INGS").attr("disabled", true);
+        $("#PER_CC").attr("disabled", true);
+        $("#PER_P").attr("disabled", true);
+        $("#PER_ADMIN").attr("disabled", true);
+        $("#PER_ROOT").attr("disabled", true);
         
     })
    
@@ -290,7 +322,7 @@ function Consultausu(nombre, apellido){
                     "className": "text-center",
                         'render': function (data, type, row) {
                             
-                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +" title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
+                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
                         }
                     },
                    
@@ -298,7 +330,7 @@ function Consultausu(nombre, apellido){
                     "data": null,
                     "className": "text-center",
                         'render': function (data, type, row) {
-                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +" title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
                         }
                     },
                     
@@ -310,21 +342,6 @@ function Consultausu(nombre, apellido){
 
     })
 };
-//bloquear botones a un usuario de baja
-function desbloquear_estado(estado){
-    var boton = null;
-
-    if(estado == 'BA'){
-
-        boton =  'disabled';
-    }
-     else{
-       
-        boton =  " ";
-    }
- 
-     return boton;
-}
 
 // ---------------------------------------------------------------------------------------------------------------------------------  
 //-------------------------Baja de un usuario---------------------------------------------------------------------------
@@ -362,10 +379,14 @@ $(document).ready(function(){
        }
        else
        {
-        var nombre = $(nombrealtau).val();
-        var apellido =  $(apellidoaltau).val();
-        var logon = nombre.charAt(0) + apellido;
+        
+        var nombre = $('#nombrealtau').val();
+        var apellido =  $('#apellidoaltau').val();
 
+        console.log(nombre);
+       
+        var logon = nombre.charAt(0) + apellido;
+        
         $("#logonusu").val(logon).attr( "disabled", true);
 
        }
@@ -413,12 +434,4 @@ function Aceptaraltausu(nombre, apellido){
     })
     
 };
-
-//cerrar alta usuario
-$(document).ready(function(){
-    $("#ceraralta_usu").click(function(){
-        $("#nombrealtau").val(" ");
-        $("#apellidoaltau").val(" ");
-        $("#logonusu").val(" ");
-    });
-});    
+ 
