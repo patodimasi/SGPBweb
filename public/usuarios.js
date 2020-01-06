@@ -94,7 +94,7 @@ $(document).ready(function(){
                 "className": "text-center",
                     'render': function (data, type, row) {
                         
-                        return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip'  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
+                        return "<button id='"+JSON.stringify(data)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +"  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
                     }
                 },
                
@@ -102,7 +102,7 @@ $(document).ready(function(){
                 "data": null,
                 "className": "text-center",
                     'render': function (data, type, row) {
-                        return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                        return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +" title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
                      
                     }
                 },
@@ -290,7 +290,7 @@ function Consultausu(nombre, apellido){
                     "className": "text-center",
                         'render': function (data, type, row) {
                             
-                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
+                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +" title='Modificar permisos' onclick='Permiso(this)' class='fa fa-pencil'/>"
                         }
                     },
                    
@@ -298,7 +298,7 @@ function Consultausu(nombre, apellido){
                     "data": null,
                     "className": "text-center",
                         'render': function (data, type, row) {
-                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip'  title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
+                            return "<button id='"+JSON.stringify(data._id)+ "' data-toggle='tooltip' " + desbloquear_estado(data.USR_ESTADO) +" title='Baja usuario' onclick='Baja(this)' class='fa fa-trash-o'/>"
                         }
                     },
                     
@@ -310,6 +310,21 @@ function Consultausu(nombre, apellido){
 
     })
 };
+//bloquear botones a un usuario de baja
+function desbloquear_estado(estado){
+    var boton = null;
+
+    if(estado == 'BA'){
+
+        boton =  'disabled';
+    }
+     else{
+       
+        boton =  " ";
+    }
+ 
+     return boton;
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------  
 //-------------------------Baja de un usuario---------------------------------------------------------------------------
