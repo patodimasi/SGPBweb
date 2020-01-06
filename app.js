@@ -24,7 +24,6 @@ var weekdays = {
     PER_ROOT: 'N'
 }
 
-
 app.use(bodyParser.urlencoded({
     extended: true
 }));
