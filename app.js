@@ -14,16 +14,6 @@ var path = require('path');
 var _ = require('lodash');
 var program = require('commander');
 
-
-var weekdays = {
-    PER_INGJ : 'N',
-    PER_INGS : 'N',
-    PER_CC : 'N',
-    PER_P: 'N',
-    PER_ADMIN: 'N',
-    PER_ROOT: 'N'
-}
-
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -467,9 +457,9 @@ app.get('/buscarTodosu',(req,res)=>{
 });
 //muestra los permisos del usuario
 app.get('/mostrar_usu',(req,res)=>{
-    //console.log(req.query.codigo);
+    console.log("Es el codigo" + " " + req.query.codigo);
     permisos.find({PER_CODIGO: req.query.codigo},function(err, permiso) {
-       // console.log(permiso);
+       // console.log("Es el permiso" + " " + permiso);
         res.write(JSON.stringify(permiso));
         return res.end();
     });
@@ -479,6 +469,7 @@ app.get('/mostrar_usu',(req,res)=>{
 app.get('/modpermiso_usu',(req,res)=>{
     // console.log(req.query.logon);
      //console.log(req.query.permisos[0]);
+     console.log(req.query.permisos);
     usuarios.find({USR_LOGON: req.query.logon},function(err, usuario) {
          if(err) throw err;
          permisos.updateOne({PER_CODIGO:usuario[0].USR_CODIGO},{$set:{PER_INGJ:req.query.permisos[0],PER_INGS:req.query.permisos[1],
@@ -584,8 +575,8 @@ app.get('/alta_usu',(req,res)=>{
           usuarios.create(myobjusuario, function(err, resultadop) {
             if(err) throw err;
            // console.log(req.query.estado_check);
-            getFullName(req.query.estado_check);
-            //console.log("eSTE ES EL FULL NAME" + " " + fullName);
+           weekdays =  getFullName(req.query.estado_check,codigo_usr);
+         
             var myobjpermiso = 
             {
                 PER_CODIGO: codigo_usr, PER_INGJ: weekdays.PER_INGJ, PER_INGS: weekdays.PER_INGS, PER_CC: weekdays.PER_CC,
@@ -607,11 +598,22 @@ app.get('/alta_usu',(req,res)=>{
     
 });
 
-function getFullName(weekDay) {
+function getFullName(weekDay,codigo_usr) {
+    var weekdays = {
+        PER_INGJ : 'N',
+        PER_INGS : 'N',
+        PER_CC : 'N',
+        PER_P: 'N',
+        PER_ADMIN: 'N',
+        PER_ROOT: 'N'
+    }
+    
     for( var prop in weekdays ) { 
         if (prop == weekDay){   
             weekdays[ prop ] = 'S';
         }
     }
+
+    return weekdays;
 }
     
