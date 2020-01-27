@@ -13,11 +13,26 @@ const fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
 var program = require('commander');
+var router = express.Router();
+var multer = require("multer");
+var ejs = require('ejs');
+var gm = require('gm');
+var sharp = require('sharp');
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-  
+global.logonusu;
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb){
+      cb(null, './public/uploadas')
+    },
+    filename: function (req, file, cb){
+      cb(null, file.originalname)
+    }
+  });
+
+var upload = multer({
+    storage: storage
+});
 
 //permite direccionar a direcciones estaticas....todas las paginas que esten en la carpeta public
 app.set('port',3000);
@@ -25,7 +40,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
@@ -394,8 +409,8 @@ app.get('/buscarTodosp',(req,res)=>{
 
 app.get('/login',(req,res)=>{
 
-    console.log("Request recibido.")
-    console.log(req.url);
+  //  console.log("Request recibido.")
+  //  console.log(req.url);
     var q = url.parse(req.url, true);
     usuarios.find({USR_LOGON: q.query.usr,USR_PASS: q.query.pass},function(err,docs){
      
@@ -403,7 +418,7 @@ app.get('/login',(req,res)=>{
 
        if(docs != "" ){
            console.log("no esta vacio");
-           
+           global.logonusu = docs[0].USR_LOGON;
          
             var loginResult =
             {
@@ -412,6 +427,7 @@ app.get('/login',(req,res)=>{
                 iniciales : docs[0].USR_INICIAL, 
                 nombre : docs[0].USR_NOMBRE + " " + docs[0].USR_APELLIDO,
                 codigo : docs[0].USR_CODIGO,
+                foto: docs[0].USR_FOTO,
                 logon : docs[0].USR_LOGON
             }
             test= q.query.usr;
@@ -457,7 +473,7 @@ app.get('/buscarTodosu',(req,res)=>{
 });
 //muestra los permisos del usuario
 app.get('/mostrar_usu',(req,res)=>{
-    console.log("Es el codigo" + " " + req.query.codigo);
+    //console.log("Es el codigo" + " " + req.query.codigo);
     permisos.find({PER_CODIGO: req.query.codigo},function(err, permiso) {
        // console.log("Es el permiso" + " " + permiso);
         res.write(JSON.stringify(permiso));
@@ -616,4 +632,38 @@ function getFullName(weekDay,codigo_usr) {
 
     return weekdays;
 }
+
+//imagen usuario
+
+app.post('/upload', upload.single('file'), function (req, res, next) {
+    var url = '/uploadas/' + req.file.filename;
+ 
+    console.log("logon usuario" + " " +  global.logonusu);
+    var group = (req.file.filename.split(".")[0]);
+    console.log(req.file);
+    sharp(req.file.path)
     
+    .resize(200, 200, {
+        kernel: sharp.kernel.nearest,
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 0.5 }
+    })
+    
+    .toFile('public/uploadas/' + group + "-resize.jpg", function (err) {
+           
+        if (err) console.log(err);
+         
+        usuarios.updateOne({USR_LOGON: global.logonusu},{$set:{USR_FOTO: '/uploadas/' + group + '-resize.jpg'}}, function(err, result) {
+                console.log(result);
+                res.json({
+                    code : 1,
+                    data :'/uploadas/' + group + "-resize.jpg"
+                });
+                res.end();
+
+            });
+    });
+     
+});
+
+
