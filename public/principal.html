@@ -110,6 +110,10 @@
       .contents > div {
         display: none;
       }
+
+      input[type=file].hidden {
+        color: transparent;
+      }
       
 </style>
 <body id = "pantallap">
@@ -122,11 +126,11 @@
                  
                 </div>
                 <!-- sidebar-header  -->
-                <div class="sidebar-item sidebar-header d-flex flex-nowrap">
-                    <div class="user-pic">
-                        <img  class="img-responsive img-rounded" src="./images/user.jpg" alt="User picture">
-                    </div>
-                    <div class="user-info">
+                <div class="sidebar-item sidebar-header d-flex flex-nowrap" style="margin-left:-10px">
+                    <!--div class="user-pic">
+                        <img   style="width:100px;height: 100px;" src="./images/user.jpg" alt="User picture">
+                    </!--div-->
+                    <!--div class="user-info">
                         <strong><span id="usrnombre" class="user-name"></strong>
                            
                         </span>
@@ -135,8 +139,23 @@
                             <i class="fa fa-circle"></i>
                             <span>Online</span>
                         </span>
-                    </div>
+                    </!--div-->
+
+                     <form  action="" id="uploadForm" enctype="multipart/form-data">
+                        <div class="card" style="width: 15rem;">
+                            <strong><span id="usrnombre" class="user-name"></strong>
+                            <img id="imagenf" class="card-img-top">
+                            <div class="card-body">    
+                                <div class="form-group">
+                                    <input class="hidden" type="file" id="file"  name="file" style="margin-left: 0px" >
+                                </div>
+                               
+                                <input type="button"  value="Subir" id="but_upload" >
+                            </div>
+                        </div>
+                    </form> 
                 </div>
+
                 <!-- sidebar-search  -->
                 <div class="sidebar-item sidebar-search">
                     <div>
@@ -858,10 +877,7 @@
             </div>
         </div>
 
-
-
     </div>
-
 
     <!-- using online scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -12,7 +12,15 @@ class Permiso_usu {
 $(document).ready(function(){
     if (sessionStorage["nombre"]){
       var nombre = sessionStorage["nombre"];
+      var foto = sessionStorage["foto"];
+      console.log(nombre);
        $('<p>'+ nombre +'</p>').appendTo('#usrnombre');
+       if(foto == ""){
+        $("#imagenf").attr('src',"./images/user.jpg");
+       }
+       else{
+          $("#imagenf").attr('src',foto);
+        }
     }
     else
     {
@@ -39,7 +47,7 @@ $(document).ready(function() {
 
 function obtener_logon(){
     var codigo = sessionStorage["codigo"];
-    console.log("Esto es el codigo" + " " + codigo);
+    //console.log("Esto es el codigo" + " " + codigo);
     //una vez que obtengo el logon pido los permisos del usuario al servidor
    //
    var usuario;
@@ -56,7 +64,6 @@ function obtener_logon(){
 
                 if(respuesta[0].PER_INGJ == "S"){
                     usuario = new Permiso_usu(' ','disabled','disabled','disabled',' ','none'); 
-                 
                 }
                 if (respuesta[0].PER_INGS == "S"){
                     usuario = new Permiso_usu(' ',' ',' ',' ',' ','none'); 
@@ -81,3 +88,37 @@ function obtener_logon(){
     return  usuario;
 }
 
+
+$(document).ready(function(){
+   
+    $("#but_upload").click(function(){
+       
+       console.log("Este es el logon" + " " + logon); 
+       console.log("but_upload click");
+       var logon = sessionStorage["logon"];
+       var fd = new FormData();
+       var files = $('#file')[0].files[0];
+       
+       fd.append('file',files);
+       
+       $.ajax({
+            url: '/upload',
+            method: 'post',
+            data: fd,      
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+            console.log("upload sucess" + " " + data.data);
+            $("#imagenf").attr('src',data.data);
+            console.log($("#imagenf"));
+            
+            },
+            error: function(data){
+                console.error(data);
+            }
+        });
+     
+    });
+    
+})
