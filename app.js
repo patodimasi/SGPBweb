@@ -306,10 +306,10 @@ app.get('/detallehisto',(req,res)=>{
 });
 
 //busca un plano
-app.post('/buscarp',(req,res)=>{
+app.get('/buscarp',(req,res)=>{
     var  filtro = {}
-    
-    if((req.body.codigo == '') && (req.body.nrorev == '') && (req.body.descripcion == ''))
+    console.log(req.query.codigo);
+    if((req.query.codigo == '') && (req.query.nrorev == '') && (req.query.descripcion == ''))
     {
        
         res.write(JSON.stringify([]));
@@ -318,22 +318,22 @@ app.post('/buscarp',(req,res)=>{
     }
     else
     {
-        if(req.body.codigo != '')
+        if(req.query.codigo != '')
         {
-            filtro.PLN_CODIGO = {'$regex': '.*' + req.body.codigo + '.*',$options : 'i'}
+            filtro.PLN_CODIGO = {'$regex': '.*' + req.query.codigo + '.*',$options : 'i'}
            
           
         }
    
-        if(req.body.nrorev != '')
+        if(req.query.nrorev != '')
         {
-            filtro.PLN_NRO_REV = parseInt(req.body.nrorev);
+            filtro.PLN_NRO_REV = parseInt(req.query.nrorev);
           
         }
    
-        if(req.body.descripcion != '')
+        if(req.query.descripcion != '')
         {
-            filtro.PLN_DESCRIPCION = {'$regex': '.*' + req.body.descripcion + '.*',$options : 'i'}
+            filtro.PLN_DESCRIPCION = {'$regex': '.*' + req.query.descripcion + '.*',$options : 'i'}
             
         } 
         
