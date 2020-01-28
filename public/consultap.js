@@ -93,14 +93,15 @@ $(document).ready(function(){
 //Consulta un solo plano viene del button bpb
 
 function Consulta(codigo,nrorev,descripcion){
-    //console.log("LLEGA ")
+    console.log("LLEGA ")
     var codigo = codigo.value;
     var descripcion = descripcion.value;
     var nrorev = nrorev.value;
    
+    console.log(codigo,descripcion,nrorev);
     var maxrev;
     $.ajax({
-        method : "POST",
+        method : "GET",
         async: true,
         url:"/buscarp",
         dataType : 'json',
