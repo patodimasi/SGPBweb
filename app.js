@@ -409,17 +409,14 @@ app.get('/buscarTodosp',(req,res)=>{
 
 app.get('/login',(req,res)=>{
 
-  //  console.log("Request recibido.")
-  //  console.log(req.url);
     var q = url.parse(req.url, true);
     usuarios.find({USR_LOGON: q.query.usr,USR_PASS: q.query.pass},function(err,docs){
      
       var loginResult = null;
 
        if(docs != "" ){
-           console.log("no esta vacio");
            global.logonusu = docs[0].USR_LOGON;
-         
+           
             var loginResult =
             {
                 result : "SUCCESS",
@@ -443,7 +440,8 @@ app.get('/login',(req,res)=>{
                 result : "ERROR"
             }
         }
-        console.log(loginResult);
+        console.log("-------------------INICIO-------------------------")
+        console.log("Datos de inicio de secion" + " " + JSON.stringify(loginResult));
         //console.log(JSON.stringify(loginResult));
         res.write(JSON.stringify(loginResult));
         return res.end();
@@ -637,10 +635,10 @@ function getFullName(weekDay,codigo_usr) {
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
     var url = '/uploadas/' + req.file.filename;
- 
+    console.log("-----------------CAMBIO DE FOTO---------------");
     console.log("logon usuario" + " " +  global.logonusu);
     var group = (req.file.filename.split(".")[0]);
-    console.log(req.file);
+    console.log("Este es el archivo " + " " + req.file.filename);
     sharp(req.file.path)
     
     .resize(200, 200, {
