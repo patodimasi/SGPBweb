@@ -8,17 +8,19 @@ class Permiso_usu {
     }
 }
 
+
 //login usuario
 $(document).ready(function(){
     if (sessionStorage["nombre"]){
       var nombre = sessionStorage["nombre"];
       var foto = sessionStorage["foto"];
-      console.log(nombre);
+      //console.log(foto);
        $('<p>'+ nombre +'</p>').appendTo('#usrnombre');
        if(foto == ""){
         $("#imagenf").attr('src',"./images/user.jpg");
        }
        else{
+          
           $("#imagenf").attr('src',foto);
         }
     }
@@ -92,10 +94,7 @@ function obtener_logon(){
 $(document).ready(function(){
    
     $("#but_upload").click(function(){
-       
-       console.log("Este es el logon" + " " + logon); 
-       console.log("but_upload click");
-       var logon = sessionStorage["logon"];
+     
        var fd = new FormData();
        var files = $('#file')[0].files[0];
        
