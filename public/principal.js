@@ -111,14 +111,21 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data){
-            console.log("upload sucess" + " " + data.data);
+            /*console.log("upload sucess" + " " + data.data);
             $("#imagenf").attr('src',data.data);
             console.log($("#imagenf"));
-            
-            },
-            error: function(data){
-                console.error(data);
+            */
+            if(data.code == 2){
+                alert("Error al subir imagen el archivo tiene que tener extencion jpg|jpeg|png|gif");
             }
+            else{
+                console.log("upload sucess" + " " + data.data);
+                $("#imagenf").attr('src',data.data);
+                console.log($("#imagenf"));
+            
+            }
+            },
+            
         });
      
     });
