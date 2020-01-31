@@ -94,14 +94,17 @@ function obtener_logon(){
 $(document).ready(function(){
    
     $("#but_upload").click(function(){
-     
+      console.log("llega al but_uploadad");
        var fd = new FormData();
        var files = $('#file')[0].files[0];
-       
+       var nombre = sessionStorage["logon"];
+       console.log(nombre);
        fd.append('file',files);
        
        $.ajax({
-            url: '/upload',
+            //url: '/upload',
+            //url:"/upload?nombre="+nombre,
+            url:"/upload?"+nombre,
             method: 'post',
             data: fd,      
             cache: false,
@@ -121,3 +124,4 @@ $(document).ready(function(){
     });
     
 })
+
