@@ -30,8 +30,16 @@ var storage = multer.diskStorage({
   });
 
 var upload = multer({
-    storage: storage
+    storage: storage,
+    
+    fileFilter: function (req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+            return cb(null, false, new Error("Only images are allowed"))
+        }
+        cb(null, true);
+      }
 });
+
 
 //permite direccionar a direcciones estaticas....todas las paginas que esten en la carpeta public
 app.set('port',3000);
@@ -39,7 +47,7 @@ app.use(express.static(__dirname + '/public/'));
 
 var test = global.test;
 
-mongoose.connect('mongodb://localhost:27017/SGPBAUX',{ useNewUrlParser: true },function(err,res){
+mongoose.connect('mongodb://localhost:27017/SGPB',{ useNewUrlParser: true },function(err,res){
     if(err) throw err;
     console.log('Base de datos conectada');
 });
@@ -634,10 +642,9 @@ function getFullName(weekDay,codigo_usr) {
 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
-  //  var titulosElts = document.getElementsByTagName("usrnombre");
-   // console.log(titulosElts);
-   //var nombre = sessionStorage["nombre"];
-    console.log("llega");
+
+try{
+    console.log(req.file);
   
     console.log(req.url);
     
@@ -671,8 +678,13 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
 
             });
     });
-  
-     
+    } catch (ex) {
+        res.json({
+            code : 2,
+            data :'/uploadas/' + group + "-resize.jpg"
+        });
+        res.end();
+  }
 });
 
 
