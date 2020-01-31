@@ -19,7 +19,6 @@ var ejs = require('ejs');
 var gm = require('gm');
 var sharp = require('sharp');
 
-global.logonusu;
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb){
@@ -633,7 +632,18 @@ function getFullName(weekDay,codigo_usr) {
 
 //imagen usuario
 
+
 app.post('/upload', upload.single('file'), function (req, res, next) {
+  //  var titulosElts = document.getElementsByTagName("usrnombre");
+   // console.log(titulosElts);
+   //var nombre = sessionStorage["nombre"];
+    console.log("llega");
+  
+    console.log(req.url);
+    
+    var nomnre = ((req.url).split("?"))[1];
+    console.log(nomnre);
+
     var url = '/uploadas/' + req.file.filename;
     console.log("-----------------CAMBIO DE FOTO---------------");
     console.log("logon usuario" + " " +  global.logonusu);
@@ -651,7 +661,7 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
            
         if (err) console.log(err);
          
-        usuarios.updateOne({USR_LOGON: global.logonusu},{$set:{USR_FOTO: '/uploadas/' + group + '-resize.jpg'}}, function(err, result) {
+        usuarios.updateOne({USR_LOGON: nomnre},{$set:{USR_FOTO: '/uploadas/' + group + '-resize.jpg'}}, function(err, result) {
                 console.log(result);
                 res.json({
                     code : 1,
@@ -661,6 +671,7 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
 
             });
     });
+  
      
 });
 
