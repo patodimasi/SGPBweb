@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/patodimasi/SGPBweb#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "commander": "^3.0.2",
     "consolidate": "^0.15.1",
     "ejs": "^3.0.1",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "gm": "^1.23.1",
     "image-size": "^0.8.3",
     "jimp": "^0.9.3",
